@@ -4,6 +4,7 @@ import com.example.quanlycv.Entity.QlTuyenDung;
 import com.example.quanlycv.Rep.TuyenDungRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,13 @@ public class DotTuyenDungService {
 @Autowired
     private TuyenDungRep tuyenDungRep;
 
-    public Page<QlTuyenDung> getTuyenDungPage(Pageable pageable) {
-        return tuyenDungRep.findAll(pageable);
+//    public Page<QlTuyenDung> getTuyenDungPage(Pageable pageable) {
+//        return tuyenDungRep.findAll(pageable);
+//    }
+
+    public Page<QlTuyenDung> getAllPagination(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo-1,2);
+        return this.tuyenDungRep.findAll(pageable);
     }
 
 //    public List<QlTuyenDung> findAll() {

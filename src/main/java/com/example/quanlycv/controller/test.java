@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,17 +41,17 @@ public class test {
 
     @GetMapping("/tuyen-dung")
     public String listTuyenDung(Model model,
-                                @RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "2") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<QlTuyenDung> tuyenDungPage = dotTuyenDungService.getTuyenDungPage(pageable);
-
-        model.addAttribute("tuyenDungPage", tuyenDungPage);
-        model.addAttribute("currentPage", page);
+                                @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo,
+                                @Param("keyword") String keyword) {
+        Page<QlTuyenDung> tuyenDungPage = dotTuyenDungService.getAllPagination(pageNo);
+                model.addAttribute("tuyenDungPage", tuyenDungPage);
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", tuyenDungPage.getTotalPages());
         model.addAttribute("qlTuyenDung", new QlTuyenDung());
         return "tuyen-dung";
     }
+
+
 
     @PostMapping("/tuyen-dung/add")
     public String addDotTuyenDung(@ModelAttribute QlTuyenDung qlTuyenDung, RedirectAttributes redirectAttributes) {

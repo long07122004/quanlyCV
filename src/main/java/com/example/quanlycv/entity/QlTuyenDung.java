@@ -1,12 +1,10 @@
-package com.example.quanlycv.Entity;
+package com.example.quanlycv.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor

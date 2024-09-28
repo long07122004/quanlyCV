@@ -1,6 +1,6 @@
 package com.example.quanlycv.Service;
 
-import com.example.quanlycv.Entity.QlTuyenDung;
+import com.example.quanlycv.entity.QlTuyenDung;
 import com.example.quanlycv.Rep.TuyenDungRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 @Service
 public class DotTuyenDungService {
 

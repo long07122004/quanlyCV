@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Menu}"
+
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./side-bar.css"/>
+    <title>Chi tiết đợt tuyển dụng</title>
+</head>
+<body>
+<main layout:fragment="QLTuyenDung">
+
+    <form th:action="@{'/tuyen-dung/update/' + ${tuyenDung.dot_tuyen_dung_id}}" th:object="${tuyenDung}" method="post">
+    <!-- Button trigger modal -->
+
+        <h1>Chi tiết đợt tuyển dụng</h1>
+        <div>
+            <label >Mã đợt tuyển dụng</label>
+            <input class="form-control"  type="text"  name="maDot"   th:field="*{maDot}">
+        </div>
+        <div>
+            <label>Tên đợt tuyển dụng</label>
+            <input class="form-control"  type="text"  name="tenDot"  th:field="*{tenDot}">
+        </div>
+        <div>
+            <label> Nội dung</label>
+            <input class="form-control"  type="text" name="noiDung"  th:field="*{noiDung}">
+        </div>
+        <div>
+            <label> Deadline tuyển dụng</label>
+            <input class="form-control"  type="date"  name="deadline" th:field="*{deadline}">
+        </div>
+
+
+        <button type="submit" class="btn btn-success">Cập nhật</button>
+
+
+
+                    <a href="/tuyen-dung" class="btn btn-primary">Quay lại danh sách</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+<!--<h1>Chi tiết đợt tuyển dụng</h1>-->
+<!--<div>-->
+<!--    <label >Mã đợt tuyển dụng</label>-->
+<!--    <input class="form-control"  type="text"  name="maDot"  th:value="${tuyenDung.maDot}">-->
+<!--</div>-->
+<!--<div>-->
+<!--    <label>Tên đợt tuyển dụng</label>-->
+<!--    <input class="form-control"  type="text"  name="tenDot" th:value="${tuyenDung.tenDot}">-->
+<!--</div>-->
+<!--<div>-->
+<!--    <label> Nội dung</label>-->
+<!--    <input class="form-control"  type="text" name="noiDung" th:value="${tuyenDung.noiDung}">-->
+<!--</div>-->
+<!--<div>-->
+<!--    <label> Deadline tuyển dụng</label>-->
+<!--    <input class="form-control"  type="date"  name="deadline" th:value="${tuyenDung.deadline}">-->
+<!--</div>-->
+
+
+
+<!--<a href="/tuyen-dung" class="btn btn-primary">Quay lại danh sách</a>-->
+    </form>
+</main>
+</body>
+</html>

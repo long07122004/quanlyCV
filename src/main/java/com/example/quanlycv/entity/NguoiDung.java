@@ -1,4 +1,4 @@
-package com.example.quanlycv.Entity;
+package com.example.quanlycv.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

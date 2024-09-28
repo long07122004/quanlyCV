@@ -21,44 +21,65 @@
         </form>
     </div>
     <div class="row">
-        <div class="row">
+        <div class="row" style="margin-top: 5px; margin-bottom: 5px">
             <div class="col-sm-1">
-                <button type="button" class="btn btn-success lni lni-plus" data-bs-toggle="modal" data-bs-target="#exampleModal">
-<!--                    <i class="lni lni-plus" style="margin-top: 3px;"></i>-->
-                </button>
+                <button type="button" class="btn btn-success lni lni-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 5px; margin-bottom: 5px">
+            <div class="col-sm-5">
+                <!-- Thông báo thành công -->
+                <div th:if="${successMessage}" id="success-alert" class="alert alert-success">
+                    <span th:text="${successMessage}"></span>
+                </div>
+
+                <!--  Thông báo lỗi-->
+                <div th:if="${errorMessage}" id="error-alert" class="alert alert-danger">
+                    <span th:text="${errorMessage}"></span>
+                </div>
             </div>
         </div>
         <table class="table">
             <thead>
             <tr>
                 <th scope="col">STT</th>
-                <th scope="col">UserName</th>
                 <th scope="col">Email</th>
                 <th scope="col">SDT</th>
+                <th scope="col">Vai Trò</th>
                 <th scope="col">Trạng Thái</th>
                 <th scope="col">Hoạt Động</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr th:each="nguoiDung : ${listND}">
                 <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+                <td th:text="${nguoiDung.email}"></td>
+                <td th:text="${nguoiDung.sdt}"></td>
+                <td th:text="${nguoiDung.vaiTro.tenVaiTro}"></td>
+                <td th:text="${nguoiDung.trangThai ? 'Kích hoạt' : 'Tạm khóa'}"></td>
+                <td>
+                    <button type="button" class="btn btn-success lni lni-coin"></button>
+                    <button type="button" class="btn btn-warning lni lni-pencil"></button>
+                    <a th:href="@{|/admin/role/delete/${nguoiDung.id}|}">
+                        <button type="button" class="btn btn-danger lni lni-trash-can"></button>
+                    </a>
+
+                </td>
             </tr>
             </tbody>
         </table>
+    </div>
+    <div class="row">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li th:if="${curentPage>1}" class="page-item"><a class="page-link" th:href="@{'?pageNo='+${curentPage-1}}">Previous</a></li>
+                <li th:each="i:${#numbers.sequence(1,totalPage)}" class="page-item" th:classappend="${curentPage==i?'active':''}">
+                    <a class="page-link"
+                       th:href="@{${keyword != null && keyword!='' ? '?keyword=' + keyword+'&':'?'}+ 'pageNo='+${i}}" th:text="${i}"></a>
+                </li>
+                <li th:if="${curentPage < totalPage}" class="page-item"><a class="page-link" th:href="@{'?pageNo='+${curentPage+1}}">Next</a></li>
+            </ul>
+        </nav>
     </div>
 
 
@@ -72,35 +93,56 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-4">.col-md-4</div>
-                                <div class="col-md-4 ms-auto">.col-md-4 .ms-auto</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 ms-auto">.col-md-3 .ms-auto</div>
-                                <div class="col-md-2 ms-auto">.col-md-2 .ms-auto</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 ms-auto">.col-md-6 .ms-auto</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-9">
-                                    Level 1: .col-sm-9
-                                    <div class="row">
-                                        <div class="col-8 col-sm-6">
-                                            Level 2: .col-8 .col-sm-6
-                                        </div>
-                                        <div class="col-4 col-sm-6">
-                                            Level 2: .col-4 .col-sm-6
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <form th:object="${formUser}" method="post">
+                           <div class="row">
+                               <div class="mb-3">
+                                   <label for="hoTen" class="form-label">Họ Và Tên</label>
+                                   <input type="text" th:field="*{hoTen}" class="form-control" id="hoTen" name="hoTen" placeholder="Nhập Họ và Tên">
+                               </div>
+                               <div class="mb-3">
+                                   <label for="emailID" class="form-label">Email</label>
+                                   <input type="email" th:field="*{email}" class="form-control" id="emailID" name="email" placeholder="Nhập email">
+                               </div>
+                               <div class="mb-3">
+                                   <label for="passwordID" class="form-label">Password</label>
+                                   <input type="password" th:field="*{password}" class="form-control" id="passwordID" name="password" placeholder="Nhập Password">
+                               </div>
+                               <div class="mb-3">
+                                   <label for="sdtID" class="form-label">Số điện thoại</label>
+                                   <input type="text" th:field="*{sdt}" class="form-control" id="sdtID" name="sdt" placeholder="Nhập số điện thoại">
+                               </div>
+                               <div class="mb-3">
+                                   <label for="vaiTroID" class="form-label">Số điện thoại</label>
+                                   <select th:field="*{vaiTroId}" class="form-select form-select-sm" aria-label="Small select example" id="vaiTroID">
+                                       <option value="" selected>Chọn Vai Trò</option>
+                                       <option th:each="vaitro:${VAITRO}" th:value="${vaitro.id}" th:text="${vaitro.tenVaiTro}"></option>
+                                   </select>
+                               </div>
+                               <div class="mb-3">
+                                   <label for="nhanvienID" class="form-label">Nhân Viên</label>
+                                   <input type="hidden" th:field="*{nhanVienId}" class="form-control" id="idNhanvienHidden" name="nhanVienId" placeholder="Nhập số điện thoại">
+                                   <input type="text" class="form-control" id="nhanvienID" placeholder="Nhập số điện thoại">
+                                   <button type="button" class="btn btn-secondary lni lni-plus" id="btnNV"></button>
+                               </div>
+                               <div class="mb-3">
+                                   <div class="form-check">
+                                       <input class="form-check-input" th:field="*{trangThai}" type="radio" value="true" name="trangThai" id="flexRadioDefault1" checked>
+                                       <label class="form-check-label" for="flexRadioDefault1">
+                                           Kích hoạt
+                                       </label>
+                                   </div>
+                                   <div class="form-check">
+                                       <input class="form-check-input" th:field="*{trangThai}" type="radio" value="false" name="trangThai" id="flexRadioDefault2" >
+                                       <label class="form-check-label" for="flexRadioDefault2">
+                                           Tạm khóa
+                                       </label>
+                                   </div>
+                               </div>
+                           </div>
 
                             <div class="row">
+                                <button th:formaction="@{/admin/role/add}" type="submit" class="btn btn-primary col-sm-2">Save</button>
                                 <button type="button" class="btn btn-secondary col-sm-2" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary col-sm-2">Save</button>
                             </div>
                         </form>
 
@@ -113,6 +155,58 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalNV" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel1">Danh Sách Nhân Viên</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Tên Nhân Viên</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phòng Ban</th>
+                                    <th scope="col">Vị Trí CV</th>
+                                    <th scope="col">Thao Tác</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="nhanVien : ${listNV}">
+                                    <th scope="row">1</th>
+                                    <td th:text="${nhanVien.hoTen}"></td>
+                                    <td th:text="${nhanVien.email}"></td>
+                                    <td th:text="${nhanVien.phongBan.tenPhongBan}"></td>
+                                    <td th:text="${nhanVien.viTriCongViec.tenViTri}"></td>
+                                    <td>
+                                        <a>
+                                            <button type="button" class="btn btn-warning lni lni-pencil" th:attr="data-id=${nhanVien.id}" onclick="getNhanVienId(this)"></button>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Chọn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </main>
 </body>
 </html>

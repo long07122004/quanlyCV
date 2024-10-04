@@ -1,10 +1,13 @@
 package com.example.quanlycv.entity;
 
 import jakarta.persistence.*;
+
+
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,17 +21,24 @@ public class QlTuyenDung {
     private int dot_tuyen_dung_id;
 
     @Column(name = "ma_dot")
+
     private String maDot;
 
     @Column(name = "ten_dot")
+
     private String tenDot;
 
     @Column(name = "noi_dung")
+
     private String noiDung;
 
     @Column(name = "deadline")
+
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     private LocalDate deadline;
+
 
     @ManyToOne
     @JoinColumn(name = "tao_boi")

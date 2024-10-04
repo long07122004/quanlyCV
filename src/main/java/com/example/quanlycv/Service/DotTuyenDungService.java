@@ -19,7 +19,7 @@ public class DotTuyenDungService {
 //    }
 
     public Page<QlTuyenDung> getAllPagination(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo-1,2);
+        Pageable pageable = PageRequest.of(pageNo-1,5);
         return this.tuyenDungRep.findAll(pageable);
     }
 
@@ -39,15 +39,27 @@ public class DotTuyenDungService {
                 .orElseThrow(() -> new RuntimeException("Đợt tuyển dụng không tồn tại"));
     }
 
-    public void update(Integer id, QlTuyenDung updatedTuyenDung) {
-        QlTuyenDung existingTuyenDung = tuyenDungRep.findById(id).orElseThrow(() -> new RuntimeException("Not Found"));
-        existingTuyenDung.setMaDot(updatedTuyenDung.getMaDot());
-        existingTuyenDung.setTenDot(updatedTuyenDung.getTenDot());
-        existingTuyenDung.setNoiDung(updatedTuyenDung.getNoiDung());
-        existingTuyenDung.setDeadline(updatedTuyenDung.getDeadline());
-        // any other fields you want to update
+    public QlTuyenDung update(Integer id, QlTuyenDung updatedTuyenDung) {
+//        QlTuyenDung existingTuyenDung = tuyenDungRep.findById(id).orElseThrow(() -> new RuntimeException("Not Found"));
+//        existingTuyenDung.setMaDot(updatedTuyenDung.getMaDot());
+//        existingTuyenDung.setTenDot(updatedTuyenDung.getTenDot());
+//        existingTuyenDung.setNoiDung(updatedTuyenDung.getNoiDung());
+//        existingTuyenDung.setDeadline(updatedTuyenDung.getDeadline());
+//        // any other fields you want to update
+//
+//        tuyenDungRep.save(existingTuyenDung);
 
-        tuyenDungRep.save(existingTuyenDung);
+        return tuyenDungRep.findById(id)
+                .map(existingTuyenDung -> {
+                    // Cập nhật thông tin đối tượng
+                    existingTuyenDung.setMaDot(updatedTuyenDung.getMaDot());
+                    existingTuyenDung.setTenDot(updatedTuyenDung.getTenDot());
+                    existingTuyenDung.setNoiDung(updatedTuyenDung.getNoiDung());
+                    existingTuyenDung.setDeadline(updatedTuyenDung.getDeadline());
+                    // Lưu lại đối tượng sau khi cập nhật
+                    return tuyenDungRep.save(existingTuyenDung);
+                }).orElseThrow(() -> new RuntimeException("DotTuyenDung với ID " + id + " không tồn tại"));
+
     }
 
 //    public List<QlTuyenDung> searchTuyenDung(String keyword) {
@@ -59,6 +71,14 @@ public class DotTuyenDungService {
 //        // Logic tìm kiếm với keyword, có thể sử dụng các hàm của JPA hoặc Query.
 //        return tuyenDungRep.findByMaDotContainingOrTenDotContainingOrNoiDungContaining(keyword, keyword, keyword,keyword);
 //    }
+
+    public Page<QlTuyenDung> search(String keyword, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        if (keyword != null && !keyword.isEmpty()) {
+            return tuyenDungRep.searchByKeyword(keyword.toLowerCase(), pageable);
+        }
+        return tuyenDungRep.findAll(pageable);
+    }
 
 
 }

@@ -39,6 +39,7 @@ public class NguoiDung {
     @JoinColumn(name = "vai_tro_id")
     VaiTro vaiTro;
 
+
     @ManyToOne
     @JoinColumn(name = "nhan_vien_id")
     NhanVien nhanVien;

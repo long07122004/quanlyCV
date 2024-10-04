@@ -7,6 +7,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Quản lý Role</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/side-bar.css"/>
 </head>
 <body>
 <main layout:fragment="main1">
@@ -22,8 +26,10 @@
     </div>
     <div class="row">
         <div class="row" style="margin-top: 5px; margin-bottom: 5px">
-            <div class="col-sm-1">
-                <button type="button" class="btn btn-success lni lni-plus" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-success" id="show-modal-1">
+                    Thêm
+                </button>
             </div>
         </div>
         <div class="row" style="margin-top: 5px; margin-bottom: 5px">
@@ -58,8 +64,11 @@
                 <td th:text="${nguoiDung.vaiTro.tenVaiTro}"></td>
                 <td th:text="${nguoiDung.trangThai ? 'Kích hoạt' : 'Tạm khóa'}"></td>
                 <td>
-                    <button type="button" class="btn btn-success lni lni-coin"></button>
-                    <button type="button" class="btn btn-warning lni lni-pencil"></button>
+                    <a th:href="@{|/admin/role/change-status/${nguoiDung.id}|}">
+                        <button type="button" class="btn btn-success lni lni-coin" ></button>
+                    </a>
+                    <button type="button" class="btn btn-warning lni lni-pencil"
+                            th:onclick="'edit(' + '\'' + ${nguoiDung.id} + '\'' + ')'"></button>
                     <a th:href="@{|/admin/role/delete/${nguoiDung.id}|}">
                         <button type="button" class="btn btn-danger lni lni-trash-can"></button>
                     </a>
@@ -98,31 +107,38 @@
                                <div class="mb-3">
                                    <label for="hoTen" class="form-label">Họ Và Tên</label>
                                    <input type="text" th:field="*{hoTen}" class="form-control" id="hoTen" name="hoTen" placeholder="Nhập Họ và Tên">
+                                   <div class="invalid-feedback" id="hoTenError"></div>
                                </div>
                                <div class="mb-3">
                                    <label for="emailID" class="form-label">Email</label>
                                    <input type="email" th:field="*{email}" class="form-control" id="emailID" name="email" placeholder="Nhập email">
+                                   <div class="invalid-feedback" id="emailError"></div>
                                </div>
-                               <div class="mb-3">
+                               <div class="mb-3" id="passwordField">
                                    <label for="passwordID" class="form-label">Password</label>
                                    <input type="password" th:field="*{password}" class="form-control" id="passwordID" name="password" placeholder="Nhập Password">
+                                   <div class="invalid-feedback" id="passwordError"></div>
                                </div>
                                <div class="mb-3">
                                    <label for="sdtID" class="form-label">Số điện thoại</label>
                                    <input type="text" th:field="*{sdt}" class="form-control" id="sdtID" name="sdt" placeholder="Nhập số điện thoại">
+                                   <div class="invalid-feedback" id="sdtError"></div>
                                </div>
                                <div class="mb-3">
-                                   <label for="vaiTroID" class="form-label">Số điện thoại</label>
+                                   <label for="vaiTroID" class="form-label">Chọn Vai Trò</label>
                                    <select th:field="*{vaiTroId}" class="form-select form-select-sm" aria-label="Small select example" id="vaiTroID">
                                        <option value="" selected>Chọn Vai Trò</option>
                                        <option th:each="vaitro:${VAITRO}" th:value="${vaitro.id}" th:text="${vaitro.tenVaiTro}"></option>
                                    </select>
+                                   <div class="invalid-feedback" id="vaiTroError"></div>
                                </div>
                                <div class="mb-3">
                                    <label for="nhanvienID" class="form-label">Nhân Viên</label>
-                                   <input type="hidden" th:field="*{nhanVienId}" class="form-control" id="idNhanvienHidden" name="nhanVienId" placeholder="Nhập số điện thoại">
-                                   <input type="text" class="form-control" id="nhanvienID" placeholder="Nhập số điện thoại">
-                                   <button type="button" class="btn btn-secondary lni lni-plus" id="btnNV"></button>
+                                   <div class="row">
+                                       <input type="hidden" th:field="*{nhanVienId}" class="form-control col-sm-3" id="idNhanvienHidden" name="nhanVienId" placeholder="Nhập số điện thoại">
+                                       <input type="text" class="form-control col-sm-6" id="nhanvienID" placeholder="" readonly>
+                                       <button type="button" class="btn btn-secondary lni lni-plus col-sm-1" id="btnNV"></button>
+                                   </div>
                                </div>
                                <div class="mb-3">
                                    <div class="form-check">
@@ -141,17 +157,14 @@
                            </div>
 
                             <div class="row">
-                                <button th:formaction="@{/admin/role/add}" type="submit" class="btn btn-primary col-sm-2">Save</button>
+                                <button th:formaction="@{/admin/role/add}" type="submit" id="btnSave" class="btn btn-primary col-sm-2">Save</button>
+                                <button th:formaction="@{/admin/role/update/}" type="submit" class="btn btn-info col-sm-2" id="btnUpdate">Update</button>
                                 <button type="button" class="btn btn-secondary col-sm-2" data-bs-dismiss="modal">Close</button>
                             </div>
                         </form>
 
                     </div>
                 </div>
-<!--                <div class="modal-footer">-->
-<!--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
-<!--                    <button type="button" class="btn btn-primary">Save changes</button>-->
-<!--                </div>-->
             </div>
         </div>
     </div>

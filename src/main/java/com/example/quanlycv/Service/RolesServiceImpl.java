@@ -85,5 +85,20 @@ public class RolesServiceImpl implements RolesService{
         return new PageImpl<NguoiDung>(listSearch,pageable,this.searchNguoiDung(keyword).size());
     }
 
+    @Override
+    public void update(NguoiDung nguoiDungEntity) {
+        this.nguoiDungRepo.save(nguoiDungEntity);
+    }
+
+    @Override
+    public boolean emailExists(String email, Integer nguoiDungId) {
+        return nguoiDungRepo.existsByEmailAndIdNot(email, nguoiDungId);
+    }
+
+    @Override
+    public NguoiDung findById(Integer id) {
+        return nguoiDungRepo.findById(id).get();
+    }
+
 
 }

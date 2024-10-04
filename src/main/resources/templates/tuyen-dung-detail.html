@@ -22,21 +22,37 @@
         <h1>Chi tiết đợt tuyển dụng</h1>
         <div>
             <label >Mã đợt tuyển dụng</label>
-            <input class="form-control"  type="text"  name="maDot"   th:field="*{maDot}">
+            <input class="form-control"  type="text"  name="maDot"   th:field="*{maDot}"
+                   required minlength="3" maxlength="20"
+                   title="Mã đợt tuyển dụng phải có từ 3 đến 20 ký tự."
+            >
         </div>
         <div>
             <label>Tên đợt tuyển dụng</label>
-            <input class="form-control"  type="text"  name="tenDot"  th:field="*{tenDot}">
+            <input class="form-control"  type="text"  name="tenDot"  th:field="*{tenDot}"
+                   required minlength="5" maxlength="100"
+                   title="Tên đợt tuyển dụng phải có từ 5 đến 100 ký tự."
+            >
         </div>
         <div>
             <label> Nội dung</label>
-            <input class="form-control"  type="text" name="noiDung"  th:field="*{noiDung}">
+            <textarea id="noiDung" class="form-control" name="noiDung"
+                      th:field="*{noiDung}"
+                      required minlength="10" maxlength="500"
+                      title="Nội dung phải có từ 10 đến 500 ký tự."
+            ></textarea>
         </div>
         <div>
             <label> Deadline tuyển dụng</label>
-            <input class="form-control"  type="date"  name="deadline" th:field="*{deadline}">
-        </div>
+            <input class="form-control"  type="date"  name="deadline" th:field="*{deadline}"
+                   required
+                   th:min="${minDate}"
+                   th:max="${maxDate}"
+                   title="Vui lòng chọn ngày hợp lệ trong tương lai và không quá 6 tháng."
 
+            >
+        </div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
         <button type="submit" class="btn btn-success">Cập nhật</button>
 
@@ -55,27 +71,7 @@
 
 
 
-<!--<h1>Chi tiết đợt tuyển dụng</h1>-->
-<!--<div>-->
-<!--    <label >Mã đợt tuyển dụng</label>-->
-<!--    <input class="form-control"  type="text"  name="maDot"  th:value="${tuyenDung.maDot}">-->
-<!--</div>-->
-<!--<div>-->
-<!--    <label>Tên đợt tuyển dụng</label>-->
-<!--    <input class="form-control"  type="text"  name="tenDot" th:value="${tuyenDung.tenDot}">-->
-<!--</div>-->
-<!--<div>-->
-<!--    <label> Nội dung</label>-->
-<!--    <input class="form-control"  type="text" name="noiDung" th:value="${tuyenDung.noiDung}">-->
-<!--</div>-->
-<!--<div>-->
-<!--    <label> Deadline tuyển dụng</label>-->
-<!--    <input class="form-control"  type="date"  name="deadline" th:value="${tuyenDung.deadline}">-->
-<!--</div>-->
 
-
-
-<!--<a href="/tuyen-dung" class="btn btn-primary">Quay lại danh sách</a>-->
     </form>
 </main>
 </body>

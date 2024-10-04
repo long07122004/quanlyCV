@@ -4,6 +4,7 @@ import com.example.quanlycv.dto.NguoiDungDTO;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.NhanVien;
 import com.example.quanlycv.entity.VaiTro;
+import com.example.quanlycv.entity.VaiTroQuyenTruyCap;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -24,4 +25,5 @@ public interface RolesService {
     boolean emailExists(String email, Integer nguoiDungId);
 
     NguoiDung findById(Integer id);
+    List<VaiTroQuyenTruyCap> findAllVTQCT();
 }

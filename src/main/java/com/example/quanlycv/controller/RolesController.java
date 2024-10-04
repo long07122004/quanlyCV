@@ -63,6 +63,8 @@ public class RolesController {
             model.addAttribute("curentPage",pageNo);
             model.addAttribute("listND", listND);
         }
+
+        model.addAttribute("VTQTC",rolesService.findAllVTQCT());
         return  "roles/index-role";
     }
 
@@ -161,5 +163,7 @@ public class RolesController {
 
         return  "redirect:/admin/role";
     }
+
+
 
 }

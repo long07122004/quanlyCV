@@ -162,7 +162,7 @@ function displayError(elementId, errorMessage) {
     var errorElement = document.getElementById(elementId);
     errorElement.innerHTML = errorMessage;
     errorElement.style.display = "block";
-    errorElement.previousElementSibling.classList.add("is-invalid");  // Đánh dấu input là invalid
+    errorElement.previousElementSibling.classList.add("is-invalid");
 }
 
 function clearErrors() {

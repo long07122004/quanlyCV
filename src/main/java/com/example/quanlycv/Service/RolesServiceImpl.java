@@ -3,9 +3,11 @@ package com.example.quanlycv.Service;
 import com.example.quanlycv.Rep.NguoiDungRepo;
 import com.example.quanlycv.Rep.NhanVienRepo;
 import com.example.quanlycv.Rep.VaiTroRepo;
+import com.example.quanlycv.Rep.VatTroQuyenTruyCapRepo;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.NhanVien;
 import com.example.quanlycv.entity.VaiTro;
+import com.example.quanlycv.entity.VaiTroQuyenTruyCap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,8 @@ public class RolesServiceImpl implements RolesService{
     NhanVienRepo nhanVienRepo;
     @Autowired
     VaiTroRepo vaiTroRepo;
+    @Autowired
+    VatTroQuyenTruyCapRepo VTQTC;
 
 
     @Override
@@ -98,6 +102,11 @@ public class RolesServiceImpl implements RolesService{
     @Override
     public NguoiDung findById(Integer id) {
         return nguoiDungRepo.findById(id).get();
+    }
+
+    @Override
+    public List<VaiTroQuyenTruyCap> findAllVTQCT() {
+        return VTQTC.findAll();
     }
 
 

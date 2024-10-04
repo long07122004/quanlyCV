@@ -233,4 +233,9 @@ footer{
     .navbar-expand .navbar-nav .dropdown-menu{
         box-shadow:  0 .1rem .2rem rgba(0, 0, 0, .05);
     }
+
+    #nhanvienID{
+        width: 85%;
+        margin-left: 3%;
+    }
 }

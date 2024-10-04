@@ -13,4 +13,5 @@ public interface NguoiDungRepo extends JpaRepository<NguoiDung,Integer> {
 //    List<NguoiDung> searchUser(String keyword);
     @Query("SELECT p FROM NguoiDung p WHERE p.hoTen LIKE %?1% or p.email LIKE %?1% or p.sdt LIKE %?1% or p.vaiTro.tenVaiTro LIKE %?1%")
     List<NguoiDung> searchUser(String keyword);
+    boolean existsByEmailAndIdNot(String email, Integer id);
 }

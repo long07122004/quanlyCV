@@ -2,18 +2,22 @@ package com.example.quanlycv.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@Data
 @Table(name = "Nguoi_Dung")
 public class NguoiDung {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private int nguoi_dung_id;
+//    @Column(name = "ho_ten")
+//    private String hoTen;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nguoi_dung_id")
@@ -35,16 +39,12 @@ public class NguoiDung {
     @JoinColumn(name = "vai_tro_id")
     VaiTro vaiTro;
 
+
     @ManyToOne
     @JoinColumn(name = "nhan_vien_id")
     NhanVien nhanVien;
 
     @Column(name = "trang_thai", columnDefinition = "BIT DEFAULT 1")
     Boolean trangThai;
-
-
-
-
-
 
 }

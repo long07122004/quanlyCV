@@ -19,4 +19,9 @@ public interface RolesService {
     Page<NguoiDung> getAllPagination(Integer pageNo);
     List<NguoiDung> searchNguoiDung(String keyword);
     Page<NguoiDung> searchNguoiDung(String keyword,Integer pageNo);
+
+    void update(NguoiDung nguoiDungEntity);
+    boolean emailExists(String email, Integer nguoiDungId);
+
+    NguoiDung findById(Integer id);
 }

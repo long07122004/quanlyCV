@@ -1,35 +1,28 @@
 package com.example.quanlycv.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "Phong_Ban")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "Phong_Ban")
 public class PhongBan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "phong_ban_id")
-     Integer id;
+    private Integer id;
 
-    @Column(name = "ma_phong_ban",  unique = true, length = 50)
-     String maPhongBan;
-
-    @Column(name = "ten_phong_ban",  length = 100)
-     String tenPhongBan;
-
-    @Column(name = "trang_thai", columnDefinition = "BIT DEFAULT 1")
-     Boolean trangThai = true;
-
-    @Column(name = "ngay_tao")
-     LocalDateTime ngayTao = LocalDateTime.now();
-
-    @Column(name = "ngay_cap_nhat")
-     LocalDateTime ngayCapNhat = LocalDateTime.now();
+    @Column(name = "ten_phong_ban")
+    private String tenPhongBan;
 }

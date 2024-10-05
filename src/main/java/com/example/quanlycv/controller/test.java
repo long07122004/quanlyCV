@@ -18,8 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class test {
     @Autowired
     private DotTuyenDungService dotTuyenDungService;
-    @Autowired
-    private TuyenDungRep tuyendungRep;
+
 
 
 
@@ -91,13 +90,7 @@ public class test {
         return "redirect:/tuyen-dung";
     }
 
-//    @DeleteMapping("/tuyen-dung/delete/{id}")
-//    public String deleteDotTuyenDung(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-//      // System.out.println(id);
-//        dotTuyenDungService.deleteDotTuyenDung(id);
-//        redirectAttributes.addFlashAttribute("message", "Đợt tuyển dụng đã được xóa thành công!");
-//        return "redirect:/tuyen-dung";
-//    }
+
     @GetMapping("/tuyen-dung/delete/{id}")
     public String deleteTuyenDung(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
@@ -154,20 +147,10 @@ public class test {
             return "tuyen-dung-detail"; // Trả về form với thông báo lỗi
         }
 
-      //  dotTuyenDungService.update(id, tuyenDung); // Update method in the service
+
         return "redirect:/tuyen-dung"; // Redirect back to the list
     }
 
-//    @GetMapping("/tuyen-dung/search")
-//    public String searchTuyenDung(@RequestParam("keyword") String keyword, Model model) {
-//        // Gọi đến service để tìm kiếm đợt tuyển dụng
-//        List<QlTuyenDung> searchResults = dotTuyenDungService.searchTuyenDung(keyword);
-//        System.out.println( "++"+searchResults);
-//        // Đưa kết quả tìm kiếm vào model
-//        model.addAttribute("qlTuyenDung", new QlTuyenDung());
-//        model.addAttribute("tuyenDung", searchResults);
-//        return "tuyen-dung";
-//    }
 
 }
 

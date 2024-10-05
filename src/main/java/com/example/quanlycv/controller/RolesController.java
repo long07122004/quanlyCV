@@ -5,6 +5,7 @@ import com.example.quanlycv.dto.NguoiDungDTO;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.NhanVien;
 import com.example.quanlycv.entity.VaiTro;
+import com.example.quanlycv.entity.VaiTroQuyenTruyCap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class RolesController {
@@ -64,7 +66,10 @@ public class RolesController {
             model.addAttribute("listND", listND);
         }
 
-        model.addAttribute("VTQTC",rolesService.findAllVTQCT());
+        List<VaiTroQuyenTruyCap> vtqtcList = rolesService.findAllVTQCT();
+        Map<String, String> groupedRoles = rolesService.getGroupedRoles(vtqtcList);
+        System.out.println("group: "+groupedRoles);
+        model.addAttribute("VTQTC",groupedRoles);
         return  "roles/index-role";
     }
 

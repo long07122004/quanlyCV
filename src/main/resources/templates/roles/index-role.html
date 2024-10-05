@@ -57,8 +57,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="nguoiDung : ${listND}">
-                <th scope="row">1</th>
+            <tr th:each="nguoiDung,indexND : ${listND.content}">
+                <th th:text="${indexND.index + 1}" scope="row">1</th>
                 <td th:text="${nguoiDung.email}"></td>
                 <td th:text="${nguoiDung.sdt}"></td>
                 <td th:text="${nguoiDung.vaiTro.tenVaiTro}"></td>
@@ -92,26 +92,61 @@
     </div>
     <br>
 
-<!--    <div class="row">-->
-<!--        <table class="table">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th scope="col">STT</th>-->
-<!--                <th scope="col">Vai Trò</th>-->
-<!--                <th scope="col">Quyền Truy Cập</th>-->
-<!--                <th scope="col">Hành Động</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr th:each="vtqtc : ${VTQTC}">-->
-<!--                <th scope="row">1</th>-->
-<!--                <td th:text="${vtqtc.vaiTro.tenVaiTro}"></td>-->
-<!--                <td th:text="${vtqtc.quyenTruyCap.name}"></td>-->
-<!--                <td></td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--    </div>-->
+    <div class="row">
+        <div class="col-7" >
+            <h3>Vai Tro - Quyền Truy Cập</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Vai Trò</th>
+                    <th scope="col">Quyền Truy Cập</th>
+                    <th scope="col">Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="entry, stat : ${VTQTC}">
+                        <th scope="row" th:text="${stat.count}"></th>
+                        <td th:text="${entry.key}"></td>
+                        <td th:text="${entry.value}"></td>
+                        <td>
+                            <button type="button" class="btn btn-warning lni lni-pencil"></button>
+                            <a>
+                                <button type="button" class="btn btn-danger lni lni-trash-can"></button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-5" >
+            <h3>Quản Lý Quyền Truy Cập</h3>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">Vai Trò</th>
+                    <th scope="col">Quyền Truy Cập</th>
+                    <th scope="col">Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+<!--                <tr th:each="vtqtc : ${VTQTC}">-->
+<!--                    <th scope="row">1</th>-->
+<!--                    <td th:text="${vtqtc.vaiTro.tenVaiTro}"></td>-->
+<!--                    <td th:text="${vtqtc.quyenTruyCap.name}"></td>-->
+<!--                    <td>-->
+<!--                        <button type="button" class="btn btn-warning lni lni-pencil"></button>-->
+<!--                        <a>-->
+<!--                            <button type="button" class="btn btn-danger lni lni-trash-can"></button>-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
 
 
 <!--    modal-->
@@ -243,5 +278,6 @@
 
 
 </main>
+<script layout:fragment="js-frangment" src="/js/roles.js"></script>
 </body>
 </html>

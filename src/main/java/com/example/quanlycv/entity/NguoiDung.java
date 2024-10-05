@@ -32,7 +32,7 @@ public class NguoiDung {
     @Column(name = "sdt", length = 15)
     String sdt;
 
-    @Column(name = "password")
+    @Column(name = "mat_khau")
     String password;
 
     @ManyToOne

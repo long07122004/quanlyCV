@@ -85,7 +85,7 @@ public class test {
 
 
     @PostMapping("/tuyen-dung/add")
-    public String addDotTuyenDung(@ModelAttribute QlTuyenDung qlTuyenDung, RedirectAttributes redirectAttributes) {
+    public String addDotTuyenDung(@ModelAttribute("qlTuyenDung") QlTuyenDung qlTuyenDung, RedirectAttributes redirectAttributes) {
         dotTuyenDungService.saveDotTuyenDung(qlTuyenDung);
         redirectAttributes.addFlashAttribute("message", "Đợt tuyển dụng đã được thêm thành công!");
         return "redirect:/tuyen-dung";

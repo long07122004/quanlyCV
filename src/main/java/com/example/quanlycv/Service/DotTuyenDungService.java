@@ -40,14 +40,7 @@ public class DotTuyenDungService {
     }
 
     public QlTuyenDung update(Integer id, QlTuyenDung updatedTuyenDung) {
-//        QlTuyenDung existingTuyenDung = tuyenDungRep.findById(id).orElseThrow(() -> new RuntimeException("Not Found"));
-//        existingTuyenDung.setMaDot(updatedTuyenDung.getMaDot());
-//        existingTuyenDung.setTenDot(updatedTuyenDung.getTenDot());
-//        existingTuyenDung.setNoiDung(updatedTuyenDung.getNoiDung());
-//        existingTuyenDung.setDeadline(updatedTuyenDung.getDeadline());
-//        // any other fields you want to update
-//
-//        tuyenDungRep.save(existingTuyenDung);
+
 
         return tuyenDungRep.findById(id)
                 .map(existingTuyenDung -> {

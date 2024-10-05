@@ -83,7 +83,7 @@ function  edit(id){
             }else {
                 $('#flexRadioDefault2').prop('checked', true);
             }
-            $('#btnUpdate').attr('formaction', '/admin/role/update/' + data.id);
+            $('#btnUpdate').attr('formaction', '/admin/role/update/' + data.nguoiDungId);
 
             $('#btnUpdate').show();
             $('#btnSave').hide();

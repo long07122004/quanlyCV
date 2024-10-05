@@ -1,3 +1,4 @@
+
 package com.example.quanlycv.controller;
 
 import com.example.quanlycv.Service.RolesService;
@@ -32,11 +33,6 @@ public class RolesController {
 //        // nhân viên
 //        List<NhanVien> listNV = rolesService.getALLNhanVIen();
 //        model.addAttribute("listNV", listNV);
-//
-//        NguoiDungDTO nguoiDung = new NguoiDungDTO();
-//        model.addAttribute("formUser", nguoiDung);
-//        return  "roles/index-role";
-//    }
 
     @GetMapping("/admin/role")
     public String viewRolePagination(Model model,
@@ -86,8 +82,8 @@ public class RolesController {
                 nhanVien = new NhanVien(nguoiDung.getNhanVienId(),"","","",null,null,null,null,"",null,null);
             }
             NguoiDung nguoiDungEntity = new NguoiDung(
-                    nguoiDung.getId(),nguoiDung.getHoTen(),nguoiDung.getEmail(),nguoiDung.getSdt(),nguoiDung.getPassword(),
-                    new VaiTro(nguoiDung.getVaiTroId(),""),
+                    nguoiDung.getId(),nguoiDung.getHoTen(),nguoiDung.getEmail(),nguoiDung.getSdt(),
+                    new VaiTro(nguoiDung.getVaiTroId(),""),nguoiDung.getPassword(),
                     nhanVien,
                     nguoiDung.getTrangThai()
             );
@@ -118,7 +114,7 @@ public class RolesController {
             nhanVien = new NhanVien(nguoiDung.getNhanVienId(),"","","",null,null,null,null,"",null,null);
         }
 
-        currentNguoiDung.setId(nguoiDung.getId());
+        currentNguoiDung.setNguoiDungId(nguoiDung.getId());
         currentNguoiDung.setHoTen(nguoiDung.getHoTen());
         currentNguoiDung.setEmail(nguoiDung.getEmail());
         currentNguoiDung.setSdt(nguoiDung.getSdt());
@@ -157,9 +153,9 @@ public class RolesController {
         }
 
         NguoiDung nd = rolesService.getNguoiDungById(id);
-        nd.setId(id);
-        System.out.println("get Trang Thai: "+nd.getTrangThai());
-        if(nd.getTrangThai()){
+        nd.setNguoiDungId(id);
+        System.out.println("get Trang Thai: "+nd.isTrangThai());
+        if(nd.isTrangThai()){
             nd.setTrangThai(false);
         }else {
             nd.setTrangThai(true);
@@ -170,5 +166,5 @@ public class RolesController {
     }
 
 
-
 }
+

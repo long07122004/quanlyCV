@@ -1,50 +1,56 @@
 package com.example.quanlycv.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.util.Collection;
+import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "Nguoi_Dung")
 @Getter
 @Setter
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-@Table(name = "Nguoi_Dung")
 public class NguoiDung {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int nguoi_dung_id;
-//    @Column(name = "ho_ten")
-//    private String hoTen;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nguoi_dung_id")
-    Integer id;
-
-    @Column(name = "ho_ten",nullable = false,  length = 100)
-    String hoTen;
-
-    @Column(name = "email",nullable = false, unique = true, length = 100)
-    String email;
-
-    @Column(name = "sdt", length = 15)
-    String sdt;
-
-    @Column(name = "mat_khau")
-    String password;
+    private Integer nguoiDungId;
+    @Column(name = "ho_ten")
+    private String hoTen;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "sdt")
+    private String sdt;
 
     @ManyToOne
     @JoinColumn(name = "vai_tro_id")
-    VaiTro vaiTro;
-
-
+    private VaiTro vaiTro;
+    @Column(name = "mat_khau")
+    private String matKhau;
     @ManyToOne
     @JoinColumn(name = "nhan_vien_id")
-    NhanVien nhanVien;
+    private NhanVien nhanVien;
 
-    @Column(name = "trang_thai", columnDefinition = "BIT DEFAULT 1")
-    Boolean trangThai;
+    @Column(name = "trang_thai")
+    private boolean trangThai;
 
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(vaiTro.getTenVaiTro()));
+    }
 }

@@ -69,10 +69,9 @@
         </ul>
 
         <div class="sidebar-footer">
-            <a href="" class="sidebar-link">
-                <i class="lni lni-exit"></i>
-                <span>Logout</span>
-            </a>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-warning">Đăng xuất</button>
+            </form>
         </div>
     </aside>
     <div class="main">

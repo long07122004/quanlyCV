@@ -94,7 +94,8 @@ public class RolesServiceImpl implements RolesService{
 
     @Override
     public boolean emailExists(String email, Integer nguoiDungId) {
-        return nguoiDungRepo.existsByEmailAndIdNot(email, nguoiDungId);
+        //return nguoiDungRepo.existsByEmailAndIdNot(email, nguoiDungId);
+        return true;
     }
 
     @Override

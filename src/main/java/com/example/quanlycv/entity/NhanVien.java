@@ -2,6 +2,7 @@ package com.example.quanlycv.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.example.quanlycv.entity.PhongBan;
 
 import java.time.LocalDateTime;
 
@@ -29,7 +30,7 @@ public class NhanVien {
 
     @ManyToOne
     @JoinColumn(name = "vi_tri_id")
-     ViTriCongViec viTriCongViec;
+    ViTriCongViec viTriCongViec;
 
     @ManyToOne
     @JoinColumn(name = "vai_tro_id")

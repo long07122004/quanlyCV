@@ -1,0 +1,403 @@
+    <!DOCTYPE html>
+    <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quản lý Vị trí Công việc</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <style>
+            body {
+                background-color: #f8f9fa;
+                font-family: Arial, sans-serif;
+            }
+
+            .banner {
+                background-color: #007bff;
+                color: white;
+                padding: 60px 0;
+                text-align: center;
+                border-bottom: 5px solid #0056b3;
+            }
+
+            .banner h1 {
+                font-size: 2.5rem;
+                margin: 0;
+            }
+
+            .banner p {
+                font-size: 1.2rem;
+            }
+
+            .table th, .table td {
+                text-align: center;
+            }
+
+            .table {
+                margin-top: 20px;
+                background-color: white;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .modal-header {
+                background-color: #007bff;
+                color: white;
+            }
+
+            .modal-title {
+                margin: 0;
+            }
+
+            .search-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            a {
+                color: red;
+                display: block;
+            }
+            .pagination-container {
+                margin: 20px 0; /* Thêm khoảng cách phía trên và dưới */
+            }
+
+            .pagination {
+                display: flex; /* Hiển thị các mục trong danh sách như một hàng */
+                justify-content: center; /* Căn giữa các mục */
+                list-style: none; /* Bỏ dấu chấm của danh sách */
+                padding: 0; /* Bỏ padding */
+            }
+
+            .pagination .page-item {
+                margin: 0 5px; /* Khoảng cách giữa các nút */
+            }
+
+            .pagination .page-link {
+                display: inline-block; /* Đảm bảo kích thước nút được điều chỉnh */
+                padding: 10px 15px; /* Padding cho nút */
+                border: 1px solid #007bff; /* Viền cho nút */
+                border-radius: 5px; /* Bo tròn các góc */
+                color: #007bff; /* Màu chữ */
+                text-decoration: none; /* Bỏ gạch chân */
+                transition: background-color 0.3s, color 0.3s; /* Hiệu ứng chuyển đổi */
+            }
+
+            .pagination .page-link:hover {
+                background-color: #007bff;
+            }
+        </style>
+    </head>
+    <body>
+
+
+    <div class="banner">
+        <h1>Quản lý Vị trí Công việc</h1>
+        <p>Tuyển dụng những vị trí tốt nhất cho doanh nghiệp của bạn!</p>
+    </div>
+
+    <div class="container mt-5">
+        <div class="search-container">
+            <form action="/find-combined" method="get">
+            <div>
+                <input type="text" id="searchCode" placeholder="key" th:name="key" class="form-control d-inline-block w-auto"/>
+                    <select id="filterLevel" class="form-control d-inline-block w-auto" th:name="level">
+                        <option th:value="0">Tất cả</option>
+                        <option th:each="levele : ${level}" th:value="${levele.id}" th:text="${levele.tenLevel}"></option>
+                    </select>
+            </div>
+            <div>
+                <button class="btn btn-primary" id="searchBtn">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+                <button class="btn btn-success" id="addBtn" data-bs-toggle="modal" data-bs-target="#jobPositionModal">
+                    <i class="fas fa-plus"></i> Thêm mới
+                </button>
+            </div>
+            </form>
+        </div>
+
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Mã vị trí</th>
+                <th>Tên vị trí</th>
+                <th>Level</th>
+                <th>Phòng ban</th>
+                <th>Trạng Thái</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody id="jobPositionTable">
+            <tr th:if="${not #lists.isEmpty(viTri)}" th:each="vitricv, stt : ${viTri}">
+                <td th:text="${vitricv.maViTri}"></td>
+                <td th:text="${vitricv.tenViTri}"></td>
+                <td th:text="${vitricv.level.tenLevel}"></td>
+                <td th:text="${vitricv.phongBan.tenPhongBan}"></td>
+                <td th:text="${vitricv.getTrangThaiNe()}"></td>
+                <td>
+                    <button class="btn btn-warning updateBtn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editEmployeeModal"
+                            th:data-id="${vitricv.id}"
+                            th:data-ma="${vitricv.maViTri}"
+                            th:data-ten="${vitricv.tenViTri}"
+                            th:data-level="${vitricv.level.id}"
+                            th:data-phongBan="${vitricv.phongBan != null ? vitricv.phongBan.id : 'N/A'}"
+                            th:data-trangThai="${vitricv.trangThai}">
+                        <i class="fas fa-edit"></i> Sửa
+                    </button>
+
+                    <button class="btn btn-info chiTietBtn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#chiTietEmployeeModal"
+                            th:data-id="${vitricv.id}"
+                            th:data-ma="${vitricv.maViTri}"
+                            th:data-ten="${vitricv.tenViTri}"
+                            th:data-level="${vitricv.level.id}"
+                            th:data-phongBan="${vitricv.phongBan != null ? vitricv.phongBan.id : 'N/A'}"
+                            th:data-ngayTao="${vitricv.ngayTao}"
+                            th:data-ngayCapNhat="${vitricv.ngayCapNhat}">
+                        <i class="fas fa-eye"></i> Xem chi tiết
+                    </button>
+                    <a th:href="@{/doitrangThai?id=__${vitricv.id}__}" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i> Đổi trạng thái
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <nav aria-label="Page navigation" class="pagination-container">
+            <ul class="pagination justify-content-center" id="pagination">
+                <li class="page-item" th:if="${currentPage > 0}">
+                    <a th:href="@{'?page=' + ${currentPage - 1}}" class="page-link">PREV</a>
+                </li>
+
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    th:classappend="${currentPage == i ? 'active' : ''}">
+                    <a th:href="@{'?page=' + ${i}}" class="page-link" th:text="${i + 1}"></a>
+                </li>
+
+                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a th:href="@{'?page=' + ${currentPage + 1}}" class="page-link">NEXT</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+    <!-- Thêm vị trí -->
+    <div class="modal" id="jobPositionModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm Vị trí</h4>
+                    <a href="" data-dismiss="modal">X</a>
+                </div>
+                <div class="modal-body">
+                    <form id="jobPositionForm" th:action="@{/add-viTri}" method="post">
+                        <div class="form-group">
+                            <label for="positionCode">Mã vị trí:</label>
+                            <input type="text" class="form-control" id="positionCode" name="maViTri" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="positionName">Tên vị trí:</label>
+                            <input type="text" class="form-control" id="positionName" name="tenViTri" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="positionLevel">Level:</label>
+                            <select class="form-control" id="positionLevel" name="level" required>
+                                <option th:each="levelz : ${level}" th:value="${levelz.id}"
+                                        th:text="${levelz.tenLevel}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="positionPhongBan">Phòng Ban:</label>
+                            <select class="form-control" id="positionPhongBan" name="phongBan" required>
+                                <option th:each="phongBanN : ${phongBan}" th:value="${phongBanN.id}"
+                                        th:text="${phongBanN.tenPhongBan}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Thêm Vị trí</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sửa Vị trí  -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa Vị trí</h5>
+                    <a href="" data-dismiss="modal">X</a>
+                </div>
+                <div class="modal-body">
+                    <form id="jobPositionForm1" th:action="@{/update-viTri}" method="post">
+                        <div class="form-group">
+                            <label for="editNhId">Id:</label>
+                            <input type="text" class="form-control" id="editNhId" name="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editMaViTri">Mã vị trí:</label>
+                            <input type="text" class="form-control" id="editMaViTri" name="maViTri" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTenViTri">Tên vị trí:</label>
+                            <input type="text" class="form-control" id="editTenViTri" name="tenViTri">
+                        </div>
+                        <div class="form-group">
+                            <label for="editLevel">Level:</label>
+                            <select class="form-control" id="editLevel" name="level">
+                                <option th:each="levelz : ${level}" th:value="${levelz.id}"
+                                        th:text="${levelz.tenLevel}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPhongBan">Phòng Ban:</label>
+                            <select class="form-control" id="editPhongBan" name="phongBan">
+                                <option th:each="phongBanN1 : ${phongBan}" th:value="${phongBanN1.id}"
+                                        th:text="${phongBanN1.tenPhongBan}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Xem Chi tiết  -->
+    <div class="modal fade" id="chiTietEmployeeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết Vị trí</h5>
+                    <a  data-dismiss="modal">X</a>
+                </div>
+                <div class="modal-body">
+                    <form id="jobDetailForm">
+                        <div class="form-group">
+                            <label for="editNhId1">Id:</label>
+                            <input type="text" class="form-control" id="editNhId1" name="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editMaViTri1">Mã vị trí:</label>
+                            <input type="text" class="form-control" id="editMaViTri1" name="maViTri" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTenViTri1">Tên vị trí:</label>
+                            <input type="text" class="form-control" id="editTenViTri1" name="tenViTri" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editLevel">Level:</label>
+                            <select class="form-control" id="editLevel1" name="level">
+                                <option th:each="levelz : ${level}" th:value="${levelz.id}" th:text="${levelz.tenLevel}"
+                                        disabled></option>
+                            </select>
+                        </div>
+                        <select class="form-control" id="editPhongBan1" name="phongBan">
+                            <option th:each="phongBanN2 : ${phongBan}" th:value="${phongBanN2.id}"
+                                    th:text="${phongBanN2.tenPhongBan}" disabled></option>
+                        </select>
+                        <div class="form-group">
+                            <label for="editNgayTao">Ngày Tạo:</label>
+                            <input type="text" class="form-control" id="editNgayTao" name="ngayTao" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editNgayCapNhat">Ngày Cập Nhật:</label>
+                            <input type="text" class="form-control" id="editNgayCapNhat" name="ngayCapNhat" readonly>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Quay lại</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById('addBtn').onclick = function () {
+            event.preventDefault();
+            $('#jobPositionModal').modal('show');
+
+        };
+
+        // Hàm thiết lập giá trị cho modal Chi tiết
+        function setDetailValues(id, ma, ten, level, phongBan, ngayTao, ngayCapNhat) {
+            let detailForm = document.getElementById('chiTietEmployeeModal');
+            detailForm.querySelector('#editNhId1').value = id;
+            detailForm.querySelector('#editMaViTri1').value = ma;
+            detailForm.querySelector('#editTenViTri1').value = ten;
+            detailForm.querySelector('#editLevel1').value = level;
+            detailForm.querySelector('#editPhongBan1').value = phongBan;
+            detailForm.querySelector('#editNgayTao').value = ngayTao;
+            detailForm.querySelector('#editNgayCapNhat').value = ngayCapNhat;
+
+
+
+        }
+
+        // Xử lý sự kiện cho nút Chi tiết
+        document.querySelectorAll('.chiTietBtn').forEach(function (button) {
+            button.onclick = function (event) {
+                event.preventDefault();
+
+                // Lấy các giá trị từ thuộc tính data-* của button
+                const id = button.getAttribute('data-id');
+                const ma = button.getAttribute('data-ma');
+                const ten = button.getAttribute('data-ten');
+                const level = button.getAttribute('data-level');
+                const phongBan = button.getAttribute('data-phongBan');
+                const ngayTao = button.getAttribute('data-ngayTao');
+                const ngayCapNhat = button.getAttribute('data-ngayCapNhat');
+
+
+
+                // Gọi hàm để set giá trị
+                setDetailValues(id, ma, ten, level, phongBan, ngayTao, ngayCapNhat);
+                $('#chiTietEmployeeModal').modal('show');  // Hiện modal
+            };
+        });
+
+        // Xử lý sự kiện cho nút Sửa
+        document.querySelectorAll('.updateBtn').forEach(function (button) {
+            button.onclick = function (event) {
+                event.preventDefault();
+
+                // Lấy các giá trị từ thuộc tính data-* của button
+                const id = button.getAttribute('data-id');
+                const ma = button.getAttribute('data-ma');
+                const ten = button.getAttribute('data-ten');
+                const level = button.getAttribute('data-level');
+                const phongBan = button.getAttribute('data-phongBan');
+
+                // Gọi hàm để thiết lập giá trị cho modal sửa
+                document.getElementById('editNhId').value = id;
+                document.getElementById('editMaViTri').value = ma;
+                document.getElementById('editTenViTri').value = ten;
+                document.getElementById('editLevel').value = level;
+                document.getElementById('editPhongBan').value = phongBan;
+
+                // Hiện modal
+                $('#editEmployeeModal').modal('show');
+            };
+        });
+    </script>
+
+    </body>
+    </html>

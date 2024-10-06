@@ -281,7 +281,10 @@ public class test {
     }
 
 
-
+    @GetMapping("/qlcv")
+    public String viewqlcv(){
+        return "qlcv";
+    }
 
 
 }

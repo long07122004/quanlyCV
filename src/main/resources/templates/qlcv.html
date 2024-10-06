@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi">
-
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Menu}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý CV</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -34,309 +31,351 @@
         .table td {
             text-align: center;
         }
-
-        .modal-title {
-            display: inline-block;
-        }
     </style>
 </head>
-
-<body>
-    <div class="container mt-5">
-        <!-- Banner -->
+<body ng-app="cvManagementApp" ng-controller="CvController">
+<main layout:fragment="main1">
+    <div class="container-fluid mt-5">
         <div class="banner">
             <h1>Quản lý CV</h1>
             <p>Tuyển dụng những vị trí tốt nhất cho doanh nghiệp của bạn!</p>
         </div>
-        <!-- Bộ lọc và tìm kiếm -->
+
         <div class="mb-3">
-            <input type="text" id="searchInput" class="form-control"
-                placeholder="Tìm kiếm theo CV_ID, Họ tên, Email...">
-            <select id="statusFilter" class="form-control mt-2">
+            <input type="text" ng-model="searchInput" class="form-control"
+                   placeholder="Tìm kiếm theo CV_ID, Họ tên, Email...">
+            <select ng-model="statusFilter" class="form-control mt-2">
                 <option value="">Lọc theo trạng thái</option>
-                <option value="Chưa pvan">Chưa pvan</option>
-                <option value="pass pvan">pass pvan</option>
-                <option value="fail pvan">fail pvan</option>
-                <option value="đang cân nhắc sau pvan">đang cân nhắc sau pvan</option>
-                <option value="Nghỉ việc">Nghỉ việc</option>
-                <option value="Bị thôi việc">Bị thôi việc</option>
+                <option value="1">Chưa pvan</option>
+                <option value="2">Pass pvan</option>
+                <option value="3">Fail pvan</option>
+                <option value="4">Đang cân nhắc</option>
+                <option value="5">Nghỉ việc</option>
+                <option value="6">Bị thôi việc</option>
             </select>
-            <select id="genderFilter" class="form-control mt-2">
+            <select ng-model="genderFilter" class="form-control mt-2">
                 <option value="">Lọc theo giới tính</option>
                 <option value="Nam">Nam</option>
                 <option value="Nữ">Nữ</option>
             </select>
         </div>
 
-        <!-- Nút thêm CV -->
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addCVModal">Thêm CV</button>
 
-        <!-- Bảng danh sách CV -->
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>CV_ID</th>
-                    <th>Ngày nộp</th>
-                    <th>Họ và tên</th>
-                    <th>Giới tính</th>
-                    <th>Email</th>
-                    <th>Điện thoại</th>
-                    <th>Thành phố</th>
-                    <th>Công việc</th>
-                    <th>Tổng năm kinh nghiệm</th>
-                    <th>Ghi chú</th>
-                    <th>Link CV</th>
-                    <th>Nguồn tuyển dụng</th>
-                    <th>Trạng thái</th>
-                    <th>Hành động</th>
-                </tr>
+            <tr>
+                <th>CV_ID</th>
+                <th>Ngày nộp</th>
+                <th>Họ và tên</th>
+                <th>Giới tính</th>
+                <th>Email</th>
+                <th>Điện thoại</th>
+                <th>Thành phố</th>
+                <th>Công việc</th>
+                <th>Tổng năm kinh nghiệm</th>
+                <th>Ghi chú</th>
+                <th>Link CV</th>
+                <th>Nguồn tuyển dụng</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
             </thead>
-            <tbody id="cvTableBody">
-                <!-- Danh sách CV sẽ được thêm vào đây -->
+            <tbody>
+            <tr ng-repeat="cv in cvList | filter:searchInput | filter:{cvStatusId:statusFilter, gioiTinh:genderFilter}">
+                <td>{{ cv.cv_id }}</td>
+                <td>{{ cv.applyDateTime | date:'medium' }}</td>
+                <td>{{ cv.hoTen }}</td>
+                <td>{{ cv.gioiTinh }}</td>
+                <td>{{ cv.email }}</td>
+                <td>{{ cv.sdt }}</td>
+                <td>{{ cv.thanhPho }}</td>
+                <td>{{ cv.tenCongViec }}</td>
+                <td>{{ cv.soNamKinhNghiem }}</td>
+                <td>{{ cv.ghiChu }}</td>
+                <td><a ng-href="{{ cv.linkCV }}" target="_blank">Xem CV</a></td>
+                <td>{{ cv.nguonTuyenDung }}</td>
+                <td>{{ cv.cvStatusId }}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" ng-click="openEditModal(cv)">Sửa</button>
+                    <button class="btn btn-danger btn-sm" ng-click="deleteCV(cv.cv_id)">Xóa</button>
+                </td>
+            </tr>
             </tbody>
         </table>
-
-        <!-- Phân trang -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Trước</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Tiếp</a></li>
-            </ul>
-        </nav>
     </div>
 
     <!-- Modal Thêm CV -->
     <div class="modal fade" id="addCVModal" tabindex="-1" role="dialog" aria-labelledby="addCVModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCVModalLabel">Thêm CV</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="addCVForm">
+                    <form ng-submit="addCV()">
                         <div class="form-group">
                             <label for="applyDateTime">Ngày nộp</label>
-                            <input type="datetime-local" class="form-control" id="applyDateTime" required>
+                            <input type="datetime-local" class="form-control" ng-model="newCv.applyDateTime" required>
                         </div>
                         <div class="form-group">
                             <label for="fullName">Họ và tên</label>
-                            <input type="text" class="form-control" id="fullName" required>
+                            <input type="text" class="form-control" ng-model="newCv.hoTen" required>
                         </div>
                         <div class="form-group">
                             <label for="gender">Giới tính</label>
-                            <select class="form-control" id="gender">
+                            <select class="form-control" ng-model="newCv.gioiTinh">
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" required>
+                            <input type="email" class="form-control" ng-model="newCv.email" required>
                         </div>
                         <div class="form-group">
                             <label for="tel">Điện thoại</label>
-                            <input type="tel" class="form-control" id="tel" required>
+                            <input type="tel" class="form-control" ng-model="newCv.sdt" required>
                         </div>
                         <div class="form-group">
                             <label for="city">Thành phố</label>
-                            <input type="text" class="form-control" id="city" required>
+                            <input type="text" class="form-control" ng-model="newCv.thanhPho" required>
                         </div>
                         <div class="form-group">
                             <label for="jobName">Công việc</label>
-                            <input type="text" class="form-control" id="jobName" required>
+                            <input type="text" class="form-control" ng-model="newCv.tenCongViec" required>
                         </div>
                         <div class="form-group">
                             <label for="experience">Tổng năm kinh nghiệm</label>
-                            <input type="number" class="form-control" id="experience" min="0" required>
+                            <input type="number" class="form-control" ng-model="newCv.soNamKinhNghiem" min="0" required>
                         </div>
                         <div class="form-group">
                             <label for="note">Ghi chú</label>
-                            <textarea class="form-control" id="note"></textarea>
+                            <textarea class="form-control" ng-model="newCv.ghiChu"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="linkCV">Link CV</label>
-                            <input type="url" class="form-control" id="linkCV">
+                            <input type="url" class="form-control" ng-model="newCv.linkCV">
                         </div>
                         <div class="form-group">
                             <label for="source">Nguồn tuyển dụng</label>
-                            <input type="text" class="form-control" id="source"
-                                placeholder="Fb/Giới thiệu/TopCV/Linkedin...">
+                            <input type="text" class="form-control" ng-model="newCv.nguonTuyenDung"
+                                   placeholder="Fb/Giới thiệu/TopCV/Linkedin...">
                         </div>
                         <div class="form-group">
                             <label for="status">Trạng thái</label>
-                            <select class="form-control" id="status">
-                                <option value="Chưa pvan">Chưa pvan</option>
-                                <option value="pass pvan">pass pvan</option>
-                                <option value="fail pvan">fail pvan</option>
-                                <option value="đang cân nhắc sau pvan">đang cân nhắc sau pvan</option>
-                                <option value="Nghỉ việc">Nghỉ việc</option>
-                                <option value="Bị thôi việc">Bị thôi việc</option>
+                            <select class="form-control" ng-model="newCv.cvStatusId">
+                                <option value="1">Chưa pvan</option>
+                                <option value="2">Pass pvan</option>
+                                <option value="3">Fail pvan</option>
+                                <option value="4">Đang cân nhắc</option>
+                                <option value="5">Nghỉ việc</option>
+                                <option value="6">Bị thôi việc</option>
                             </select>
                         </div>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="addCvBtn">Lưu</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Chỉnh Sửa CV -->
+    <!-- Modal Sửa CV -->
     <div class="modal fade" id="editCVModal" tabindex="-1" role="dialog" aria-labelledby="editCVModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editCVModalLabel">Chỉnh sửa CV</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Đóng">
+                    <h5 class="modal-title" id="editCVModalLabel">Sửa CV</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="editCVForm">
-                        <input type="hidden" id="editCvId">
+                    <form ng-submit="updateCV(editCv)">
                         <div class="form-group">
-                            <label for="editApplyDateTime">Ngày nộp</label>
-                            <input type="datetime-local" class="form-control" id="editApplyDateTime" required>
+                            <label for="applyDateTime">Ngày nộp</label>
+                            <p class="form-control-static">{{ editCv.applyDateTime | date:'dd/MM/yyyy' }}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fullName">Họ và tên</label>
+                            <input type="text" class="form-control" ng-model="editCv.hoTen" required>
                         </div>
                         <div class="form-group">
-                            <label for="editFullName">Họ và tên</label>
-                            <input type="text" class="form-control" id="editFullName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="editGender">Giới tính</label>
-                            <select class="form-control" id="editGender">
+                            <label for="gender">Giới tính</label>
+                            <select class="form-control" ng-model="editCv.gioiTinh">
                                 <option value="Nam">Nam</option>
                                 <option value="Nữ">Nữ</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="editEmail">Email</label>
-                            <input type="email" class="form-control" id="editEmail" required>
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" ng-model="editCv.email" required>
                         </div>
                         <div class="form-group">
-                            <label for="editTel">Điện thoại</label>
-                            <input type="tel" class="form-control" id="editTel" required>
+                            <label for="tel">Điện thoại</label>
+                            <input type="tel" class="form-control" ng-model="editCv.sdt" required>
                         </div>
                         <div class="form-group">
-                            <label for="editCity">Thành phố</label>
-                            <input type="text" class="form-control" id="editCity" required>
+                            <label for="city">Thành phố</label>
+                            <input type="text" class="form-control" ng-model="editCv.thanhPho" required>
                         </div>
                         <div class="form-group">
-                            <label for="editJobName">Công việc</label>
-                            <input type="text" class="form-control" id="editJobName" required>
+                            <label for="jobName">Công việc</label>
+                            <input type="text" class="form-control" ng-model="editCv.tenCongViec" required>
                         </div>
                         <div class="form-group">
-                            <label for="editExperience">Tổng năm kinh nghiệm</label>
-                            <input type="number" class="form-control" id="editExperience" min="0" required>
+                            <label for="experience">Tổng năm kinh nghiệm</label>
+                            <input type="number" class="form-control" ng-model="editCv.soNamKinhNghiem" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label for="editNote">Ghi chú</label>
-                            <textarea class="form-control" id="editNote"></textarea>
+                            <label for="note">Ghi chú</label>
+                            <textarea class="form-control" ng-model="editCv.ghiChu"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="editLinkCV">Link CV</label>
-                            <input type="url" class="form-control" id="editLinkCV">
+                            <label for="linkCV">Link CV</label>
+                            <input type="url" class="form-control" ng-model="editCv.linkCV">
                         </div>
                         <div class="form-group">
-                            <label for="editSource">Nguồn tuyển dụng</label>
-                            <input type="text" class="form-control" id="editSource">
+                            <label for="source">Nguồn tuyển dụng</label>
+                            <input type="text" class="form-control" ng-model="editCv.nguonTuyenDung"
+                                   placeholder="Fb/Giới thiệu/TopCV/Linkedin...">
                         </div>
                         <div class="form-group">
-                            <label for="editStatus">Trạng thái</label>
-                            <select class="form-control" id="editStatus">
-                                <option value="Chưa pvan">Chưa pvan</option>
-                                <option value="pass pvan">pass pvan</option>
-                                <option value="fail pvan">fail pvan</option>
-                                <option value="đang cân nhắc sau pvan">đang cân nhắc sau pvan</option>
-                                <option value="Nghỉ việc">Nghỉ việc</option>
-                                <option value="Bị thôi việc">Bị thôi việc</option>
+                            <label for="status">Trạng thái</label>
+                            <select class="form-control" ng-model="editCv.cvStatusId">
+                                <option ng-value="1">Chưa pvan</option>
+                                <option ng-value="2">Pass pvan</option>
+                                <option ng-value="3">Fail pvan</option>
+                                <option ng-value="4">Đang cân nhắc</option>
+                                <option ng-value="5">Nghỉ việc</option>
+                                <option ng-value="6">Bị thôi việc</option>
                             </select>
                         </div>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" id="editCvBtn">Cập nhật</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Script xử lý thêm và chỉnh sửa CV -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('addCvBtn').addEventListener('click', function () {
-            var cvData = {
-                applyDateTime: document.getElementById('applyDateTime').value,
-                fullName: document.getElementById('fullName').value,
-                gender: document.getElementById('gender').value,
-                email: document.getElementById('email').value,
-                tel: document.getElementById('tel').value,
-                city: document.getElementById('city').value,
-                jobName: document.getElementById('jobName').value,
-                experience: document.getElementById('experience').value,
-                note: document.getElementById('note').value,
-                linkCV: document.getElementById('linkCV').value,
-                source: document.getElementById('source').value,
-                status: document.getElementById('status').value
-            };
+        angular.module('cvManagementApp', [])
+            .controller('CvController', ['$scope', '$http', function ($scope, $http) {
+                const apiUrl = 'http://localhost:8080/api/qlcv';
 
-            // Gửi dữ liệu cvData tới server hoặc lưu vào mảng  
-            console.log(cvData); // Thay bằng mã bạn muốn để lưu dữ liệu  
-            $('#addCVModal').modal('hide'); // Đóng modal  
-        });
+                $scope.cvList = [];
+                $scope.newCv = {};
+                $scope.editCv = {};
 
-        document.getElementById('editCvBtn').addEventListener('click', function () {
-            var cvId = document.getElementById('editCvId').value;
-            var updatedCvData = {
-                id: cvId,
-                applyDateTime: document.getElementById('editApplyDateTime').value,
-                fullName: document.getElementById('editFullName').value,
-                gender: document.getElementById('editGender').value,
-                email: document.getElementById('editEmail').value,
-                tel: document.getElementById('editTel').value,
-                city: document.getElementById('editCity').value,
-                jobName: document.getElementById('editJobName').value,
-                experience: document.getElementById('editExperience').value,
-                note: document.getElementById('editNote').value,
-                linkCV: document.getElementById('editLinkCV').value,
-                source: document.getElementById('editSource').value,
-                status: document.getElementById('editStatus').value
-            };
+                $scope.loadCVs = async function () {
+                    try {
+                        const response = await $http.get(apiUrl);
+                        console.log('Phản hồi API:', response.data);
+                        $scope.cvList = response.data.map(cv => {
+                            cv.cvStatusId = Number(cv.cvStatusId); // Ensure cvStatusId is a number
+                            return cv;
+                        });
 
-            // Cập nhật dữ liệu cvData trên server hoặc trong mảng  
-            console.log(updatedCvData); // Thay bằng mã bạn muốn để cập nhật dữ liệu  
-            $('#editCVModal').modal('hide'); // Đóng modal  
-        });
+                        if (!$scope.$$phase) {
+                            $scope.$apply(); // Trigger a digest cycle if not already in one
+                        }
+                    } catch (error) {
+                        console.error('Lỗi khi tải CV:', error);
+                    }
+                };
 
-        // Hàm để mở modal chỉnh sửa và nạp dữ liệu  
-        function openEditModal(cv) {
-            document.getElementById('editCvId').value = cv.id;
-            document.getElementById('editApplyDateTime').value = cv.applyDateTime;
-            document.getElementById('editFullName').value = cv.fullName;
-            document.getElementById('editGender').value = cv.gender;
-            document.getElementById('editEmail').value = cv.email;
-            document.getElementById('editTel').value = cv.tel;
-            document.getElementById('editCity').value = cv.city;
-            document.getElementById('editJobName').value = cv.jobName;
-            document.getElementById('editExperience').value = cv.experience;
-            document.getElementById('editNote').value = cv.note;
-            document.getElementById('editLinkCV').value = cv.linkCV;
-            document.getElementById('editSource').value = cv.source;
-            document.getElementById('editStatus').value = cv.status;
+                $scope.openEditModal = function (cv) {
+                    $scope.editCv = angular.copy(cv);
+                    console.log('CV đang chỉnh sửa:', cv);
+                    if ($scope.editCv.applyDateTime) {
+                        const date = new Date($scope.editCv.applyDateTime);
+                        if (!isNaN(date.getTime())) {
+                            $scope.editCv.applyDateTime = date.toISOString().slice(0, 16);
+                        } else {
+                            $scope.editCv.applyDateTime = null;
+                        }
+                    } else {
+                        $scope.editCv.applyDateTime = null;
+                    }
 
-            $('#editCVModal').modal('show'); // Mở modal chỉnh sửa  
-        }  
+                    // Mở modal
+                    $('#editCVModal').modal('show');
+                };
+
+                $scope.addCV = async function () {
+                    if ($scope.newCv.applyDateTime) {
+                        const date = new Date($scope.newCv.applyDateTime);
+                        $scope.newCv.applyDateTime = date.toISOString().slice(0, 16);
+                    }
+
+                    try {
+                        const response = await $http.post(apiUrl, $scope.newCv);
+                        if (response.status === 200) {
+                            $('#addCVModal').modal('hide');
+                            $scope.loadCVs();
+                            $scope.newCv = {};
+                        }
+                    } catch (error) {
+                        alert('Lỗi khi thêm CV');
+                        console.error('Error adding CV:', error);
+                    }
+                };
+
+                $scope.updateCV = async function (cv) {
+                    if (!cv.cvStatusId) {
+                        alert('Trạng thái CV không hợp lệ');
+                        return;
+                    }
+
+                    if (cv.applyDateTime) {
+                        cv.applyDateTime = new Date(cv.applyDateTime).toISOString(); // Đảm bảo định dạng đúng
+                    }
+
+                    try {
+                        const response = await $http.put(`${apiUrl}/${cv.cv_id}`, cv);
+                        if (response.status === 200) {
+                            $('#editCVModal').modal('hide'); // Đóng modal
+                            $scope.loadCVs();
+                        }
+                    } catch (error) {
+                        alert('Lỗi khi cập nhật CV');
+                        console.error('Error updating CV:', error);
+                    }
+                };
+
+
+                $scope.deleteCV = async function (cvId) {
+                    try {
+                        const response = await $http.delete(`${apiUrl}/${cvId}`);
+                        if (response.status === 200) {
+                            $scope.loadCVs();
+                        }
+                    } catch (error) {
+                        alert('Lỗi khi xóa CV');
+                        console.error('Error deleting CV:', error);
+                    }
+                };
+
+                // Load CVs on initialization
+                $scope.loadCVs();
+            }]);
     </script>
-</body>
+</main>
 
+</body>
 </html>

@@ -19,7 +19,7 @@ public class DotTuyenDungService {
 //    }
 
     public Page<QlTuyenDung> getAllPagination(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo-1,5);
+        Pageable pageable = PageRequest.of(pageNo-1,3);
         return this.tuyenDungRep.findAll(pageable);
     }
 
@@ -40,14 +40,7 @@ public class DotTuyenDungService {
     }
 
     public QlTuyenDung update(Integer id, QlTuyenDung updatedTuyenDung) {
-//        QlTuyenDung existingTuyenDung = tuyenDungRep.findById(id).orElseThrow(() -> new RuntimeException("Not Found"));
-//        existingTuyenDung.setMaDot(updatedTuyenDung.getMaDot());
-//        existingTuyenDung.setTenDot(updatedTuyenDung.getTenDot());
-//        existingTuyenDung.setNoiDung(updatedTuyenDung.getNoiDung());
-//        existingTuyenDung.setDeadline(updatedTuyenDung.getDeadline());
-//        // any other fields you want to update
-//
-//        tuyenDungRep.save(existingTuyenDung);
+
 
         return tuyenDungRep.findById(id)
                 .map(existingTuyenDung -> {
@@ -62,15 +55,7 @@ public class DotTuyenDungService {
 
     }
 
-//    public List<QlTuyenDung> searchTuyenDung(String keyword) {
-//        // Gọi phương thức tìm kiếm trong repository
-//        return tuyenDungRep.searchByKeyword(keyword);
-//    }
 
-//    public List<QlTuyenDung> searchByKeyword(String keyword) {
-//        // Logic tìm kiếm với keyword, có thể sử dụng các hàm của JPA hoặc Query.
-//        return tuyenDungRep.findByMaDotContainingOrTenDotContainingOrNoiDungContaining(keyword, keyword, keyword,keyword);
-//    }
 
     public Page<QlTuyenDung> search(String keyword, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);

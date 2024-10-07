@@ -6,23 +6,38 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.Instant;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "Phong_Ban")
 public class PhongBan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "phong_ban_id")
+    @Column(name = "phong_ban_id", nullable = false)
     private Integer id;
 
-    @Column(name = "ten_phong_ban")
+    @Column(name = "ma_phong_ban", nullable = false, length = 50)
+    private String maPhongBan;
+
+    @Column(name = "ten_phong_ban", nullable = false, length = 100)
     private String tenPhongBan;
+
+    @ColumnDefault("1")
+    @Column(name = "trang_thai")
+    private Boolean trangThai;
+
+    @ColumnDefault("getdate()")
+    @Column(name = "ngay_tao")
+    private Instant ngayTao;
+
+    @ColumnDefault("getdate()")
+    @Column(name = "ngay_cap_nhat")
+    private Instant ngayCapNhat;
+
 }

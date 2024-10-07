@@ -1,9 +1,9 @@
 package com.example.quanlycv.controller;
 
 import com.example.quanlycv.entity.ViTriCongViec;
-import com.example.quanlycv.Rep.PhongBanRepo;
-import com.example.quanlycv.Rep.levelRepo;
-import com.example.quanlycv.Rep.viTriCongViecRepo;
+import com.example.quanlycv.repo.levelRepo;
+import com.example.quanlycv.repo.viTriCongViecRepo;
+import com.example.quanlycv.repo.PhongBanRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

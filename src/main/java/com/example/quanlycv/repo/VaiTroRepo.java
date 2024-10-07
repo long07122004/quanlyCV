@@ -1,4 +1,4 @@
-package com.example.quanlycv.Rep;
+package com.example.quanlycv.repo;
 
 import com.example.quanlycv.entity.VaiTro;
 import org.springframework.data.jpa.repository.JpaRepository;

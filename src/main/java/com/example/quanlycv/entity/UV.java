@@ -1,5 +1,6 @@
 package com.example.quanlycv.entity;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -3,6 +3,7 @@ toggle.addEventListener("click",function(){
     document.querySelector("#sidebar").classList.toggle("expand");
 });
 
+
 let deleteForm;
 
 // Confirm delete modal visibility
@@ -79,3 +80,4 @@ $(document).ready(function() {
         modal.find('#detailNgayCapNhat').val(new Date(ngayCapNhat).toLocaleString());
     });
 });
+

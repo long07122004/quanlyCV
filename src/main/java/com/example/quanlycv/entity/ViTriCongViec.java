@@ -8,10 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -20,6 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "Vi_Tri_Cong_Viec")
 public class ViTriCongViec {
     @Id
@@ -45,9 +44,11 @@ public class ViTriCongViec {
     private Boolean trangThai;
 
     @Column(name = "ngay_tao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngayTao;
 
     @Column(name = "ngay_cap_nhat")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngayCapNhat;
 
     public String getTrangThaiNe(){

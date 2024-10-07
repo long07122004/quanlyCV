@@ -45,8 +45,6 @@ public class WebSecurityConfig {
                                 "/deletePhongBan","/updatePhongBan","/","/admin/role/**"
                         ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete",
                                 "/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/doitrangThai").hasRole("ADMIN")
-
-
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

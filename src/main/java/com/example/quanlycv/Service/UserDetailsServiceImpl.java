@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // Logging thông tin người dùng
         System.out.println("User found: " + nguoiDung.getEmail());
 
-        // Ánh xạ vai trò thành authorities
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         int vaiTroId = nguoiDung.getVaiTro().getId(); // Giả sử bạn có phương thức getId() để lấy ID của vai trò
 
@@ -42,8 +42,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
 
-
-        // Trả về đối tượng UserDetails
         return org.springframework.security.core.userdetails.User
                 .withUsername(nguoiDung.getEmail())
                 .password(nguoiDung.getMatKhau()) // Sử dụng mật khẩu đã mã hóa từ cơ sở dữ liệu

@@ -31,8 +31,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/some-endpoint/**") // Nếu có một số endpoint không cần CSRF bảo vệ, có thể ignore tại đây
+                )
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**","/tuyen-dung/**").permitAll()
+                        .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**").permitAll()
+                        .requestMatchers("/tuyen-dung/**","/api/qlcv/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

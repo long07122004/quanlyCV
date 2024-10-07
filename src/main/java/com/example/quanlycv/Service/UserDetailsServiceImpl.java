@@ -3,10 +3,15 @@ package com.example.quanlycv.Service;
 import com.example.quanlycv.Rep.NguoiDungRepo;
 import com.example.quanlycv.entity.NguoiDung;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -23,6 +28,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // Logging thông tin người dùng
         System.out.println("User found: " + nguoiDung.getEmail());
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        int vaiTroId = nguoiDung.getVaiTro().getId(); // Giả sử bạn có phương thức getId() để lấy ID của vai trò
+
+        if (vaiTroId == 1) { // ADMIN
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else if (vaiTroId == 2) { // MANAGER
+            authorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        } else if (vaiTroId == 3) { // MEMBER
+            authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+        }
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(nguoiDung.getEmail())

@@ -1,5 +1,8 @@
     <!DOCTYPE html>
-    <html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <html lang="vi" xmlns:th="http://www.thymeleaf.org"
+          xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+          layout:decorate="~{Menu}"
+    >
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,7 +100,7 @@
         </style>
     </head>
     <body>
-
+    <main layout:fragment="main1">
 
     <div class="banner">
         <h1>Quản lý Vị trí Công việc</h1>
@@ -398,6 +401,6 @@
             };
         });
     </script>
-
+    </main>
     </body>
     </html>

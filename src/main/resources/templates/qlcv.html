@@ -118,6 +118,7 @@
                 </div>
                 <div class="modal-body">
                     <form ng-submit="addCV()">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <div class="form-group">
                             <label for="applyDateTime">Ngày nộp</label>
                             <input type="datetime-local" class="form-control" ng-model="newCv.applyDateTime" required>

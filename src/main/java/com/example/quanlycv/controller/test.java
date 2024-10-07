@@ -6,6 +6,7 @@ import com.example.quanlycv.Service.DotTuyenDungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class test {
 //
 //        return "tuyen-dung";
 //    }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tuyen-dung")
     public String listTuyenDung(Model model,
                                 @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo,
@@ -82,8 +83,7 @@ public class test {
         return "tuyen-dung";
     }
 
-
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/tuyen-dung/add")
     public String addDotTuyenDung(@ModelAttribute QlTuyenDung qlTuyenDung, RedirectAttributes redirectAttributes) {
         dotTuyenDungService.saveDotTuyenDung(qlTuyenDung);
@@ -98,6 +98,7 @@ public class test {
 //        redirectAttributes.addFlashAttribute("message", "Đợt tuyển dụng đã được xóa thành công!");
 //        return "redirect:/tuyen-dung";
 //    }
+
     @GetMapping("/tuyen-dung/delete/{id}")
     public String deleteTuyenDung(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
         try {
@@ -131,6 +132,7 @@ public class test {
 //    }
 
     // Handle the update request
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/tuyen-dung/update/{id}")
     public String updateTuyenDung(@PathVariable("id") Integer id, @ModelAttribute("tuyenDung") QlTuyenDung tuyenDung,Model model) {
         LocalDate today = LocalDate.now();

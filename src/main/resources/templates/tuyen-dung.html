@@ -18,6 +18,7 @@
 <body>
 <main layout:fragment="QLTuyenDung">
     <form action="tuyen-dung/add" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
             <h1>Quản Lý Đợt Tuyển Dụng</h1>
             <div>

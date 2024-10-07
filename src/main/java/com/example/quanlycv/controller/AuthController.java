@@ -124,4 +124,10 @@ public class AuthController {
         return "redirect:/login";
     }
 
+    @GetMapping("/access-denied")
+    public String accessDenied(Model model) {
+        model.addAttribute("errorMessage", "Bạn không có quyền truy cập vào trang này.");
+        return "access-denied"; // Tên view để hiển thị thông báo
+    }
+
 }

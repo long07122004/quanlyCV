@@ -45,6 +45,7 @@
                 </div>
             </div>
         </div>
+        <h3>Quản Lý Người Dùng</h3>
         <table class="table">
             <thead>
             <tr>
@@ -95,6 +96,13 @@
     <div class="row">
         <div class="col-7" >
             <h3>Vai Tro - Quyền Truy Cập</h3>
+            <div class="row" style="margin-top: 5px; margin-bottom: 5px">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-info lni lni-circle-plus">
+<!--                        Thêm-->
+                    </button>
+                </div>
+            </div>
             <table class="table">
                 <thead>
                 <tr>
@@ -121,27 +129,32 @@
         </div>
         <div class="col-5" >
             <h3>Quản Lý Quyền Truy Cập</h3>
+            <div class="row" style="margin-top: 5px; margin-bottom: 5px">
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-info lni lni-circle-plus">
+<!--                        Thêm-->
+                    </button>
+                </div>
+            </div>
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col">Vai Trò</th>
                     <th scope="col">Quyền Truy Cập</th>
                     <th scope="col">Hành Động</th>
                 </tr>
                 </thead>
                 <tbody>
-<!--                <tr th:each="vtqtc : ${VTQTC}">-->
-<!--                    <th scope="row">1</th>-->
-<!--                    <td th:text="${vtqtc.vaiTro.tenVaiTro}"></td>-->
-<!--                    <td th:text="${vtqtc.quyenTruyCap.name}"></td>-->
-<!--                    <td>-->
-<!--                        <button type="button" class="btn btn-warning lni lni-pencil"></button>-->
-<!--                        <a>-->
-<!--                            <button type="button" class="btn btn-danger lni lni-trash-can"></button>-->
-<!--                        </a>-->
-<!--                    </td>-->
-<!--                </tr>-->
+                <tr th:each="permisster : ${permisster}">
+                    <th scope="row">1</th>
+                    <td th:text="${permisster.name}"></td>
+                    <td>
+                        <button type="button" class="btn btn-warning lni lni-pencil"></button>
+                        <a>
+                            <button type="button" class="btn btn-danger lni lni-trash-can"></button>
+                        </a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -214,7 +227,8 @@
                            </div>
 
                             <div class="row">
-                                <button th:formaction="@{/admin/role/add}" type="submit" id="btnSave" class="btn btn-primary col-sm-2">Save</button>
+<!--                                <button th:formaction="@{/admin/role/add}" type="submit" id="btnSave" class="btn btn-primary col-sm-2">Save</button>-->
+                                <button th:onclick="add()" type="submit" id="btnSave" class="btn btn-primary col-sm-2">Save</button>
                                 <button th:formaction="@{/admin/role/update/}" type="submit" class="btn btn-info col-sm-2" id="btnUpdate">Update</button>
                                 <button type="button" class="btn btn-secondary col-sm-2" data-bs-dismiss="modal">Close</button>
                             </div>

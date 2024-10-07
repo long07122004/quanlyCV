@@ -3,10 +3,7 @@ package com.example.quanlycv.controller;
 
 import com.example.quanlycv.Service.RolesService;
 import com.example.quanlycv.dto.NguoiDungDTO;
-import com.example.quanlycv.entity.NguoiDung;
-import com.example.quanlycv.entity.NhanVien;
-import com.example.quanlycv.entity.VaiTro;
-import com.example.quanlycv.entity.VaiTroQuyenTruyCap;
+import com.example.quanlycv.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -64,8 +61,10 @@ public class RolesController {
 
         List<VaiTroQuyenTruyCap> vtqtcList = rolesService.findAllVTQCT();
         Map<String, String> groupedRoles = rolesService.getGroupedRoles(vtqtcList);
-        System.out.println("group: "+groupedRoles);
         model.addAttribute("VTQTC",groupedRoles);
+
+        List<QuyenTruyCap> permisster = rolesService.getAllQuyenTruyCap();
+        model.addAttribute("permisster",permisster);
         return  "roles/index-role";
     }
 

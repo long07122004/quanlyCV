@@ -96,6 +96,23 @@ function  edit(id){
     modal1.show();
 }
 
+function  add(){
+    const urlAdd ="/admin/role/add";
+    //console.log('DataID:', id);
+    $.ajax({
+        url: "/admin/role/add",
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+            console.log("data return add: ",data);
+            //window.location.href = "/admin/role";
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+}
+
 document.getElementById("btnSave").addEventListener("click",function (event){
     var hoTen = document.getElementById("hoTen").value.trim();
     var email = document.getElementById("emailID").value.trim();

@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -43,10 +45,10 @@ public class ViTriCongViec {
     private Boolean trangThai;
 
     @Column(name = "ngay_tao")
-    private String ngayTao;
+    private Date ngayTao;
 
     @Column(name = "ngay_cap_nhat")
-    private String ngayCapNhat;
+    private Date ngayCapNhat;
 
     public String getTrangThaiNe(){
         if(this.trangThai == true){

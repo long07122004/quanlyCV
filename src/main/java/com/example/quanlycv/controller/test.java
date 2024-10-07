@@ -245,8 +245,8 @@ public class test {
                 uv.setLoaiHoatDong(loaiHoatDong);
             }
         }
-
-        uvRepository.save(uv);
+       System.out.println("tset" +uv);
+        //uvRepository.save(uv);
         return "redirect:/index-uv";
     }
 
@@ -278,7 +278,7 @@ public class test {
         if (uv.getNgayTao() == null) {
             uv.setNgayTao(new Date());  // Gán giá trị mặc định nếu ngày tạo bị trống
         }
-
+       // System.out.println("dftest: "+uv);
         uvRepository.save(uv);
         return "redirect:/index-uv";
     }

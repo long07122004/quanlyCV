@@ -201,6 +201,7 @@
                 </div>
                 <div class="modal-body">
                     <form ng-submit="updateCV(editCv)">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <div class="form-group">
                             <label for="applyDateTime">Ngày nộp</label>
                             <p class="form-control-static">{{ editCv.applyDateTime | date:'dd/MM/yyyy' }}</p>

@@ -29,6 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // Logging thông tin người dùng
         System.out.println("User found: " + nguoiDung.getEmail());
 
+
         List<GrantedAuthority> authorities = new ArrayList<>();
         int vaiTroId = nguoiDung.getVaiTro().getId(); // Giả sử bạn có phương thức getId() để lấy ID của vai trò
 
@@ -40,10 +41,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
         }
 
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(nguoiDung.getEmail())
                 .password(nguoiDung.getMatKhau()) // Sử dụng mật khẩu đã mã hóa từ cơ sở dữ liệu
-                .authorities(nguoiDung.getAuthorities()) // Sử dụng authorities từ thực thể
+                .authorities(authorities) // Sử dụng danh sách authorities
                 .accountLocked(!nguoiDung.isTrangThai()) // Kiểm tra trạng thái người dùng
                 .build();
     }

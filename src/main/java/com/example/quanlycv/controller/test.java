@@ -29,8 +29,6 @@ import java.util.Date;
 public class test {
     @Autowired
     private DotTuyenDungService dotTuyenDungService;
-    @Autowired
-    NguoiDungRepo nguoiDungRepo;
 
 
 
@@ -167,6 +165,9 @@ public class test {
     private UVRepository uvRepository;
 
     @Autowired
+    private NguoiDungRepo nguoiDungRepository;
+
+    @Autowired
     private LoaiHoatDongRepository loaiHoatDongRepository;
 
     @GetMapping("/index-uv")
@@ -219,7 +220,7 @@ public class test {
         UV uv = new UV();
         model.addAttribute("uv", uv);
         model.addAttribute("loaiHoatDongList", loaiHoatDongRepository.findAll());
-        model.addAttribute("nguoiDungList",nguoiDungRepo.findAll());
+        model.addAttribute("nguoiDungList", nguoiDungRepository.findAll());
         return "addUV";
     }
 
@@ -229,7 +230,7 @@ public class test {
 
         // Lấy người dùng dựa trên ID
         if (uv.getNguoiDung() != null && uv.getNguoiDung().getNguoiDungId() != null) {
-            NguoiDung nguoiDung = nguoiDungRepo.findById(uv.getNguoiDung().getNguoiDungId()).orElse(null);
+            NguoiDung nguoiDung = nguoiDungRepository.findById(uv.getNguoiDung().getNguoiDungId()).orElse(null);
             if (nguoiDung != null) {
                 uv.setNguoiDung(nguoiDung);
             }
@@ -261,14 +262,14 @@ public class test {
         }
         model.addAttribute("uv", uv);
         model.addAttribute("loaiHoatDongList", loaiHoatDongRepository.findAll());
-        model.addAttribute("nguoiDungList", nguoiDungRepo.findAll());
+        model.addAttribute("nguoiDungList", nguoiDungRepository.findAll());
         return "editUV";
     }
     @PostMapping("/index-uv/update")
     public String updateUV(@ModelAttribute("uv") UV uv, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("loaiHoatDongList", loaiHoatDongRepository.findAll());
-            model.addAttribute("nguoiDungList", nguoiDungRepo.findAll());
+            model.addAttribute("nguoiDungList", nguoiDungRepository.findAll());
             return "editUV";
         }
 

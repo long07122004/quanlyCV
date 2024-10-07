@@ -35,12 +35,11 @@
             <label for="nguoiDung" class="form-label">Người dùng</label>
             <select id="nguoiDung" name="nguoiDung.id" class="form-select" required>
                 <option th:each="nguoiDung : ${nguoiDungList}"
-                        th:value="${nguoiDung.nguoiDungId}"
+                        th:value="${nguoiDung.id}"
                         th:text="${nguoiDung.hoTen}">
                 </option>
             </select>
         </div>
-
 
         <button type="submit" class="btn btn-primary">Lưu</button>
         <a href="/index-uv" class="btn btn-secondary">Hủy</a>

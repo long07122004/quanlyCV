@@ -11,6 +11,7 @@
     <h1>Thêm Hoạt Động Ứng Viên</h1>
 
     <form action="/index-uv/save" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="mb-3">
             <label for="loaiHoatDong" class="form-label">Loại hoạt động</label>
             <select id="loaiHoatDong" name="loaiHoatDong.id" class="form-select" required>

@@ -41,7 +41,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
 
                         .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**").permitAll()
-                        .requestMatchers("/tuyen-dung/**","/api/qlcv/**").hasRole("ADMIN")
+                        .requestMatchers("/tuyen-dung/**","/api/qlcv/**","/index-uv/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )

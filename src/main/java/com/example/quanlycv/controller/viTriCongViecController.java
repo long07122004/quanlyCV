@@ -73,10 +73,11 @@ public class viTriCongViecController {
     }
 
     @PostMapping("/update-viTri")
-    public String update(ViTriCongViec viTriCongViec) {
+    public String update(@ModelAttribute ViTriCongViec viTriCongViec) {
         Date ngayHienTai = new Date();
         viTriCongViec.setNgayCapNhat(ngayHienTai);
         viTriCongViec.setTrangThai(true);
+        //System.out.println("test vị trí: "+viTriCongViec);
         viTriCongViecRepo.save(viTriCongViec);
         return "redirect:/quan-ly-vi-tri";
     }

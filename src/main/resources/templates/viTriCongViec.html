@@ -126,6 +126,7 @@
     <div class="container mt-5">
         <div class="search-container">
             <form action="/find-combined" method="get">
+
                 <div>
                     <input type="text" id="searchCode" placeholder="key" th:name="key" class="form-control d-inline-block w-auto"/>
                     <select id="filterLevel" class="form-control d-inline-block w-auto" th:name="level">
@@ -232,6 +233,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="jobPositionForm" th:action="@{/add-viTri}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <div class="form-group">
                             <label for="positionCode">Mã vị trí:</label>
                             <input type="text" class="form-control" id="positionCode" name="maViTri" required>
@@ -271,6 +273,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="jobPositionForm1" th:action="@{/update-viTri}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <div class="form-group">
                             <label for="editNhId">Id:</label>
                             <input type="text" class="form-control" id="editNhId" name="id" readonly>

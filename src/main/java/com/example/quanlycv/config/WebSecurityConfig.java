@@ -43,7 +43,8 @@ public class WebSecurityConfig {
 
                         .requestMatchers("/tuyen-dung/**","/api/qlcv/**","/index-uv/**","/updateTrangThai","/addPhongBan",
                                 "/deletePhongBan","/updatePhongBan","/","/admin/role/**"
-                        ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete").hasRole("ADMIN")
+                        ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete",
+                                "/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/doitrangThai").hasRole("ADMIN")
 
 
                         .anyRequest().authenticated()

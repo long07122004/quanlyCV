@@ -27,10 +27,17 @@
         <!-- Người dùng -->
         <div class="mb-3">
             <label for="nguoiDung" class="form-label">Người dùng</label>
+<<<<<<< HEAD:QLCV/src/main/resources/templates/editUV.html
             <select id="nguoiDung" class="form-select" th:field="*{nguoiDung.id}">
                 <option th:each="nguoi : ${nguoiDungList}"
                         th:value="${nguoi.id}"
                         th:text="${nguoi.hoTen}">
+=======
+            <select id="nguoiDung" name="nguoiDung.id" class="form-select" required>
+                <option th:each="nguoiDung : ${nguoiDungList}"
+                        th:value="${nguoiDung.nguoiDungId}"
+                        th:text="${nguoiDung.hoTen}">
+>>>>>>> master:src/main/resources/templates/editUV.html
                 </option>
             </select>
         </div>

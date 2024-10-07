@@ -41,8 +41,8 @@ public class QlTuyenDung {
 
 
     @ManyToOne
-    @JoinColumn(name = "tao_boi")
-    private NguoiDung nguoiDung;
+    @JoinColumn(name = "nhan_vien_id")
+    private NhanVien nhanVien;
 
 
 

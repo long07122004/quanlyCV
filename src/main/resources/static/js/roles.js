@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 const showModal = document.querySelector("#btnNV");//button show modal 2
 const modal1 = new bootstrap.Modal(document.getElementById('exampleModal'));
 const modal2 = new bootstrap.Modal(document.getElementById('modalNV'));
 const showModal1 = document.querySelector("#show-modal-1");
+=======
+//const toggle = document.querySelector("#toggle-btn");
+const showModal = document.querySelector("#btnNV");//button show modal 2
+const modal1 = new bootstrap.Modal(document.getElementById('exampleModal'));
+const modal2 = new bootstrap.Modal(document.getElementById('modalNV'));
+const showModal1 = document.querySelector("#show-modal-1");//button show modal1
+
+// toggle.addEventListener("click",function(){
+//     document.querySelector("#sidebar").classList.toggle("expand");
+// });
+>>>>>>> master
 
 showModal.addEventListener("click",function (){
     modal2.show();
@@ -83,7 +95,11 @@ function  edit(id){
             }else {
                 $('#flexRadioDefault2').prop('checked', true);
             }
+<<<<<<< HEAD
             $('#btnUpdate').attr('formaction', '/admin/role/update/' + data.nguoiDungId);
+=======
+            $('#btnUpdate').attr('formaction', '/admin/role/update/' + data.id);
+>>>>>>> master
 
             $('#btnUpdate').show();
             $('#btnSave').hide();
@@ -96,6 +112,7 @@ function  edit(id){
     modal1.show();
 }
 
+<<<<<<< HEAD
 function  add(){
     const urlAdd ="/admin/role/add";
     //console.log('DataID:', id);
@@ -113,6 +130,8 @@ function  add(){
     });
 }
 
+=======
+>>>>>>> master
 document.getElementById("btnSave").addEventListener("click",function (event){
     var hoTen = document.getElementById("hoTen").value.trim();
     var email = document.getElementById("emailID").value.trim();
@@ -120,7 +139,11 @@ document.getElementById("btnSave").addEventListener("click",function (event){
     var sdt = document.getElementById("sdtID").value.trim();
     var vaiTro = document.getElementById("vaiTroID").value.trim();
     var isValid = true;
+<<<<<<< HEAD
     clearErrors();
+=======
+        clearErrors();
+>>>>>>> master
     //check họ tên
     if(hoTen === null ){
         displayError("hoTenError", "Họ và Tên không được để trống.");
@@ -174,7 +197,11 @@ function displayError(elementId, errorMessage) {
     var errorElement = document.getElementById(elementId);
     errorElement.innerHTML = errorMessage;
     errorElement.style.display = "block";
+<<<<<<< HEAD
     errorElement.previousElementSibling.classList.add("is-invalid");
+=======
+    errorElement.previousElementSibling.classList.add("is-invalid");  // Đánh dấu input là invalid
+>>>>>>> master
 }
 
 function clearErrors() {

@@ -42,7 +42,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**").permitAll()
 
                         .requestMatchers("/tuyen-dung/**","/api/qlcv/**","/index-uv/**","/updateTrangThai","/addPhongBan",
-                                "/deletePhongBan","/updatePhongBan","/","/admin/role/**").hasRole("ADMIN")
+                                "/deletePhongBan","/updatePhongBan","/","/admin/role/**"
+                        ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete").hasRole("ADMIN")
 
 
                         .anyRequest().authenticated()

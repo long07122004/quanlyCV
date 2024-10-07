@@ -239,3 +239,149 @@ footer{
         margin-left: 3%;
     }
 }
+
+.outer-div {
+    background-color: #f0f0f0; /* Màu xám nhạt */
+    padding: 20px; /* Thêm khoảng cách cho nội dung bên trong */
+    border-radius: 16px; /* Tạo bo tròn cho góc (tuỳ chọn) */
+}
+.table th, .table td {
+    vertical-align: middle; /* Canh giữa nội dung */
+}
+.table {
+    border-radius: 0.5rem; /* Bo góc bảng */
+    overflow: hidden; /* Để bo góc hoạt động */
+}
+.table thead {
+    background-color: #007bff; /* Màu nền cho tiêu đề */
+    color: white; /* Màu chữ cho tiêu đề */
+}
+.table tbody tr:hover {
+    background-color: #f1f1f1; /* Màu nền khi hover */
+}
+/* Nút icon */
+.btn-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #007bff; /* Màu xanh dương mặc định */
+}
+
+.btn-icon:hover {
+    color: #dc3545; /* Màu đỏ khi hover */
+}
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 10;
+}
+.btn-icon:hover + .tooltip {
+    display: block;
+}
+body {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.outer-div {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.d-flex {
+    display: flex;
+    flex-wrap: wrap; /* Đảm bảo các phần tử xuống hàng nếu không đủ chỗ */
+}
+
+input, select, button {
+    font-size: 1em;
+    margin: 5px;
+}
+
+.table {
+    width: 100%;
+    overflow-x: auto; /* Bảng sẽ cuộn ngang nếu quá rộng */
+    table-layout: auto; /* Điều chỉnh độ rộng các cột tự động */
+}
+
+@media (max-width: 768px) {
+    .outer-div {
+        width: 100%;
+    }
+
+    .d-flex {
+        flex-direction: column;
+    }
+
+    input, select, button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+.btn-icon {
+    position: relative;
+}
+
+.btn-icon .tooltip {
+    visibility: hidden;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 4px;
+    top: -30px; /* Hiển thị bên trên */
+    font-size: 1.2em;
+    white-space: nowrap;
+}
+
+.btn-icon:hover .tooltip {
+    visibility: visible;
+}
+
+/* Hiệu ứng zoom khi mở modal */
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes zoomOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+}
+
+/* Tùy chỉnh lớp modal để dùng animation */
+.modal-dialog-zoom {
+    animation: zoomIn 0.3s ease-in-out;
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal.fade.show .modal-dialog {
+    animation: zoomIn 0.3s ease-in-out;
+}
+
+.modal.fade:not(.show) .modal-dialog {
+    animation: zoomOut 0.3s ease-in-out;
+}
+

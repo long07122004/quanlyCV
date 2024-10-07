@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -49,14 +51,19 @@ public class viTriCongViecController {
     }
 
     @PostMapping("/add-viTri")
-    public String addViTri(Model model, ViTriCongViec viTriCongViec){
+    public String addViTri(Model model, ViTriCongViec viTriCongViec) {
+        Date ngayHienTai = new Date();
+        viTriCongViec.setNgayTao(ngayHienTai);
         viTriCongViec.setTrangThai(true);
         viTriCongViecRepo.save(viTriCongViec);
         return "redirect:/quan-ly-vi-tri";
     }
+
     @GetMapping("/lay-id-Vitri/{id}")
-    public String layVitri(@PathVariable Integer id,Model model){
-        ViTriCongViec viTriCongViec =  viTriCongViecRepo.getReferenceById(id);
+    public String layVitri(@PathVariable Integer id, Model model) {
+        ViTriCongViec viTriCongViec = viTriCongViecRepo.getReferenceById(id);
+        viTriCongViec.setNgayTao(viTriCongViec.getNgayTao());
+        viTriCongViecRepo.save(viTriCongViec);
         System.out.println("Trạng thái : " + viTriCongViec.getTrangThai());
         model.addAttribute("viTriId", viTriCongViec);
         model.addAttribute("viTri", viTriCongViecRepo.findAll());
@@ -64,16 +71,21 @@ public class viTriCongViecController {
         model.addAttribute("phongBan", phongBanRepo.findAll());
         return "viTriCongViec";
     }
+
     @PostMapping("/update-viTri")
-    public String update(ViTriCongViec viTriCongViec){
+    public String update(@ModelAttribute ViTriCongViec viTriCongViec) {
+        Date ngayHienTai = new Date();
+        viTriCongViec.setNgayCapNhat(ngayHienTai);
+        viTriCongViec.setTrangThai(true);
+        //System.out.println("test vị trí: "+viTriCongViec);
         viTriCongViecRepo.save(viTriCongViec);
         return "redirect:/quan-ly-vi-tri";
     }
 
     @GetMapping("/doitrangThai")
-    public String doiTrangThai(@RequestParam Integer id){
+    public String doiTrangThai(@RequestParam Integer id) {
         ViTriCongViec viTriCongViec = viTriCongViecRepo.findById(id).get();
-        if(viTriCongViec.getTrangThai() == true){
+        if (viTriCongViec.getTrangThai() == true) {
             viTriCongViec.setTrangThai(false);
         } else if (viTriCongViec.getTrangThai() == false) {
             viTriCongViec.setTrangThai(true);
@@ -82,11 +94,7 @@ public class viTriCongViecController {
         return "redirect:/quan-ly-vi-tri";
     }
 
-    @GetMapping("/delete/{id}")
-    public String xoa(@PathVariable Integer id){
-        viTriCongViecRepo.deleteById(id);
-        return  "redirect:/quan-ly-vi-tri";
-    }
+
 
     @GetMapping("/find-combined")
     public String findCombined(
@@ -96,12 +104,12 @@ public class viTriCongViecController {
             @RequestParam(name = "level", required = false) Integer level,
             Model model) {
 
-            // nếu page < 0 , return page = 0
         if (page < 0) {
             page = 0;
         }
         Pageable pageable = PageRequest.of(page, size);
         Page<ViTriCongViec> viTriCongViecs;
+
         if (key == null || key.isEmpty()) {
             if (level != null && level > 0) {
                 viTriCongViecs = viTriCongViecRepo.findByLevel_Id(level, pageable);
@@ -115,16 +123,13 @@ public class viTriCongViecController {
                 viTriCongViecs = viTriCongViecRepo.findByTenViTriContainingOrMaViTriContaining(key, key, pageable);
             }
         }
-        if (viTriCongViecs.isEmpty() && page > 0) {
-            return "redirect:/find-combined?page=0&size=" + size + "&key=" + key + "&level=" + level;
-        }
 
         model.addAttribute("viTri", viTriCongViecs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", viTriCongViecs.getTotalPages());
         model.addAttribute("level", levelRepo.findAll());
         model.addAttribute("phongBan", phongBanRepo.findAll());
-        return "view/viTriCongViec";
-    }
 
+        return "viTriCongViec";
+    }
 }

@@ -27,10 +27,12 @@
         <!-- Người dùng -->
         <div class="mb-3">
             <label for="nguoiDung" class="form-label">Người dùng</label>
+
             <select id="nguoiDung" name="nguoiDung.id" class="form-select" th:field="*{nguoiDung.nguoiDungId}" required>
                 <option th:each="nguoiDung : ${nguoiDungList}"
                         th:value="${nguoiDung.nguoiDungId}"
                         th:text="${nguoiDung.hoTen}">
+
                 </option>
             </select>
         </div>

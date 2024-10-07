@@ -1,7 +1,7 @@
 package com.example.quanlycv.Service;
 
 import com.example.quanlycv.entity.QlTuyenDung;
-import com.example.quanlycv.Rep.TuyenDungRep;
+import com.example.quanlycv.repo.TuyenDungRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

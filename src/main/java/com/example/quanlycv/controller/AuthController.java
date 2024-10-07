@@ -1,11 +1,12 @@
 package com.example.quanlycv.controller;
 
-import com.example.quanlycv.Rep.NguoiDungRepo;
-import com.example.quanlycv.Rep.PasswordResetTokenRepository;
+
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.PasswordResetToken;
 import com.example.quanlycv.Service.EmailService;
 import com.example.quanlycv.Service.NguoiDungService;
+import com.example.quanlycv.repo.NguoiDungRepo;
+import com.example.quanlycv.repo.PasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -122,6 +123,12 @@ public class AuthController {
 
         model.addAttribute("message", "Đặt lại mật khẩu thành công!");
         return "redirect:/login";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied(Model model) {
+        model.addAttribute("errorMessage", "Bạn không có quyền truy cập vào trang này.");
+        return "access-denied"; // Tên view để hiển thị thông báo
     }
 
 }

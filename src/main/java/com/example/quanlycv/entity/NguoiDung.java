@@ -37,6 +37,7 @@ public class NguoiDung {
     private String email;
     @Column(name = "sdt")
     private String sdt;
+
     @ManyToOne
     @JoinColumn(name = "vai_tro_id")
     private VaiTro vaiTro;

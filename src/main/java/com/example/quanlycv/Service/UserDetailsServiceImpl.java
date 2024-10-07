@@ -1,7 +1,8 @@
 package com.example.quanlycv.Service;
 
-import com.example.quanlycv.Rep.NguoiDungRepo;
+
 import com.example.quanlycv.entity.NguoiDung;
+import com.example.quanlycv.repo.NguoiDungRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,7 +1,8 @@
 package com.example.quanlycv.Service;
 
-import com.example.quanlycv.Rep.*;
+
 import com.example.quanlycv.entity.*;
+import com.example.quanlycv.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

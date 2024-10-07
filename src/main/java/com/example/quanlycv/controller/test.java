@@ -1,14 +1,14 @@
 package com.example.quanlycv.controller;
 
-import com.example.quanlycv.Rep.LoaiHoatDongRepository;
-import com.example.quanlycv.Rep.NguoiDungRepo;
-import com.example.quanlycv.Rep.UVRepository;
+
 import com.example.quanlycv.entity.LoaiHoatDong;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.QlTuyenDung;
-import com.example.quanlycv.Rep.TuyenDungRep;
 import com.example.quanlycv.Service.DotTuyenDungService;
 import com.example.quanlycv.entity.UV;
+import com.example.quanlycv.repo.LoaiHoatDongRepository;
+import com.example.quanlycv.repo.NguoiDungRepo;
+import com.example.quanlycv.repo.UVRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

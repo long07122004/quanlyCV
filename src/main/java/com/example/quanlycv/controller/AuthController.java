@@ -1,11 +1,12 @@
 package com.example.quanlycv.controller;
 
-import com.example.quanlycv.Rep.NguoiDungRepo;
-import com.example.quanlycv.Rep.PasswordResetTokenRepository;
+
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.PasswordResetToken;
 import com.example.quanlycv.Service.EmailService;
 import com.example.quanlycv.Service.NguoiDungService;
+import com.example.quanlycv.repo.NguoiDungRepo;
+import com.example.quanlycv.repo.PasswordResetTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;

@@ -6,9 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+
 
 import java.time.Instant;
 
@@ -22,9 +25,13 @@ public class PhongBan {
     @Column(name = "phong_ban_id", nullable = false)
     private Integer id;
 
+    @NotBlank(message = "Mã phòng ban không được để trống")
+    @Size(max = 50, message = "Mã phòng ban không được quá 50 ký tự")
     @Column(name = "ma_phong_ban", nullable = false, length = 50)
     private String maPhongBan;
 
+    @NotBlank(message = "Tên phòng ban không được để trống")
+    @Size(max = 100, message = "Tên phòng ban không được quá 100 ký tự")
     @Column(name = "ten_phong_ban", nullable = false, length = 100)
     private String tenPhongBan;
 

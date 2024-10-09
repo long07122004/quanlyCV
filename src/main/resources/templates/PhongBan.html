@@ -50,17 +50,59 @@
 
                 <div>
                     <!-- Nút xuất file Excel -->
-                    <button type="button" class="btn btn-success" onclick="window.location.href='/exportExcel'">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmExportModal">
                         Xuất Excel
                     </button>
 
-                    <!-- Nút nhập file Excel -->
-                    <form id="importExcelForm" action="/importExcel" method="POST" enctype="multipart/form-data">
-                        <input type="file" name="file" accept=".xlsx, .xls" required/>
-                        <button type="submit" class="btn btn-primary">
-                            Nhập Excel
-                        </button>
-                    </form>
+                    <!-- Modal xác nhận xuất file -->
+                    <div class="modal fade" id="confirmExportModal" tabindex="-1" aria-labelledby="confirmExportModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmExportModalLabel">Xác nhận xuất file</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Bạn có chắc chắn muốn xuất file Excel không?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-success" onclick="exportExcel()">Xác nhận</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút hiển thị modal nhập file Excel -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+                        Nhập Excel
+                    </button>
+
+                    <!-- Modal để chọn file nhập Excel -->
+                    <div class="modal fade" id="importExcelModal" tabindex="-1" aria-labelledby="importExcelModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="importExcelModalLabel">Nhập file Excel</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Form nhập file Excel -->
+                                    <form id="importExcelForm" action="/importExcel" method="POST" enctype="multipart/form-data">
+                                        <div class="mb-3">
+                                            <label for="fileExcel" class="form-label">Chọn file Excel</label>
+                                            <input type="file" class="form-control" name="fileExcel" accept=".xlsx, .xls" required/>
+                                        </div>
+                                        <!-- Modal Footer with buttons in the same row -->
+                                        <div class="modal-footer d-flex justify-content-end">
+                                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" form="importExcelForm" class="btn btn-primary">Nhập file</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#themMoiModal">

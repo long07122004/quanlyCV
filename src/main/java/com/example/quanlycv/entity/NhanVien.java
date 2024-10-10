@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-import com.example.quanlycv.entity.PhongBan;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,7 +18,7 @@ public class NhanVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nhan_vien_id")
-    private Long nhanVienId;
+    private Integer nhanVienId;
 
     @NotEmpty(message = "Vui lòng nhập họ tên")
     @Column(name = "ho_ten")

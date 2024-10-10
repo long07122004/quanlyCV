@@ -78,7 +78,7 @@ public class RolesController {
         try{
             NhanVien nhanVien = null;
             if(nguoiDung.getNhanVienId() != null){
-                nhanVien = new NhanVien(nguoiDung.getNhanVienId(),"","","",null,null,null,null,"",null,null);
+                nhanVien = new NhanVien(nguoiDung.getNhanVienId(),"","","",null,null,null,null,null,null,null,null);
             }
             NguoiDung nguoiDungEntity = new NguoiDung(
                     nguoiDung.getId(),nguoiDung.getHoTen(),nguoiDung.getEmail(),nguoiDung.getSdt(),
@@ -110,7 +110,7 @@ public class RolesController {
         NhanVien nhanVien = null;
         if(nguoiDung.getNhanVienId() != null){
             //System.out.println("nhan vien ID: "+nguoiDung.getNhanVienId());
-            nhanVien = new NhanVien(nguoiDung.getNhanVienId(),"","","",null,null,null,null,"",null,null);
+            nhanVien = new NhanVien(nguoiDung.getNhanVienId(),"","","",null,null,null,null,null,null,null,null);
         }
 
         currentNguoiDung.setNguoiDungId(nguoiDung.getId());

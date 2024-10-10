@@ -4,6 +4,7 @@ import com.example.quanlycv.entity.ViTriCongViec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -15,4 +16,8 @@ public interface viTriCongViecRepo extends JpaRepository<ViTriCongViec,Integer> 
 
     Page<ViTriCongViec> findAll(Pageable pageable);
 
+    @Query("""
+                    SELECT vt FROM ViTriCongViec vt where vt.tenViTri = :name
+            """)
+    ViTriCongViec findByName(String name);
 }

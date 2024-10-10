@@ -166,3 +166,29 @@ function validateFormUpdate() {
 
     return valid; // Trả về kết quả
 }
+
+function exportExcel() {
+    fetch('/exportExcel', {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'phongBan.xlsx'; // Tên file mặc định, người dùng có thể sửa trong hộp thoại tải
+            document.body.appendChild(a);
+            a.click();
+            a.remove(); // Gỡ bỏ thẻ <a> sau khi hoàn thành
+        })
+        .catch(error => {
+            console.error('Error exporting Excel file:', error);
+        });
+}
+
+

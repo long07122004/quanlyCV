@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/nhan-vien")
 public class NhanVienController {
 
     @Autowired
@@ -40,20 +41,20 @@ public class NhanVienController {
     @Autowired
     private viTriCongViecRepo viTriRepo;
 
-    @GetMapping("/hien-thi")
-    public String view(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable pageable = PageRequest.of(page, 7);
-        Page<NhanVien> nhanVienPage = nhanVienRepo.findAll(pageable);
-        model.addAttribute("nhanVien", new NhanVien());
-        model.addAttribute("list", nhanVienPage.getContent());
-        model.addAttribute("currentPage", nhanVienPage.getNumber());
-        model.addAttribute("totalPages", nhanVienPage.getTotalPages());
-        model.addAttribute("listViTri", viTriRepo.findAll());
-        model.addAttribute("listVaiTro", vaiTroRepo.findAll());
-        model.addAttribute("listPhongBan", phongBanRepo.findAll());
-        model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
-        return "nhan_vien/index";
-    }
+        @GetMapping("/hien-thi")
+        public String view(@RequestParam(defaultValue = "0") int page, Model model) {
+            Pageable pageable = PageRequest.of(page, 7);
+            Page<NhanVien> nhanVienPage = nhanVienRepo.findAll(pageable);
+            model.addAttribute("nhanVien", new NhanVien());
+            model.addAttribute("list", nhanVienPage.getContent());
+            model.addAttribute("currentPage", nhanVienPage.getNumber());
+            model.addAttribute("totalPages", nhanVienPage.getTotalPages());
+            model.addAttribute("listViTri", viTriRepo.findAll());
+            model.addAttribute("listVaiTro", vaiTroRepo.findAll());
+            model.addAttribute("listPhongBan", phongBanRepo.findAll());
+            model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
+            return "nhanvien";
+        }
 
     @GetMapping("/xoa/{id}")
     public String delete(@PathVariable Integer id) {
@@ -94,7 +95,7 @@ public class NhanVienController {
         // Check for validation errors
         if (result.hasErrors()) {
             model.addAttribute("showModal", true); // Open modal on validation error
-            return "nhan_vien/index"; // Return to the index page with existing data
+            return "nhanvien"; // Return to the index page with existing data
         }
 
         PhongBan phongBan = nhanVien.getPhongBan();
@@ -137,7 +138,7 @@ public class NhanVienController {
 
         model.addAttribute("keyWord", keyWord);
 
-        return "nhan_vien/index";
+        return "nhanvien";
     }
 
     @GetMapping("/filter")
@@ -150,31 +151,40 @@ public class NhanVienController {
         Pageable pageable = PageRequest.of(page, 7);
         Page<NhanVien> nhanVienPage;
 
+        // Check both criteria (role and tenViTri) if provided
         if (role != null && !role.isEmpty() && tenViTri != null && !tenViTri.isEmpty()) {
             nhanVienPage = nhanVienRepo.filter(role, tenViTri, pageable);
-        } else if (role != null && !role.isEmpty()) {
+        }
+        // Check if only role is provided
+        else if (role != null && !role.isEmpty()) {
             nhanVienPage = nhanVienRepo.filterByRole(role, pageable);
-        } else if (tenViTri != null && !tenViTri.isEmpty()) {
+        }
+        // Check if only position is provided
+        else if (tenViTri != null && !tenViTri.isEmpty()) {
             nhanVienPage = nhanVienRepo.filterByViTri(tenViTri, pageable);
-        } else {
+        }
+        // If no filter criteria are provided, return all
+        else {
             nhanVienPage = nhanVienRepo.findAll(pageable);
         }
 
+        // Pass the filtered list and pagination information to the view
         model.addAttribute("list", nhanVienPage.getContent());
         model.addAttribute("currentPage", nhanVienPage.getNumber());
         model.addAttribute("totalPages", nhanVienPage.getTotalPages());
         model.addAttribute("nhanVien", new NhanVien());
-
         model.addAttribute("listViTri", viTriRepo.findAll());
         model.addAttribute("listVaiTro", vaiTroRepo.findAll());
         model.addAttribute("listPhongBan", phongBanRepo.findAll());
         model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
 
+        // Pass selected filter values to the model for preserving the selection in the UI
         model.addAttribute("selectedRole", role);
         model.addAttribute("selectedViTri", tenViTri);
 
-        return "nhan_vien/index";
+        return "nhanvien";
     }
+
 
     @GetMapping("/export")
     public void exportToExcel(HttpServletResponse response) {

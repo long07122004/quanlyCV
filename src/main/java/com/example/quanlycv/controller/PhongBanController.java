@@ -245,7 +245,7 @@ public class PhongBanController {
         headerRow.createCell(2).setCellValue("Trạng Thái");
 
         // Giả sử có danh sách các phòng ban lấy từ DB
-        List<PhongBan> phongBanList = PBservice.getAll();
+        List<PhongBan> phongBanList = PBservice.getAll(); // Lấy danh sách phòng ban từ service
 
         int rowNum = 1;
         for (PhongBan pb : phongBanList) {
@@ -255,44 +255,45 @@ public class PhongBanController {
             row.createCell(2).setCellValue(pb.getTrangThai() ? "Đang Hoạt Động" : "Ngừng Hoạt Động");
         }
 
-        // Viết dữ liệu ra file Excel trong một mảng byte
+        // Ghi dữ liệu ra file Excel trong một mảng byte
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         workbook.close();
 
         byte[] excelData = outputStream.toByteArray();
 
-        // Thiết lập response headers
+        // Gắn headers để yêu cầu trình duyệt tải file xuống
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=phongBan.xlsx");
 
+        // Trả về file Excel với headers và status OK
         return new ResponseEntity<>(excelData, headers, HttpStatus.OK);
     }
 
-    @PostMapping("/importExcel")
-    public String importExcel(@RequestParam("file") MultipartFile file) {
-        try {
-            Workbook workbook = WorkbookFactory.create(file.getInputStream());
-            Sheet sheet = workbook.getSheetAt(0);
-
-            for (Row row : sheet) {
-                if (row.getRowNum() == 0) { // Bỏ qua dòng tiêu đề (header)
-                    continue;
-                }
-                int id = (int) row.getCell(0).getNumericCellValue();
-                String tenPhongBan = row.getCell(1).getStringCellValue();
-                boolean trangThai = row.getCell(2).getStringCellValue().equals("Đang Hoạt Động");
-
-                // Tạo đối tượng PhongBan và lưu vào DB
-                PhongBan pb = new PhongBan();
-                PBservice.savePhongBan(pb);
-            }
-            workbook.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "redirect:/phongBan?error=File không hợp lệ";
-        }
-
-        return "redirect:/phongBan?success=Nhập dữ liệu thành công";
-    }
+//    @PostMapping("/importExcel")
+//    public String importExcel(@RequestParam("file") MultipartFile file) {
+//        try {
+//            Workbook workbook = WorkbookFactory.create(file.getInputStream());
+//            Sheet sheet = workbook.getSheetAt(0);
+//
+//            for (Row row : sheet) {
+//                if (row.getRowNum() == 0) { // Bỏ qua dòng tiêu đề (header)
+//                    continue;
+//                }
+//                int id = (int) row.getCell(0).getNumericCellValue();
+//                String tenPhongBan = row.getCell(1).getStringCellValue();
+//                boolean trangThai = row.getCell(2).getStringCellValue().equals("Đang Hoạt Động");
+//
+//                // Tạo đối tượng PhongBan và lưu vào DB
+//                PhongBan pb = new PhongBan();
+//                PBservice.savePhongBan(pb);
+//            }
+//            workbook.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "redirect:/phongBan?error=File không hợp lệ";
+//        }
+//
+//        return "redirect:/phongBan?success=Nhập dữ liệu thành công";
+//    }
 }

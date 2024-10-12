@@ -11,6 +11,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <style>
@@ -148,20 +149,19 @@
 </head>
 <body>
 <main layout:fragment="main1">
+
+
     <a href="/nhan-vien/hien-thi?page=0">
         <h1> Quản lý nhân viên </h1>
     </a>
-
-    <form action="/nhan-vien/qr" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <button type="submit" class="btn btn-dark">Add Employee</button>
-    </form>
 
     <!-- Search and Filter Form -->
     <div class="filter-container">
         <div class="filter-header">
             <i class="fas fa-filter"></i> Filter
         </div>
+
+
         <form method="get" action="/nhan-vien/tim-kiem">
             <div class="row mb-3">
                 <!-- Search Input with Icon -->
@@ -215,7 +215,10 @@
             </button>
         </div>
 
-        <a href="/nhan-vien/export" class="btn btn-dark"><i class="fa-solid fa-file-export"></i> Export Excel</a>
+        <a th:href="@{/nhan-vien/export}" class="btn btn-dark">
+            <i class="fa-solid fa-file-export"></i> Export Excel
+        </a>
+
 
         <!-- Import Excel Form -->
         <div class="import">
@@ -228,15 +231,9 @@
             </form>
         </div>
 
-        <div class="scanqr">
-            <button id="openModal" class="btn btn-secondary"><i class="fa-solid fa-qrcode"></i> Scan QRㅤ</button>
-        </div>
-    </div>
-
-
     <!-- Table nhan vien-->
     <div>
-        <table class="table table-hover">
+        <table class="table table-hover table-wrapper">
             <thead>
             <tr>
                 <th>STT</th>
@@ -265,16 +262,17 @@
                 <td th:text="${nv.vaiTro.tenVaiTro}"></td>
                 <td th:text="${nv.trang_thai}"></td>
                 <td>
-                    <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#detail"
-                       th:onclick="'showDetail(' + '${nv.nhanVienId}', '${nv.ma}', '${nv.hoTen}', '${nv.email}', '${nv.sdt}', '${nv.viTri.vi_tri_id}', '${nv.truongPhong.truong_phong_id}', '${nv.phongBan.phong_ban_id}', '${nv.vaiTro.vai_tro_id}', '${nv.ngay_tao}', '${nv.ngay_cap_nhat}', '${nv.trang_thai}' + ')'">
+                        <!-- Button to view details -->
+                    <a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#detailModal"
+                       th:onclick="'setSelectedEmployee(' + ${nv.nhanVienId} + ');'">
                         <i class="fa-solid fa-circle-info"></i> Chi tiết
                     </a>
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editEmployeeModal"
-                       th:onclick="'setEditValues(' + '${nv.nhanVienId}', '${nv.ma}', '${nv.hoTen}', '${nv.email}', '${nv.sdt}', '${nv.viTri.vi_tri_id}', '${nv.truongPhong.truong_phong_id}', '${nv.phongBan.phong_ban_id}', '${nv.vaiTro.vai_tro_id}', '${nv.trang_thai}' + ')'">
+                       th:onclick="'setSelectedEmployee(' + ${nv.nhanVienId} + ');'">
                         <i class="fa-solid fa-pen-to-square"></i> Sửa
                     </a>
                     <a th:href="@{'/nhan-vien/xoa/' + ${nv.nhanVienId}}" class="btn btn-danger"
-                       onclick="return confirm('Are you sure you want to delete this employee?');">
+                       onclick="return confirmDelete();">
                         <i class="fa-solid fa-trash"></i> Xóa
                     </a>
 
@@ -284,7 +282,83 @@
         </table>
     </div>
 
+        
 
+        <!-- Detail Modal -->
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detailModalLabel">Chi tiết nhân viên</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Mã nhân viên:</strong> <span id="detailMa"></span></p>
+                        <p><strong>Họ và tên:</strong> <span id="detailHoTen"></span></p>
+                        <p><strong>Email:</strong> <span id="detailEmail"></span></p>
+                        <p><strong>Số điện thoại:</strong> <span id="detailSDT"></span></p>
+                        <p><strong>Vị trí:</strong> <span id="detailViTri"></span></p>
+                        <p><strong>Trưởng phòng:</strong> <span id="detailTruongPhong"></span></p>
+                        <p><strong>Phòng ban:</strong> <span id="detailPhongBan"></span></p>
+                        <p><strong>Vai trò:</strong> <span id="detailVaiTro"></span></p>
+                        <p><strong>Trạng thái:</strong> <span id="detailTrangThai"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Employee Modal -->
+        <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editEmployeeModalLabel">Sửa thông tin nhân viên</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/nhan-vien/sua}" method="post" id="editEmployeeForm">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="editHoTen" class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" id="editHoTen" name="hoTen" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editSDT" class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" id="editSDT" name="sdt" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editViTri" class="form-label">Vị trí</label>
+                                <input type="text" class="form-control" id="editViTri" name="viTri" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTruongPhong" class="form-label">Trưởng phòng</label>
+                                <input type="text" class="form-control" id="editTruongPhong" name="truongPhong" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editPhongBan" class="form-label">Phòng ban</label>
+                                <input type="text" class="form-control" id="editPhongBan" name="phongBan" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editVaiTro" class="form-label">Vai trò</label>
+                                <input type="text" class="form-control" id="editVaiTro" name="vaiTro" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTrangThai" class="form-label">Trạng thái</label>
+                                <input type="text" class="form-control" id="editTrangThai" name="trangThai" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="editEmployeeId" name="employeeId" />
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     <!-- Pagination -->
     <nav aria-label="Page navigation">
@@ -318,158 +392,41 @@
             </li>
         </ul>
     </nav>
+        <!--Scrpit-->
+        <script>
+            function setSelectedEmployee(employeeId) {
+                fetch(`/nhan-vien/${employeeId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the detail modal
+                        document.getElementById('detailMa').textContent = data.ma;
+                        document.getElementById('detailHoTen').textContent = data.hoTen;
+                        document.getElementById('detailEmail').textContent = data.email;
+                        document.getElementById('detailSDT').textContent = data.sdt;
+                        document.getElementById('detailViTri').textContent = data.viTri.tenViTri;
+                        document.getElementById('detailTruongPhong').textContent = data.truongPhong.tenTruongPhong;
+                        document.getElementById('detailPhongBan').textContent = data.phongBan.tenPhongBan;
+                        document.getElementById('detailVaiTro').textContent = data.vaiTro.tenVaiTro;
+                        document.getElementById('detailTrangThai').textContent = data.trang_thai;
 
-    <!--Scrpit-->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        // Xử lý giá trị khi mở modal sửa nhân viên
-        function setEditValues(id, ma, hoTen, email, sdt, viTriId, truongPhongId, phongBanId, vaiTroId, trangThai) {
-            document.querySelector('#editEmployeeModal input[name="nhanVienId"]').value = id;
-            document.querySelector('#editEmployeeModal input[name="ma"]').value = ma;
-            document.querySelector('#editEmployeeModal input[name="hoTen"]').value = hoTen;
-            document.querySelector('#editEmployeeModal input[name="email"]').value = email;
-            document.querySelector('#editEmployeeModal input[name="sdt"]').value = sdt;
-            document.querySelector('#editEmployeeModal select[name="viTri.vi_tri_id"]').value = viTriId;
-            document.querySelector('#editEmployeeModal select[name="truongPhong.truong_phong_id"]').value = truongPhongId;
-            document.querySelector('#editEmployeeModal select[name="phongBan.phong_ban_id"]').value = phongBanId;
-            document.querySelector('#editEmployeeModal select[name="vaiTro.vai_tro_id"]').value = vaiTroId;
-
-            // Set the radio button for trangThai
-            const activeRadio = document.querySelector('#editEmployeeModal input[name="trang_thai"][value="true"]');
-            const inactiveRadio = document.querySelector('#editEmployeeModal input[name="trang_thai"][value="false"]');
-
-            if (trangThai === "true") {
-                activeRadio.checked = true;
-                inactiveRadio.checked = false;
-            } else {
-                activeRadio.checked = false;
-                inactiveRadio.checked = true;
-            }
-        }
-
-        function showDetail(nhanVienId, ma, hoTen, email, sdt, viTriId, truongPhongId, phongBanId, vaiTroId, ngay_tao, ngay_cap_nhat, trangThai) {
-            document.querySelector('#detail input[name="nhanVienId"]').value = nhanVienId;
-            document.querySelector('#detail input[name="ma"]').value = ma;
-            document.querySelector('#detail input[name="hoTen"]').value = hoTen;
-            document.querySelector('#detail input[name="email"]').value = email;
-            document.querySelector('#detail input[name="ngay_tao"]').value = ngay_tao;
-            document.querySelector('#detail input[name="ngay_cap_nhat"]').value = ngay_cap_nhat;
-            document.querySelector('#detail input[name="sdt"]').value = sdt;
-            document.querySelector('#detail select[name="viTri.vi_tri_id"]').value = viTriId;
-            document.querySelector('#detail select[name="truongPhong.truong_phong_id"]').value = truongPhongId;
-            document.querySelector('#detail select[name="phongBan.phong_ban_id"]').value = phongBanId;
-            document.querySelector('#detail select[name="vaiTro.vai_tro_id"]').value = vaiTroId;
-
-            const activeRadio = document.querySelector('#detail input[name="trang_thai"][value="true"]');
-            const inactiveRadio = document.querySelector('#detail input[name="trang_thai"][value="false"]');
-
-            if (trangThai === "true") {
-                activeRadio.checked = true;
-                inactiveRadio.checked = false;
-            } else {
-                activeRadio.checked = false;
-                inactiveRadio.checked = true;
-            }
-        }
-
-        function confirmDelete() {
-            var confirmAction = window.confirm("Bạn có muốn xóa không ?");
-            if (confirmAction) {
-                alert("Xóa thành công <3");
-                return true; // Proceed with the deletion
-            } else {
-                return false; // Cancel the deletion
-            }
-        }
-
-        function submitForm() {
-            document.getElementById('filterForm').submit();
-        }
-
-        function submitForm2() {
-            document.getElementById('filterForm2').submit();
-        }
-
-        // QR Code Scanning Logic
-        const video = document.getElementById('preview');
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        let scanning = false;
-
-        document.getElementById('openModal').addEventListener('click', () => {
-            $('#myModal').modal('show');
-        });
-
-        document.getElementById('cancelScan').addEventListener('click', () => {
-            $('#myModal').modal('hide');
-            stopCamera();
-        });
-
-        document.getElementById('startScan').addEventListener('click', () => {
-            if (!scanning) {
-                scanning = true;
-                video.style.display = 'block';
-                startCamera();
-            }
-        });
-
-        function startCamera() {
-            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-                .then(stream => {
-                    video.srcObject = stream;
-                    video.setAttribute('playsinline', true);
-                    video.play();
-                    requestAnimationFrame(tick);
-                })
-                .catch(err => console.error('Error accessing camera: ', err));
-        }
-
-        function stopCamera() {
-            video.srcObject.getTracks().forEach(track => track.stop());
-            video.style.display = 'none';
-            scanning = false;
-        }
-
-        function tick() {
-            if (scanning && video.readyState === video.HAVE_ENOUGH_DATA) {
-                canvas.height = video.videoHeight;
-                canvas.width = video.videoWidth;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-                if (code) {
-                    console.log('Mã QR đã quét:', code.data);
-                    alert('Đã quét mã QR: ' + code.data); // Thông báo cho người dùng
-
-                    // Gửi dữ liệu mã QR tới server
-                    fetch('/nhan-vien/qr', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: new URLSearchParams({
-                            file: code.data, // Gửi mã QR đã quét
-                        }),
+                        // Populate the edit modal
+                        document.getElementById('editEmployeeId').value = data.nhanVienId; // Hidden field for ID
+                        document.getElementById('editHoTen').value = data.hoTen;
+                        document.getElementById('editEmail').value = data.email;
+                        document.getElementById('editSDT').value = data.sdt;
+                        document.getElementById('editViTri').value = data.viTri.tenViTri;
+                        document.getElementById('editTruongPhong').value = data.truongPhong.tenTruongPhong;
+                        document.getElementById('editPhongBan').value = data.phongBan.tenPhongBan;
+                        document.getElementById('editVaiTro').value = data.vaiTro.tenVaiTro;
+                        document.getElementById('editTrangThai').value = data.trang_thai;
                     })
-                        .then(response => {
-                            if (response.redirected) {
-                                window.location.href = response.url; // Redirect if needed
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Có lỗi xảy ra khi gửi mã QR: ' + error);
-                        });
-
-                    stopCamera(); // Dừng camera sau khi quét thành công
-                }
+                    .catch(error => console.error('Error fetching employee data:', error));
             }
-            requestAnimationFrame(tick);
-        }
-    </script>
+
+            function confirmDelete() {
+                return confirm('Bạn có chắc chắn muốn xóa nhân viên này không?');
+            }
+        </script>
 
 </main>
 </body>

@@ -11,7 +11,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet"/>
+<<<<<<< HEAD
         <link rel="stylesheet" href="/css/side-bar.css"/>
+=======
+    <link rel="stylesheet" href="/css/side-bar.css"/>
+
+>>>>>>> 7e07ea69bcd90cc48497935f7b2165918f9cfb6c
     <title>Quản lý CV</title>
 </head>
 <body>
@@ -20,22 +25,93 @@
         <h3>Quản Lý Phòng Ban</h3>
         <div>
             <div class="d-flex justify-content-between align-items-center mb-3"> <!-- Flexbox -->
-                <div class="d-flex align-items-center flex-grow-1"> <!-- Thêm thanh tìm kiếm và combo box -->
-                    <input type="text" class="form-control me-2" style="width: 500px;" placeholder="Tìm kiếm...">
-                    <!-- Thanh tìm kiếm -->
-                    <select class="form-select me-2" style="width: auto; min-width: 150px;"> <!-- Combo box -->
-                        <option selected value="0" hidden>Lọc Trạng Thái</option>
-                        <option value="1">Đang Hoạt Động</option>
-                        <option value="2">Ngưng Hoạt Động</option>
-                        <option value="3">Ngày Tạo Mới Nhất</option>
-                        <option value="4">Ngày Tạo Cũ Nhất</option>
-                        <option value="5">Mới Được Chỉnh Sửa</option>
-                    </select>
-                    <button type="button" class="btn btn-primary"><i class="fas fa-search"></i> Tìm kiếm</button>
-                    <!-- Nút tìm kiếm -->
-                </div>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#themMoiModal"><i
-                        class="fas fa-plus"></i> Thêm Mới
+                <form id="searchForm" th:action="@{/phongBan}" method="get">
+                    <input type="hidden" name="itemsPerPage" th:value="${itemsPerPage}"/>
+                    <!-- Form tìm kiếm -->
+                    <div class="d-flex align-items-center flex-grow-1">
+                        <input type="text" class="form-control me-2" style="width: 300px;"
+                               placeholder="Tìm kiếm..." th:value="${keyword}" name="keyword">
+                        <!-- Thanh tìm kiếm -->
+                        <select class="form-select me-2" style="width: auto; min-width: 100px;" name="status">
+                            <!-- Combo box -->
+                            <option value="0" th:selected="${status == 0}" selected>Lọc Trạng Thái</option>
+                            <option value="1" th:selected="${status == 1}">Đang Hoạt Động</option>
+                            <option value="2" th:selected="${status == 2}">Ngưng Hoạt Động</option>
+                        </select>
+                        <select class="form-select me-2" style="width: auto; min-width: 100px;" name="time">
+                            <!-- Combo box -->
+                            <option selected value="1" th:selected="${time == 1}">Lọc Thời Gian</option>
+                            <option value="1" th:selected="${time == 1}">Ngày Tạo Mới Nhất</option>
+                            <option value="2" th:selected="${time == 2}">Ngày Tạo Cũ Nhất</option>
+                            <option value="3" th:selected="${time == 3}">Mới Được Chỉnh Sửa</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                        <!-- Nút tìm kiếm -->
+                    </div>
+                </form>
+
+                <div>
+                    <!-- Nút xuất file Excel -->
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmExportModal">
+                        Xuất Excel
+                    </button>
+
+                    <!-- Modal xác nhận xuất file -->
+                    <div class="modal fade" id="confirmExportModal" tabindex="-1" aria-labelledby="confirmExportModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="confirmExportModalLabel">Xác nhận xuất file</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Bạn có chắc chắn muốn xuất file Excel không?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-success" onclick="exportExcel()">Xác nhận</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút hiển thị modal nhập file Excel -->
+<!--                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importExcelModal">-->
+<!--                        Nhập Excel-->
+<!--                    </button>-->
+
+                    <!-- Modal để chọn file nhập Excel -->
+<!--                    <div class="modal fade" id="importExcelModal" tabindex="-1" aria-labelledby="importExcelModalLabel" aria-hidden="true">-->
+<!--                        <div class="modal-dialog">-->
+<!--                            <div class="modal-content">-->
+<!--                                <div class="modal-header">-->
+<!--                                    <h5 class="modal-title" id="importExcelModalLabel">Nhập file Excel</h5>-->
+<!--                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                                </div>-->
+<!--                                <div class="modal-body">-->
+<!--                                    &lt;!&ndash; Form nhập file Excel &ndash;&gt;-->
+<!--                                    <form id="importExcelForm" action="/importExcel" method="POST" enctype="multipart/form-data">-->
+<!--                                        <div class="mb-3">-->
+<!--                                            <label for="fileExcel" class="form-label">Chọn file Excel</label>-->
+<!--                                            <input type="file" class="form-control" name="fileExcel" accept=".xlsx, .xls" required/>-->
+<!--                                        </div>-->
+<!--                                        &lt;!&ndash; Modal Footer with buttons in the same row &ndash;&gt;-->
+<!--                                        <div class="modal-footer d-flex justify-content-end">-->
+<!--                                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Đóng</button>-->
+<!--                                            <button type="submit" form="importExcelForm" class="btn btn-primary">Nhập file</button>-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#themMoiModal">
+                    <i class="fas fa-plus"></i>
+                    Thêm Mới
                 </button> <!-- Nút thêm mới nằm bên phải -->
                 <!-- Modal -->
                 <div class="modal fade" id="themMoiModal" tabindex="-1" aria-labelledby="themMoiModalLabel"
@@ -48,7 +124,13 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form th:action="@{/addPhongBan}" method="POST">
+                                <form th:action="@{/addPhongBan}" method="POST" onsubmit="event.preventDefault(); validateFormAdd().then(isValid => {
+                                    if (isValid) {
+                                        this.submit(); // Gửi form nếu hợp lệ
+                                    }
+                                })">
+                                    <!--                                    được sử dụng trong các ứng dụng Spring để giúp bảo vệ các form khỏi CSRF (Cross-Site Request Forgery),-->
+                                    <!--                                    một loại tấn công giả mạo yêu cầu từ một trang web đáng tin cậy.-->
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                                     <input type="hidden" name="page" th:value="${currentPage}"/>
                                     <input type="hidden" name="itemsPerPage" th:value="${itemsPerPage}"/>
@@ -56,11 +138,13 @@
                                         <label for="maPhongBan" class="form-label">Mã Phòng Ban</label>
                                         <input type="text" class="form-control" id="maPhongBan" name="ma_phong_ban"
                                                placeholder="Nhập mã phòng ban" required>
+                                        <div id="maPhongBanError" class="text-danger" style="display: none;"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="tenPhongBan" class="form-label">Tên Phòng Ban</label>
                                         <input type="text" class="form-control" id="tenPhongBan" name="ten_phong_ban"
                                                placeholder="Nhập tên phòng ban" required>
+                                        <div id="tenPhongBanError" class="text-danger" style="display: none;"></div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="trangThai" class="form-label">Trạng Thái</label>
@@ -103,18 +187,14 @@
                         <!-- Nút xem chi tiết -->
                         <button type="button" class="btn-icon" title="Xem Chi Tiết Phòng Ban" data-bs-toggle="modal"
                                 data-bs-target="#detailModal"
-                                th:data-id="${pb.id}"
-                                th:data-ma-phong-ban="${pb.maPhongBan}"
-                                th:data-ten-phong-ban="${pb.tenPhongBan}"
-                                th:data-trang-thai="${pb.trangThai}"
-                                th:data-ngay-tao="${#dates.format(pb.ngayTao, 'yyyy-MM-dd HH:mm:ss')}"
-                                th:data-ngay-cap-nhat="${#dates.format(pb.ngayCapNhat, 'yyyy-MM-dd HH:mm:ss')}">
+                                th:data-id="${pb.id}">
                             <i class="fas fa-eye"></i>
                         </button>
                         <span class="tooltip">Xem Chi Tiết Phòng Ban</span>
 
                         <!-- Modal xem chi tiết -->
-                        <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="detailModal" tabindex="-1" role="dialog"
+                             aria-labelledby="detailModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -125,36 +205,42 @@
                                     </div>
                                     <div class="modal-body">
                                         <!-- ID (Hidden) -->
-                                        <input type="hidden" id="detailId" name="id" th:value="${phongBan != null ? phongBan.id : ''}" />
+                                        <input type="hidden" id="detailId" name="id"
+                                               th:value="${phongBan != null ? phongBan.id : ''}"/>
                                         <!-- Mã Phòng Ban (Readonly) -->
                                         <div class="mb-3">
                                             <label for="detailMaPhongBan" class="form-label">Mã Phòng Ban</label>
-                                            <input type="text" class="form-control" id="detailMaPhongBan" name="ma_phong_ban" disabled
-                                                   th:value="${phongBan != null ? phongBan.maPhongBan : ''}" />
+                                            <input type="text" class="form-control" id="detailMaPhongBan"
+                                                   name="ma_phong_ban" disabled
+                                                   th:value="${phongBan != null ? phongBan.maPhongBan : ''}"/>
                                         </div>
                                         <!-- Tên Phòng Ban (Readonly) -->
                                         <div class="mb-3">
                                             <label for="detailTenPhongBan" class="form-label">Tên Phòng Ban</label>
-                                            <input type="text" class="form-control" id="detailTenPhongBan" name="ten_phong_ban" disabled
-                                                   th:value="${phongBan != null ? phongBan.tenPhongBan : ''}" />
+                                            <input type="text" class="form-control" id="detailTenPhongBan"
+                                                   name="ten_phong_ban" disabled
+                                                   th:value="${phongBan != null ? phongBan.tenPhongBan : ''}"/>
                                         </div>
                                         <!-- Trạng Thái (Readonly) -->
                                         <div class="mb-3">
                                             <label for="detailTrangThai" class="form-label">Trạng Thái</label>
-                                            <input type="text" class="form-control" id="detailTrangThai" name="trang_thai" disabled
-                                                   th:value="${phongBan != null ? (phongBan.trangThai ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động') : ''}" />
+                                            <input type="text" class="form-control" id="detailTrangThai"
+                                                   name="trang_thai" disabled
+                                                   th:value="${phongBan != null ? (phongBan.trangThai ? 'Đang Hoạt Động' : 'Ngừng Hoạt Động') : ''}"/>
                                         </div>
                                         <!-- Ngày Tạo -->
                                         <div class="mb-3">
                                             <label for="detailNgayTao" class="form-label">Ngày Tạo</label>
-                                            <input type="text" class="form-control" id="detailNgayTao" name="ngay_tao" disabled
-                                                   th:value="${phongBan != null ? #dates.format(phongBan.ngayTao, 'yyyy-MM-dd HH:mm:ss') : ''}" />
+                                            <input type="text" class="form-control" id="detailNgayTao" name="ngay_tao"
+                                                   disabled
+                                                   th:value="${phongBan != null ? #dates.format(phongBan.ngayTao, 'yyyy-MM-dd HH:mm:ss') : ''}"/>
                                         </div>
                                         <!-- Ngày Cập Nhật -->
                                         <div class="mb-3">
                                             <label for="detailNgayCapNhat" class="form-label">Ngày Cập Nhật</label>
-                                            <input type="text" class="form-control" id="detailNgayCapNhat" name="ngay_cap_nhat" disabled
-                                                   th:value="${phongBan != null ? #dates.format(phongBan.ngayCapNhat, 'yyyy-MM-dd HH:mm:ss') : ''}" />
+                                            <input type="text" class="form-control" id="detailNgayCapNhat"
+                                                   name="ngay_cap_nhat" disabled
+                                                   th:value="${phongBan != null ? #dates.format(phongBan.ngayCapNhat, 'yyyy-MM-dd HH:mm:ss') : ''}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -164,19 +250,13 @@
                         <!-- Nút chỉnh sửa -->
                         <button type="button" class="btn-icon" title="Chỉnh Sửa Phòng Ban" data-bs-toggle="modal"
                                 data-bs-target="#editModal"
-                                th:data-id="${pb.id}"
-                                th:data-ma-phong-ban="${pb.maPhongBan}"
-                                th:data-ten-phong-ban="${pb.tenPhongBan}"
-                                th:data-trang-thai="${pb.trangThai?1:0}"
-                                th:data-ngay-tao="${#dates.format(pb.ngayTao, 'yyyy-MM-dd HH:mm:ss')}"
-                                th:data-ngay-cap-nhat="${#dates.format(pb.ngayCapNhat, 'yyyy-MM-dd HH:mm:ss')}">
+                                th:data-id="${pb.id}">
                             <i class="fas fa-edit"></i>
                         </button>
 
-                        <span class="tooltip">Chỉnh Sửa Phòng Ban</span>
-
                         <!-- Modal chỉnh sửa -->
-                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                             aria-labelledby="editModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -185,31 +265,41 @@
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form id="editForm" th:action="@{/updatePhongBan}"  method="post">
+                                    <form id="editForm" th:action="@{/updatePhongBan}" method="post"
+                                          onsubmit="return validateFormUpdate()">
                                         <div class="modal-body">
                                             <!-- ID (Hidden) -->
-                                            <input type="hidden" id="editId" name="id" />
+                                            <input type="hidden" id="editId" name="id"/>
                                             <!-- Mã Phòng Ban (Readonly) -->
                                             <div class="mb-3">
                                                 <label for="editMaPhongBan" class="form-label">Mã Phòng Ban</label>
-                                                <input type="text" class="form-control" id="editMaPhongBan" name="ma_phong_ban" th:value="${pb.maPhongBan}" disabled />
+                                                <input type="text" class="form-control" id="editMaPhongBan"
+                                                       name="ma_phong_ban" disabled/>
+                                                <div id="editmaPhongBanError" class="text-danger"
+                                                     style="display: none;"></div>
                                             </div>
                                             <!-- Tên Phòng Ban (Editable) -->
                                             <div class="mb-3">
                                                 <label for="editTenPhongBan" class="form-label">Tên Phòng Ban</label>
-                                                <input type="text" class="form-control" id="editTenPhongBan" name="ten_phong_ban" th:value="${pb.tenPhongBan}" required />
+                                                <input type="text" class="form-control" id="editTenPhongBan"
+                                                       name="ten_phong_ban" required/>
+                                                <div id="edittenPhongBanError" class="text-danger"
+                                                     style="display: none;"></div>
                                             </div>
                                             <!-- Trạng Thái (Editable) -->
                                             <div class="mb-3">
                                                 <label for="editTrangThai" class="form-label">Trạng Thái</label>
-                                                <select class="form-select" id="editTrangThai" name="trang_thai" required>
+                                                <select class="form-select" id="editTrangThai" name="trang_thai"
+                                                        required>
                                                     <option value="1">Đang Hoạt Động</option>
                                                     <option value="0">Ngừng Hoạt Động</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Đóng
+                                            </button>
                                             <button type="submit" class="btn btn-primary">Cập Nhật</button>
                                         </div>
                                     </form>
@@ -218,11 +308,15 @@
                         </div>
 
                         <!-- Nút xóa -->
-                        <form id="deleteForm" th:action="@{/deletePhongBan}" method="post" style="display:inline;"
+                        <form id="deleteForm" th:action="@{/deletePhongBan/{id}(id=${pb.id})}" method="get"
+                              style="display:inline;"
                               onsubmit="return confirmDelete();">
+                            <input type="hidden" name="keyword" th:value="${keyword}"/>
+                            <input type="hidden" name="status" th:value="${status}"/>
+                            <input type="hidden" name="time" th:value="${time}"/>
                             <input type="hidden" name="currentPage" th:value="${currentPage}"/>
                             <input type="hidden" name="itemsPerPage" th:value="${itemsPerPage}"/>
-                            <input type="hidden" name="id" th:value="${pb.id}"/>
+<!--                            <input type="hidden" name="id" th:value="${pb.id}"/>-->
                             <button type="button" class="btn-icon btn-delete" title="Xóa Phòng Ban" data-toggle="modal"
                                     data-target="#deleteModal" data-id="${pb.id}">
                                 <i class="fas fa-trash"></i>
@@ -254,6 +348,9 @@
                         </div>
 
                         <form th:action="@{/updateTrangThai/{id}(id=${pb.id})}" method="post" style="display:inline;">
+                            <input type="hidden" name="keyword" th:value="${keyword}"/>
+                            <input type="hidden" name="status" th:value="${status}"/>
+                            <input type="hidden" name="time" th:value="${time}"/>
                             <input type="hidden" name="currentPage" th:value="${currentPage}"/>
                             <input type="hidden" name="itemsPerPage" th:value="${itemsPerPage}"/>
                             <button type="submit" class="btn-icon" title="Đổi Trạng Thái">
@@ -271,7 +368,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <!-- Form để chọn số phần tử trên mỗi trang -->
-                    <form id="paginationForm" action="/phongBan" method="get">
+                    <form id="paginationForm" th:action="@{/phongBan}" method="get">
                         <label for="itemsPerPage">Số phần tử trên trang:</label>
                         <select id="itemsPerPage" name="itemsPerPage" class="form-select d-inline w-auto"
                                 onchange="document.getElementById('paginationForm').submit()">
@@ -294,30 +391,31 @@
                         <!-- Nút quay lại trang trước, bị vô hiệu hóa nếu đang ở trang đầu tiên -->
                         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/phongBan(page=${currentPage - 1}, itemsPerPage=${itemsPerPage})}"
+                               th:href="@{/phongBan(page=${currentPage - 1}, itemsPerPage=${itemsPerPage}, keyword=${keyword}, status=${status}, time=${time})}"
                                tabindex="-1">Trước</a>
                         </li>
 
                         <!-- Nút cho trang số 1 -->
                         <li class="page-item" th:classappend="${currentPage == 0} ? 'active'">
-                            <a class="page-link" th:href="@{/phongBan(page=0, itemsPerPage=${itemsPerPage})}">1</a>
+                            <a class="page-link" th:href="@{/phongBan(page=0, itemsPerPage=${itemsPerPage}, keyword=${keyword}, status=${status}, time=${time})}">1</a>
                         </li>
 
                         <!-- Nút chuyển sang trang cuối -->
                         <li class="page-item" th:if="${totalPages > 1}"
                             th:classappend="${currentPage == totalPages - 1} ? 'active'">
                             <a class="page-link"
-                               th:href="@{/phongBan(page=${totalPages - 1}, itemsPerPage=${itemsPerPage})}"
+                               th:href="@{/phongBan(page=${totalPages - 1}, itemsPerPage=${itemsPerPage}, keyword=${keyword}, status=${status}, time=${time})}"
                                th:text="${totalPages}"></a>
                         </li>
 
                         <!-- Nút chuyển sang trang tiếp theo, bị vô hiệu hóa nếu đang ở trang cuối -->
                         <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                             <a class="page-link"
-                               th:href="@{/phongBan(page=${currentPage + 1}, itemsPerPage=${itemsPerPage})}">Tiếp</a>
+                               th:href="@{/phongBan(page=${currentPage + 1}, itemsPerPage=${itemsPerPage}, keyword=${keyword}, status=${status}, time=${time})}">Tiếp</a>
                         </li>
                     </ul>
                 </nav>
+            </div>
             </div>
         </div>
     </div>

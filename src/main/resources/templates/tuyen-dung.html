@@ -15,9 +15,9 @@
 
     <title>Quản Lý CV</title>
 </head>
-<body>
-<main layout:fragment="main1">
-    <form action="tuyen-dung/add" method="post">
+<body >
+<main layout:fragment="main1" style="margin-left: 50px " >
+    <form action="tuyen-dung/add" method="post" >
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
             <h1>Quản Lý Đợt Tuyển Dụng</h1>

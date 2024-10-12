@@ -41,11 +41,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**").permitAll()
 
-                        .requestMatchers("/tuyen-dung/**","/api/qlcv/**","/index-uv/**","/updateTrangThai","/addPhongBan",
+                        .requestMatchers("/tuyen-dung/**","/api/**","/index-uv/**","/updateTrangThai","/addPhongBan",
                                 "/deletePhongBan","/updatePhongBan","/","/admin/role/**"
-                        ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete").hasRole("ADMIN")
-
-
+                        ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete",
+                                "/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/doitrangThai").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -33,10 +33,6 @@ public class test {
     @Autowired
     NguoiDungRepo nguoiDungRepo;
 
-
-
-
-
     @GetMapping("/")
     public String viewTest1(){
         return "Menu";
@@ -284,9 +280,9 @@ public class test {
     }
 
 
-    @GetMapping("/qlcv")
-    public String viewqlcv(){
-        return "qlcv";
+    @GetMapping("/test-qlcv")
+    public String viewqlcv() {
+        return "test-qlcv"; // Thay vì "qlcv", tránh trùng với phương thức trong CVController
     }
 
 

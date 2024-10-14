@@ -39,12 +39,16 @@ public class WebSecurityConfig {
                         .ignoringRequestMatchers("/some-endpoint/**") // Nếu có một số endpoint không cần CSRF bảo vệ, có thể ignore tại đây
                 )
                 .authorizeHttpRequests(authz -> authz
+<<<<<<< HEAD
+                        .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**","/tuyen-dung/**","/cv/**").permitAll()
+=======
                         .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**").permitAll()
 
                         .requestMatchers("/tuyen-dung/**","/api/**","/index-uv/**","/updateTrangThai","/addPhongBan",
                                 "/deletePhongBan","/updatePhongBan","/","/admin/role/**"
                         ,"/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/delete",
                                 "/quan-ly-vi-tri","/add-viTri","/lay-id-Vitri","/update-viTri","/doitrangThai").hasRole("ADMIN")
+>>>>>>> 7e07ea69bcd90cc48497935f7b2165918f9cfb6c
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

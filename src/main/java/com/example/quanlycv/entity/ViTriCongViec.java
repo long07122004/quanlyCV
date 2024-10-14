@@ -1,62 +1,43 @@
 package com.example.quanlycv.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "Vi_Tri_Cong_Viec")
+@Data
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Data
-@Table(name = "Vi_Tri_Cong_Viec")
+@AllArgsConstructor
 public class ViTriCongViec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vi_tri_id")
-    private Integer id;
+     Integer id;
 
-    @Column(name = "ma_vi_tri")
-    private String maViTri;
+    @Column(name = "ma_vi_tri",  unique = true, length = 50)
+     String maViTri;
 
-    @Column(name = "ten_vi_tri")
-    private String tenViTri;
+    @Column(name = "ten_vi_tri",  length = 100)
+     String tenViTri;
 
     @ManyToOne
     @JoinColumn(name = "phong_ban_id")
-    private PhongBan phongBan;
+     PhongBan phongBan;
 
     @ManyToOne
     @JoinColumn(name = "level_id")
-    private Level level;
+     Level level;
 
-    @Column(name = "trang_thai")
-    private Boolean trangThai;
+    @Column(name = "trang_thai", columnDefinition = "BIT DEFAULT 1")
+     Boolean trangThai = true;
 
     @Column(name = "ngay_tao")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date ngayTao;
+     LocalDateTime ngayTao = LocalDateTime.now();
 
     @Column(name = "ngay_cap_nhat")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date ngayCapNhat;
-
-    public String getTrangThaiNe(){
-        if(this.trangThai == true){
-            return "Đang hoạt động";
-        }else{
-            return "Không hoạt động";
-        }
-    }
-
+     LocalDateTime ngayCapNhat = LocalDateTime.now();
 }

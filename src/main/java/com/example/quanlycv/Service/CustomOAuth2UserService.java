@@ -1,10 +1,9 @@
 package com.example.quanlycv.Service;
 
-
+import com.example.quanlycv.Rep.NguoiDungRepo;
+import com.example.quanlycv.Rep.VaiTroRepo;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.VaiTro;
-import com.example.quanlycv.repo.NguoiDungRepo;
-import com.example.quanlycv.repo.VaiTroRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;

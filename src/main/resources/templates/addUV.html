@@ -10,8 +10,7 @@
 <main class="container mt-4">
     <h1>Thêm Hoạt Động Ứng Viên</h1>
 
-    <form action="/index-uv/save" method="post" >
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <form action="/index-uv/save" method="post">
         <div class="mb-3">
             <label for="loaiHoatDong" class="form-label">Loại hoạt động</label>
             <select id="loaiHoatDong" name="loaiHoatDong.id" class="form-select" required>
@@ -34,7 +33,7 @@
 
         <div class="mb-3">
             <label for="nguoiDung" class="form-label">Người dùng</label>
-            <select id="nguoiDung" name="nguoiDung.id" class="form-select"  required>
+            <select id="nguoiDung" name="nguoiDung.id" class="form-select" required>
                 <option th:each="nguoiDung : ${nguoiDungList}"
                         th:value="${nguoiDung.nguoiDungId}"
                         th:text="${nguoiDung.hoTen}">

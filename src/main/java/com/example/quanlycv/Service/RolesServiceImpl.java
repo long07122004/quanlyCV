@@ -1,8 +1,11 @@
 package com.example.quanlycv.Service;
 
-
-import com.example.quanlycv.entity.*;
-import com.example.quanlycv.repo.*;
+import com.example.quanlycv.Rep.NguoiDungRepo;
+import com.example.quanlycv.Rep.NhanVienRepo;
+import com.example.quanlycv.Rep.VaiTroRepo;
+import com.example.quanlycv.entity.NguoiDung;
+import com.example.quanlycv.entity.NhanVien;
+import com.example.quanlycv.entity.VaiTro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class RolesServiceImpl implements RolesService{
@@ -22,10 +23,6 @@ public class RolesServiceImpl implements RolesService{
     NhanVienRepo nhanVienRepo;
     @Autowired
     VaiTroRepo vaiTroRepo;
-    @Autowired
-    VatTroQuyenTruyCapRepo VTQTC;
-    @Autowired
-    QuyenTruyCapRepo quyenTruyCapRepo;
 
 
     @Override
@@ -102,25 +99,6 @@ public class RolesServiceImpl implements RolesService{
     @Override
     public NguoiDung findById(Integer id) {
         return nguoiDungRepo.findById(id).get();
-    }
-
-    @Override
-    public List<VaiTroQuyenTruyCap> findAllVTQCT() {
-        return VTQTC.findAll();
-    }
-
-    @Override
-    public List<QuyenTruyCap> getAllQuyenTruyCap() {
-        return this.quyenTruyCapRepo.findAll();
-    }
-
-    @Override
-    public Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList) {
-        return  vtqtcList.stream()
-                .collect(Collectors.groupingBy(
-                        vtqtc -> vtqtc.getVaiTro().getTenVaiTro(),  // Nhóm theo tên vai trò
-                        Collectors.mapping(vtqtc -> vtqtc.getQuyenTruyCap().getName(),  // Lấy quyền truy cập
-                                Collectors.joining("/"))));
     }
 
 

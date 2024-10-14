@@ -16,10 +16,9 @@
 
     <title>Quản Lý CV</title>
 </head>
-<body >
-<main layout:fragment="main1" style="margin-left: 50px " >
-    <form action="tuyen-dung/add" method="post" >
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<body>
+<main layout:fragment="main1">
+    <form action="tuyen-dung/add" method="post">
 
         <h1>Quản Lý Đợt Tuyển Dụng</h1>
         <div>
@@ -51,10 +50,7 @@
                    title="Vui lòng chọn ngày hợp lệ trong tương lai và không quá 6 tháng."
             >
         </div>
-        <button type="submit" class="btn btn-success" style="margin-top: 10px">
-<!--            <i class="lni lni-circle-plus"></i>-->
-            Thêm
-        </button>
+        <button type="submit" class="btn btn-success" style="margin-top: 10px">Thêm</button>
 
         <div th:if="${message}" class="alert alert-success" style="margin-top: 10px">
             <span th:text="${message}"></span>

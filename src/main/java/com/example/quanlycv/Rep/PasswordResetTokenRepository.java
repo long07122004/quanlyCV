@@ -1,4 +1,4 @@
-package com.example.quanlycv.repo;
+package com.example.quanlycv.Rep;
 
 import com.example.quanlycv.entity.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;

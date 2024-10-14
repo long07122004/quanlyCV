@@ -6,7 +6,6 @@ import com.example.quanlycv.Rep.UVRepository;
 import com.example.quanlycv.entity.LoaiHoatDong;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.QlTuyenDung;
-import com.example.quanlycv.Rep.TuyenDungRep;
 import com.example.quanlycv.Service.DotTuyenDungService;
 import com.example.quanlycv.entity.UV;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +30,6 @@ public class test {
     private DotTuyenDungService dotTuyenDungService;
     @Autowired
     NguoiDungRepo nguoiDungRepo;
-
-
-
-
 
     @GetMapping("/")
     public String viewTest1(){
@@ -281,9 +276,9 @@ public class test {
     }
 
 
-    @GetMapping("/qlcv")
-    public String viewqlcv(){
-        return "qlcv";
+    @GetMapping("/test-qlcv")
+    public String viewqlcv() {
+        return "test-qlcv"; // Thay vì "qlcv", tránh trùng với phương thức trong CVController
     }
 
 

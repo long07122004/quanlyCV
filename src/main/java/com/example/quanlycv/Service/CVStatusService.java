@@ -1,7 +1,17 @@
 package com.example.quanlycv.service;
 
+<<<<<<< HEAD
 import com.example.quanlycv.Rep.CVStatusRepository;
 import com.example.quanlycv.entity.CVStatus;
+=======
+
+
+
+import com.example.quanlycv.Rep.CVStatusRepository;
+
+
+
+>>>>>>> 7e07ea69bcd90cc48497935f7b2165918f9cfb6c
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

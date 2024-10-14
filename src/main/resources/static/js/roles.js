@@ -2,7 +2,11 @@
 const showModal = document.querySelector("#btnNV");//button show modal 2
 const modal1 = new bootstrap.Modal(document.getElementById('exampleModal'));
 const modal2 = new bootstrap.Modal(document.getElementById('modalNV'));
-const showModal1 = document.querySelector("#show-modal-1");//button show modal1
+
+const modal3 = new bootstrap.Modal(document.getElementById('modal-show-3'));
+const modal4 = new bootstrap.Modal(document.getElementById('modal-show-4'));
+//const showModal1 = document.querySelector("#show-modal-1");
+
 
 // toggle.addEventListener("click",function(){
 //     document.querySelector("#sidebar").classList.toggle("expand");
@@ -101,6 +105,95 @@ function  edit(id){
     modal1.show();
 }
 
+
+function editRoles(button){
+    var key = button.getAttribute("data-key");
+    const urlEdit ="/admin/role/edit/quyen-truy-cap/"+key;
+    console.log('DataID:', key);
+    $.ajax({
+        url: urlEdit,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log('Data:', data);
+            if (Array.isArray(data) && data.length > 0) {
+                const firstItem = data[0];
+                if (firstItem.vaiTro) {
+                    console.log('Vai trò ID:', firstItem.vaiTro.id);
+                    $('#vaiTroIDSS').val(firstItem.vaiTro.id);
+                } else {
+                    console.error('Vai trò không tồn tại trong phần tử đầu tiên.');
+                }
+            } else {
+                console.error('Dữ liệu không hợp lệ hoặc rỗng.');
+            }
+
+            if (Array.isArray(data)) {
+                data.forEach(item => {
+                    if (item.quyenTruyCap) {
+                        const quyenTruyCapId = item.quyenTruyCap.id; // lấy id của quyền truy cập
+                        // Đánh dấu checkbox nếu id tương ứng với quyền truy cập
+                        $(`#quyenTruyCapContainer input[type="checkbox"][value="${quyenTruyCapId}"]`).prop('checked', true);
+                    }
+                });
+            }else {
+                console.error('Dữ liệu không hợp lệ hoặc rỗng.');
+            }
+
+
+
+            modal4.show();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+    //modal1.show();
+}
+
+function updateRole() {
+    var roleId = $('#vaiTroIDS').val();
+    var selectedPermissions = [];
+
+    $('#quyenTruyCapContainer input[type="checkbox"]:checked').each(function() {
+        selectedPermissions.push($(this).val());
+    });
+
+    $.ajax({
+        url: `/admin/role/update/${roleId}`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(selectedPermissions),
+        success: function(response) {
+            console.log(response);
+            alert("Cập nhật thành công.");
+            // Có thể đóng modal hoặc làm gì đó khác
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert("Cập nhật không thành công.");
+        }
+    });
+}
+
+
+function  add(){
+    const urlAdd ="/admin/role/add";
+    //console.log('DataID:', id);
+    $.ajax({
+        url: "/admin/role/add",
+        type: 'POST',
+        dataType: 'json',
+        success: function(data) {
+            console.log("data return add: ",data);
+            //window.location.href = "/admin/role";
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+}
+
 document.getElementById("btnSave").addEventListener("click",function (event){
     var hoTen = document.getElementById("hoTen").value.trim();
     var email = document.getElementById("emailID").value.trim();
@@ -156,6 +249,11 @@ document.getElementById("btnSave").addEventListener("click",function (event){
     if (!isValid) {
         event.preventDefault();
     }
+})
+
+
+document.getElementById("btnVaiTroQTC").addEventListener("click",function (){
+    modal3.show();
 })
 
 function displayError(elementId, errorMessage) {

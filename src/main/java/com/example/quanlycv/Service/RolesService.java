@@ -1,9 +1,11 @@
 package com.example.quanlycv.Service;
 
 import com.example.quanlycv.dto.NguoiDungDTO;
+
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.NhanVien;
 import com.example.quanlycv.entity.VaiTro;
+
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -24,4 +26,16 @@ public interface RolesService {
     boolean emailExists(String email, Integer nguoiDungId);
 
     NguoiDung findById(Integer id);
+
+//    List<VaiTroQuyenTruyCap> findAllVTQCT();
+//
+//    List<QuyenTruyCap> getAllQuyenTruyCap();
+//    Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList);
+//
+//    VaiTroQuyenTruyCap saveRolesPermist(VaiTroQuyenTruyCapDTO vtqctDTO);
+//
+//    List<VaiTroQuyenTruyCap> findAllVTQCT(String id);
+
+    void updateRolePermissions(Integer id, List<Integer> permissionIds);
+
 }

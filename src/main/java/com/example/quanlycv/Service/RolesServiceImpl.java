@@ -1,11 +1,16 @@
 package com.example.quanlycv.Service;
 
+
 import com.example.quanlycv.Rep.NguoiDungRepo;
 import com.example.quanlycv.Rep.NhanVienRepo;
 import com.example.quanlycv.Rep.VaiTroRepo;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.NhanVien;
 import com.example.quanlycv.entity.VaiTro;
+
+
+import com.example.quanlycv.dto.VaiTroQuyenTruyCapDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -101,5 +106,74 @@ public class RolesServiceImpl implements RolesService{
         return nguoiDungRepo.findById(id).get();
     }
 
+//
+//    @Override
+//    public List<VaiTroQuyenTruyCap> findAllVTQCT() {
+//        return VTQTC.findAll();
+//    }
+//
+//    @Override
+//    public List<QuyenTruyCap> getAllQuyenTruyCap() {
+//        return this.quyenTruyCapRepo.findAll();
+//    }
+//
+//    @Override
+//    public Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList) {
+//        return  vtqtcList.stream()
+//                .collect(Collectors.groupingBy(
+//                        vtqtc -> vtqtc.getVaiTro().getTenVaiTro(),  // Nhóm theo tên vai trò
+//                        Collectors.mapping(vtqtc -> vtqtc.getQuyenTruyCap().getName(),  // Lấy quyền truy cập
+//                                Collectors.joining("/"))));
+//    }
+//
+//    @Override
+//    public VaiTroQuyenTruyCap saveRolesPermist(VaiTroQuyenTruyCapDTO vtqctDTO) {
+//        VaiTroQuyenTruyCap newEntity = new VaiTroQuyenTruyCap();
+//        VaiTro newVT = vaiTroRepo.findById(vtqctDTO.getVaiTroIDS()).get();
+//        QuyenTruyCap newQCT = quyenTruyCapRepo.findById(vtqctDTO.getQuyenTruyCapID()).get();
+//        newEntity.setVaiTro(newVT);
+//        newEntity.setQuyenTruyCap(newQCT);
+//        return VTQTC.save(newEntity);
+//    }
+//
+//    @Override
+//    public List<VaiTroQuyenTruyCap> findAllVTQCT(String id) {
+//        VaiTro vaiTroID = VTQTC.findByTenVaiTro(id);
+//        return VTQTC.findAllById(vaiTroID.getId());
+//    }
+//
+    @Override
+    public void updateRolePermissions(Integer vaiTroID, List<Integer> quyenTruyCapIDs) {
+//        VaiTro vaiTro = vaiTroRepo.findById(vaiTroID)
+//                .orElseThrow(() -> new EntityNotFoundException("Vai trò không tồn tại."));
+//
+//        // Lấy danh sách quyền truy cập hiện tại của vai trò
+//        List<VaiTroQuyenTruyCap> currentPermissions = VTQTC.findByVaiTro(vaiTro);
+//
+//        // Lấy danh sách các ID quyền truy cập hiện tại
+//        List<Integer> currentPermissionIDs = currentPermissions.stream()
+//                .map(vq -> vq.getQuyenTruyCap().getId())
+//                .collect(Collectors.toList());
+//
+//        // Xóa quyền không còn được chọn
+//        for (VaiTroQuyenTruyCap vq : currentPermissions) {
+//            if (!quyenTruyCapIDs.contains(vq.getQuyenTruyCap().getId())) {
+//                VTQTC.delete(vq);  // Xóa quyền truy cập này
+//            }
+//        }
+//
+//        // Thêm quyền mới được chọn
+//        for (Integer permissionId : quyenTruyCapIDs) {
+//            if (!currentPermissionIDs.contains(permissionId)) {
+//                QuyenTruyCap quyenTruyCap = quyenTruyCapRepo.findById(permissionId)
+//                        .orElseThrow(() -> new EntityNotFoundException("Quyền truy cập không tồn tại."));
+//
+//                VaiTroQuyenTruyCap newPermission = new VaiTroQuyenTruyCap();
+//                newPermission.setVaiTro(vaiTro);
+//                newPermission.setQuyenTruyCap(quyenTruyCap);
+//                VTQTC.save(newPermission);  // Lưu quyền truy cập mới
+//            }
+//        }
+    }
 
 }

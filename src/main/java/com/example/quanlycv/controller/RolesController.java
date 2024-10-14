@@ -3,15 +3,20 @@ package com.example.quanlycv.controller;
 
 import com.example.quanlycv.Service.RolesService;
 import com.example.quanlycv.dto.NguoiDungDTO;
+import com.example.quanlycv.dto.VaiTroDTO;
+import com.example.quanlycv.dto.VaiTroQuyenTruyCapDTO;
 import com.example.quanlycv.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.PublicKey;
 import java.util.List;
 import java.util.Map;
 
@@ -62,15 +67,35 @@ public class RolesController {
         List<VaiTroQuyenTruyCap> vtqtcList = rolesService.findAllVTQCT();
         Map<String, String> groupedRoles = rolesService.getGroupedRoles(vtqtcList);
         model.addAttribute("VTQTC",groupedRoles);
+        System.out.println("groupedRoles: "+groupedRoles);
 
         List<QuyenTruyCap> permisster = rolesService.getAllQuyenTruyCap();
         model.addAttribute("permisster",permisster);
+
+        VaiTroQuyenTruyCapDTO vaiTroDTO = new VaiTroQuyenTruyCapDTO();
+        model.addAttribute("vaiTroDTO", vaiTroDTO);
+
         return  "roles/index-role";
     }
 
     @ModelAttribute(name = "VAITRO")
     public List<VaiTro> getAllVaiTro(){
         return rolesService.getAllVaiTro();
+    }
+
+    @ModelAttribute(name = "VAITROS")
+    public List<VaiTro> getAllVaiTros(){
+        return rolesService.getAllVaiTro();
+    }
+    @ModelAttribute(name = "VAITROSS")
+    public List<VaiTro> getAllVaiTross(){
+        return rolesService.getAllVaiTro();
+    }
+
+    @ModelAttribute(name = " QUYENTRUYCAP")
+    public List<QuyenTruyCap> getAllQTC(){
+        System.out.println("check QUYENTRUYCAP: "+rolesService.getAllQuyenTruyCap());
+        return rolesService.getAllQuyenTruyCap();
     }
 
     @PostMapping("/admin/role/add")
@@ -164,6 +189,23 @@ public class RolesController {
         return  "redirect:/admin/role";
     }
 
+    @PostMapping("/admin/role/add/quyen-truy-cap")
+    public String addRolePermist(@ModelAttribute("vaiTroDTO") VaiTroQuyenTruyCapDTO vtqctDTO){
+        System.out.println("vtqctDTO: "+vtqctDTO);
+        VaiTroQuyenTruyCap newVaitro = rolesService.saveRolesPermist(vtqctDTO);
+        System.out.println("new VTQCT: "+newVaitro);
+        return  "redirect:/admin/role";
+    }
+
+    @PostMapping("/admin/role/quyen-truy-cap/update/{id}")
+    public String  updateRolePermissions(@ModelAttribute("vaiTroDTO") VaiTroDTO vaiTroDTO) {
+        Integer vaiTroID = vaiTroDTO.getVaiTroID();
+        List<Integer> quyenTruyCapIDs = vaiTroDTO.getQuyenTruyCapIDs();
+
+        // Gọi service để xử lý cập nhật quyền truy cập cho vai trò
+        rolesService.updateRolePermissions(vaiTroID, quyenTruyCapIDs);
+        return  "redirect:/admin/role";
+    }
 
 }
 

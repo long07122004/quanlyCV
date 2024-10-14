@@ -98,7 +98,7 @@
             <h3>Vai Tro - Quyền Truy Cập</h3>
             <div class="row" style="margin-top: 5px; margin-bottom: 5px">
                 <div class="col-sm-3">
-                    <button type="button" class="btn btn-info lni lni-circle-plus">
+                    <button type="button" class="btn btn-info lni lni-circle-plus" id="btnVaiTroQTC">
 <!--                        Thêm-->
                     </button>
                 </div>
@@ -118,7 +118,11 @@
                         <td th:text="${entry.key}"></td>
                         <td th:text="${entry.value}"></td>
                         <td>
-                            <button type="button" class="btn btn-warning lni lni-pencil"></button>
+                            <button type="button"
+                                    th:attr="data-key=${entry.key}"
+                                    class="btn btn-warning lni lni-pencil"
+                                    onclick="editRoles(this)">
+                            </button>
                             <a>
                                 <button type="button" class="btn btn-danger lni lni-trash-can"></button>
                             </a>
@@ -131,7 +135,7 @@
             <h3>Quản Lý Quyền Truy Cập</h3>
             <div class="row" style="margin-top: 5px; margin-bottom: 5px">
                 <div class="col-sm-3">
-                    <button type="button" class="btn btn-info lni lni-circle-plus">
+                    <button type="button" class="btn btn-info lni lni-circle-plus" >
 <!--                        Thêm-->
                     </button>
                 </div>
@@ -291,6 +295,64 @@
         </div>
     </div>
 
+<!--    modal3-->
+    <div class="modal fade" id="modal-show-3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel3">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${vaiTroDTO}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="mb-3">
+                            <select th:field="*{vaiTroIDS}" class="form-select" aria-label="Default select example">
+                                <option selected value="">Open this select menu</option>
+                                <option th:each="vaitro:${VAITROS}" th:value="${vaitro.id}" th:text="${vaitro.tenVaiTro}" >One</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <select th:field="*{quyenTruyCapID}" class="form-select" aria-label="Default select example">
+                                <option selected value="">Open this select menu</option>
+                                <option th:each="permisster : ${permisster}" th:value="${permisster.id}" th:text="${permisster.name}">One</option>
+                            </select>
+                        </div>
+                        <button th:formaction="@{/admin/role/add/quyen-truy-cap}" type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    modal4-->
+    <div class="modal fade" id="modal-show-4" tabindex="-1" aria-labelledby="exampleModalLabe4" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel4">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:object="${vaiTroDTO}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="mb-3">
+                            <select th:field="*{vaiTroIDS}" class="form-select" aria-label="Default select example" id="vaiTroIDSS">
+                                <option selected value="">Open this select menu</option>
+                                <option th:each="vaitro:${VAITROSS}" th:value="${vaitro.id}" th:text="${vaitro.tenVaiTro}" >One</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="quyenTruyCapContainer" th:each="permisster : ${permisster}">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" th:field="*{quyenTruyCapIDs}" th:value="${permisster.id}" th:id="'flexCheck' + ${permisster.id}">
+                                <label class="form-check-label" th:for="'flexCheck' + ${permisster.id}" th:text="${permisster.name}"></label>
+                            </div>
+                        </div>
+                        <button  type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 <script layout:fragment="js-frangment" src="/js/roles.js"></script>

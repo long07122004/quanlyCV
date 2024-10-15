@@ -92,11 +92,11 @@ public class NhanVienController {
         model.addAttribute("listPhongBan", phongBanRepo.findAll());
         model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
 
-        // Check for validation errors
-        if (result.hasErrors()) {
-            model.addAttribute("showModal", true); // Open modal on validation error
-            return "nhanvien"; // Return to the index page with existing data
-        }
+//        // Check for validation errors
+//        if (result.hasErrors()) {
+//            model.addAttribute("showModal", true); // Open modal on validation error
+//            return "nhanvien"; // Return to the index page with existing data
+//        }
 
         PhongBan phongBan = nhanVien.getPhongBan();
         if (phongBan != null && phongBan.getId() != null) {
@@ -151,34 +151,32 @@ public class NhanVienController {
         Pageable pageable = PageRequest.of(page, 7);
         Page<NhanVien> nhanVienPage;
 
-        // Check both criteria (role and tenViTri) if provided
+        // Kiểm tra nếu có cả hai tiêu chí
         if (role != null && !role.isEmpty() && tenViTri != null && !tenViTri.isEmpty()) {
             nhanVienPage = nhanVienRepo.filter(role, tenViTri, pageable);
         }
-        // Check if only role is provided
+        // Nếu chỉ có vai trò
         else if (role != null && !role.isEmpty()) {
             nhanVienPage = nhanVienRepo.filterByRole(role, pageable);
         }
-        // Check if only position is provided
+        // Nếu chỉ có vị trí
         else if (tenViTri != null && !tenViTri.isEmpty()) {
             nhanVienPage = nhanVienRepo.filterByViTri(tenViTri, pageable);
         }
-        // If no filter criteria are provided, return all
+        // Nếu không có tiêu chí nào, lấy tất cả
         else {
             nhanVienPage = nhanVienRepo.findAll(pageable);
         }
 
-        // Pass the filtered list and pagination information to the view
+        // Truyền dữ liệu ra view
         model.addAttribute("list", nhanVienPage.getContent());
         model.addAttribute("currentPage", nhanVienPage.getNumber());
         model.addAttribute("totalPages", nhanVienPage.getTotalPages());
         model.addAttribute("nhanVien", new NhanVien());
         model.addAttribute("listViTri", viTriRepo.findAll());
         model.addAttribute("listVaiTro", vaiTroRepo.findAll());
-        model.addAttribute("listPhongBan", phongBanRepo.findAll());
-        model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
 
-        // Pass selected filter values to the model for preserving the selection in the UI
+        // Truyền giá trị của bộ lọc đã chọn để hiển thị lại trong UI
         model.addAttribute("selectedRole", role);
         model.addAttribute("selectedViTri", tenViTri);
 
@@ -188,18 +186,17 @@ public class NhanVienController {
 
     @GetMapping("/export")
     public void exportToExcel(HttpServletResponse response) {
-        try {
-            // Set the content type and the header for downloading the file
-            response.setContentType("application/octet-stream");
-            String headerKey = "Content-Disposition";
-            String headerValue = "attachment; filename=Danh sách nhân viên.xlsx";
-            response.setHeader(headerKey, headerValue);
+        // Set the content type and header for the response
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Danh_sach_nhan_vien.xlsx";
+        response.setHeader(headerKey, headerValue);
 
-            List<NhanVien> nhanVienList = nhanVienRepo.findAll();
-
-            Workbook workbook = new XSSFWorkbook();
+        // Initialize the workbook and sheet
+        try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("NhanVien");
 
+            // Create the header row
             Row headerRow = sheet.createRow(0);
             headerRow.createCell(0).setCellValue("Mã NV");
             headerRow.createCell(1).setCellValue("Họ Tên");
@@ -211,10 +208,13 @@ public class NhanVienController {
             headerRow.createCell(7).setCellValue("Vai Trò");
             headerRow.createCell(8).setCellValue("Trạng Thái");
 
+            // Fetch employee data
+            List<NhanVien> nhanVienList = nhanVienRepo.findAll();
+
+            // Fill the sheet with employee data
             int rowCount = 1;
             for (NhanVien nhanVien : nhanVienList) {
                 Row row = sheet.createRow(rowCount++);
-
                 row.createCell(0).setCellValue(nhanVien.getMa());
                 row.createCell(1).setCellValue(nhanVien.getHoTen());
                 row.createCell(2).setCellValue(nhanVien.getEmail());
@@ -226,10 +226,17 @@ public class NhanVienController {
                 row.createCell(8).setCellValue(nhanVien.getTrang_thai() ? "Active" : "Inactive");
             }
 
+            // Write the workbook to the output stream
             workbook.write(response.getOutputStream());
-            workbook.close();
         } catch (IOException e) {
+            // Log the error and send a response indicating the error
             e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            try {
+                response.getWriter().write("Error occurred while generating the Excel file.");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
     }
 

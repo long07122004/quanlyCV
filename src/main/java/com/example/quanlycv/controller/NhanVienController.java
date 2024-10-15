@@ -41,20 +41,20 @@ public class NhanVienController {
     @Autowired
     private viTriCongViecRepo viTriRepo;
 
-        @GetMapping("/hien-thi")
-        public String view(@RequestParam(defaultValue = "0") int page, Model model) {
-            Pageable pageable = PageRequest.of(page, 7);
-            Page<NhanVien> nhanVienPage = nhanVienRepo.findAll(pageable);
-            model.addAttribute("nhanVien", new NhanVien());
-            model.addAttribute("list", nhanVienPage.getContent());
-            model.addAttribute("currentPage", nhanVienPage.getNumber());
-            model.addAttribute("totalPages", nhanVienPage.getTotalPages());
-            model.addAttribute("listViTri", viTriRepo.findAll());
-            model.addAttribute("listVaiTro", vaiTroRepo.findAll());
-            model.addAttribute("listPhongBan", phongBanRepo.findAll());
-            model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
-            return "nhanvien";
-        }
+    @GetMapping("/hien-thi")
+    public String view(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 7);
+        Page<NhanVien> nhanVienPage = nhanVienRepo.findAll(pageable);
+        model.addAttribute("nhanVien", new NhanVien());
+        model.addAttribute("list", nhanVienPage.getContent());
+        model.addAttribute("currentPage", nhanVienPage.getNumber());
+        model.addAttribute("totalPages", nhanVienPage.getTotalPages());
+        model.addAttribute("listViTri", viTriRepo.findAll());
+        model.addAttribute("listVaiTro", vaiTroRepo.findAll());
+        model.addAttribute("listPhongBan", phongBanRepo.findAll());
+        model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
+        return "nhanvien";
+    }
 
     @GetMapping("/xoa/{id}")
     public String delete(@PathVariable Integer id) {
@@ -240,7 +240,6 @@ public class NhanVienController {
         }
     }
 
-
     @PostMapping("/import")
     public String importNhanVien(@RequestParam("file") MultipartFile file) {
         try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
@@ -248,36 +247,68 @@ public class NhanVienController {
             List<NhanVien> nhanVienList = new ArrayList<>();
 
             for (Row currentRow : sheet) {
-                if (currentRow.getRowNum() == 0) continue;
+                if (currentRow.getRowNum() == 0) continue; // Skip header row
+
                 NhanVien nhanVien = new NhanVien();
-                nhanVien.setMa(getStringCellValue(currentRow.getCell(2)));
-                nhanVien.setHoTen(getStringCellValue(currentRow.getCell(3)));
-                nhanVien.setEmail(getStringCellValue(currentRow.getCell(4)));
-                nhanVien.setSdt(getStringCellValue(currentRow.getCell(5)));
+                nhanVien.setMa(getStringCellValue(currentRow.getCell(0)));
+                nhanVien.setHoTen(getStringCellValue(currentRow.getCell(1)));
+                nhanVien.setEmail(getStringCellValue(currentRow.getCell(2)));
+                nhanVien.setSdt(getStringCellValue(currentRow.getCell(3)));
 
-                String viTriName = getStringCellValue(currentRow.getCell(6));
+                String viTriName = getStringCellValue(currentRow.getCell(4));
+                String truongPhongName = getStringCellValue(currentRow.getCell(5));
+                String phongBanName = getStringCellValue(currentRow.getCell(6));
                 String vaiTroName = getStringCellValue(currentRow.getCell(7));
-                String truongPhongName = getStringCellValue(currentRow.getCell(8));
-                String phongBanName = getStringCellValue(currentRow.getCell(9));
-                Boolean trangThai = getBooleanCellValue(currentRow.getCell(10));
+                Boolean trangThai = getBooleanCellValue(currentRow.getCell(8));
 
-                TruongPhong truongPhong = truongPhongRepo.findByName(truongPhongName);
-                nhanVien.setTruongPhong(truongPhong);
+                // Debug logging to check values being read
+                System.out.println("Processing row: " + currentRow.getRowNum());
+                System.out.println("ViTri: " + viTriName);
+                System.out.println("TruongPhong: " + truongPhongName);
+                System.out.println("PhongBan: " + phongBanName);
+                System.out.println("VaiTro: " + vaiTroName);
+                System.out.println("TrangThai: " + trangThai);
 
-                ViTriCongViec viTri = viTriRepo.findByName(viTriName);
-                nhanVien.setViTri(viTri);
+                // Fetch and set ViTri
+                ViTriCongViec viTri = (viTriName != null && !viTriName.isEmpty()) ? viTriRepo.findByName(viTriName) : null;
+                if (viTri != null) {
+                    nhanVien.setViTri(viTri);
+                } else {
+                    System.err.println("ViTri not found: " + viTriName);
+                }
 
-                VaiTro vaiTro = vaiTroRepo.findByName(vaiTroName);
-                nhanVien.setVaiTro(vaiTro);
+                // Fetch and set TruongPhong
+                TruongPhong truongPhong = (truongPhongName != null && !truongPhongName.isEmpty()) ? truongPhongRepo.findByName(truongPhongName) : null;
+                if (truongPhong != null) {
+                    nhanVien.setTruongPhong(truongPhong);
+                } else {
+                    System.err.println("TruongPhong not found: " + truongPhongName);
+                }
 
-                PhongBan phongBan = phongBanRepo.findByName(phongBanName);
-                nhanVien.setPhongBan(phongBan);
+                // Fetch and set PhongBan
+                PhongBan phongBan = (phongBanName != null && !phongBanName.isEmpty()) ? phongBanRepo.findByName(phongBanName) : null;
+                if (phongBan != null) {
+                    nhanVien.setPhongBan(phongBan);
+                } else {
+                    System.err.println("PhongBan not found: " + phongBanName);
+                }
 
-                nhanVien.setTrang_thai(trangThai);
+                // Fetch and set VaiTro
+                VaiTro vaiTro = (vaiTroName != null && !vaiTroName.isEmpty()) ? vaiTroRepo.findByName(vaiTroName) : null;
+                if (vaiTro != null) {
+                    nhanVien.setVaiTro(vaiTro);
+                } else {
+                    System.err.println("VaiTro not found: " + vaiTroName);
+                }
 
+                // Set trangThai
+                nhanVien.setTrang_thai(trangThai != null ? trangThai : false); // Default to false if null
+
+                // Add to the list
                 nhanVienList.add(nhanVien);
             }
 
+// Save all valid NhanVien objects to the database
             nhanVienRepo.saveAll(nhanVienList);
         } catch (IOException e) {
             e.printStackTrace();
@@ -285,87 +316,22 @@ public class NhanVienController {
         return "redirect:/nhan-vien/hien-thi?page=0";
     }
 
-    @PostMapping("/qr")
-    public String addNhanVienFromQR(@RequestParam("file") String qrData, Model model) {
-        try {
-            // Thay vì đọc từ file, ta lấy dữ liệu trực tiếp từ qrData
-            String text = qrData;
-
-            // Parse the plain text
-            NhanVien nhanVien = new NhanVien();
-            String[] lines = text.split("\n");
-
-            for (String line : lines) {
-                String[] parts = line.split(":");
-                if (parts.length == 2) {
-                    String key = parts[0].trim();
-                    String value = parts[1].trim();
-
-                    switch (key) {
-                        case "MaNV":
-                            nhanVien.setMa(value);
-                            break;
-                        case "HoTen":
-                            nhanVien.setHoTen(value);
-                            break;
-                        case "Email":
-                            nhanVien.setEmail(value);
-                            break;
-                        case "Sdt":
-                            nhanVien.setSdt(value);
-                            break;
-                        case "ViTri":
-                            ViTriCongViec viTri = viTriRepo.findByName(value);
-                            nhanVien.setViTri(viTri);
-                            break;
-                        case "VaiTro":
-                            VaiTro vaiTro = vaiTroRepo.findByName(value);
-                            nhanVien.setVaiTro(vaiTro);
-                            break;
-                        case "PhongBan":
-                            PhongBan phongBan = phongBanRepo.findByName(value);
-                            nhanVien.setPhongBan(phongBan);
-                            break;
-                        case "TruongPhong":
-                            TruongPhong truongPhong = truongPhongRepo.findByName(value);
-                            nhanVien.setTruongPhong(truongPhong);
-                            break;
-                        case "TrangThai":
-                            nhanVien.setTrang_thai("Active".equalsIgnoreCase(value));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            // Save the new employee
-            nhanVienRepo.save(nhanVien);
-            model.addAttribute("message", "Thêm nhân viên thành công!");
-
-        } catch (Exception e) {
-            model.addAttribute("message", "Có lỗi xảy ra: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return "redirect:/nhan-vien/hien-thi?page=0";
-    }
-
-
-
+    // Helper method to get a String value from the cell
     private String getStringCellValue(Cell cell) {
         if (cell != null) {
-            if (cell.getCellType() == CellType.STRING) {
-                return cell.getStringCellValue();
-            } else if (cell.getCellType() == CellType.NUMERIC) {
-                return String.valueOf(cell.getNumericCellValue());
-            }
+            return cell.getCellType() == CellType.STRING ? cell.getStringCellValue() : String.valueOf(cell.getNumericCellValue());
         }
         return "";
     }
 
+    // Helper method to get a Boolean value from the cell
     private Boolean getBooleanCellValue(Cell cell) {
-        if (cell != null && cell.getCellType() == CellType.BOOLEAN) {
-            return cell.getBooleanCellValue();
+        if (cell != null) {
+            if (cell.getCellType() == CellType.BOOLEAN) {
+                return cell.getBooleanCellValue();
+            } else if (cell.getCellType() == CellType.STRING) {
+                return "TRUE".equalsIgnoreCase(cell.getStringCellValue().trim());
+            }
         }
         return null;
     }

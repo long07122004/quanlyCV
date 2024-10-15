@@ -20,20 +20,15 @@ public class NhanVien {
     @Column(name = "nhan_vien_id")
     private Integer nhanVienId;
 
-    @NotEmpty(message = "Vui lòng nhập họ tên")
     @Column(name = "ho_ten")
     private String hoTen;
 
-    @NotEmpty(message = "Vui lòng nhập mã nhân viên")
     @Column(name = "ma")
     private String ma;
 
-    @Email(message = "Email không hợp lệ")
-    @NotEmpty(message = "Vui lòng nhập Email")
     @Column(name = "email")
     private String email;
 
-    @NotEmpty(message = "Vui lòng nhập số điện thoại")
     @Column(name = "sdt")
     private String sdt;
 
@@ -58,7 +53,6 @@ public class NhanVien {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "phong_ban_id")
     private PhongBan phongBan;
-
 
 
     @Column(name = "TrangThai")

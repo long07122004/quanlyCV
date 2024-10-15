@@ -19,9 +19,10 @@ public interface NhanVienRepo extends JpaRepository<NhanVien, Integer> {
         """)
     Page<NhanVien> timKiemNhanVien(@Param("keyWord") String keyWord, Pageable pageable);
 
-    @Query("SELECT nv FROM NhanVien nv WHERE nv.vaiTro.tenVaiTro = :role AND nv.viTri.tenViTri = :tenViTri")
+    @Query("SELECT n FROM NhanVien n " +
+            "WHERE (:role IS NULL OR n.vaiTro.tenVaiTro = :role) " +
+            "AND (:tenViTri IS NULL OR n.viTri.tenViTri = :tenViTri)")
     Page<NhanVien> filter(@Param("role") String role, @Param("tenViTri") String tenViTri, Pageable pageable);
-
 
     @Query("SELECT n FROM NhanVien n WHERE n.vaiTro.tenVaiTro = :role")
     Page<NhanVien> filterByRole(@Param("role") String role, Pageable pageable);

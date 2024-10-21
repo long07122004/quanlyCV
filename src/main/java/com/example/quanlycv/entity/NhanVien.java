@@ -50,7 +50,7 @@ public class NhanVien {
     @JoinColumn(name = "truong_phong_id")
     private TruongPhong truongPhong;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "phong_ban_id")
     private PhongBan phongBan;
 

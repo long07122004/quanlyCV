@@ -3,6 +3,7 @@ package com.example.quanlycv.controller;
 
 import com.example.quanlycv.entity.*;
 import com.example.quanlycv.repo.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.apache.poi.ss.usermodel.*;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/nhan-vien")
@@ -62,6 +64,17 @@ public class NhanVienController {
         return "redirect:/nhan-vien/hien-thi?page=0";
     }
 
+    @GetMapping("/view-update/{id}")
+    public String viewUpdate(Model model, @PathVariable Integer id) {
+        NhanVien nhanVien = nhanVienRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("NhanVien not found"));
+        model.addAttribute("nhanVien", nhanVien);
+        model.addAttribute("listViTri", viTriRepo.findAll());
+        model.addAttribute("listVaiTro", vaiTroRepo.findAll());
+        model.addAttribute("listPhongBan", phongBanRepo.findAll());
+        model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
+        return "nhanvienupdate";
+    }
 
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien,
@@ -71,9 +84,10 @@ public class NhanVienController {
             model.addAttribute("listVaiTro", vaiTroRepo.findAll());
             model.addAttribute("listPhongBan", phongBanRepo.findAll());
             model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
-            return "nhan_vien/edit"; // Return to the edit page with errors
+            return "nhanvienupdate"; // Return the same view if there are errors
         }
 
+        // Handle updating phongBan if necessary
         PhongBan phongBan = nhanVien.getPhongBan();
         if (phongBan != null && phongBan.getId() != null) {
             phongBan = phongBanRepo.findById(phongBan.getId()).orElse(null);
@@ -84,19 +98,26 @@ public class NhanVienController {
         return "redirect:/nhan-vien/hien-thi?page=0"; // Redirect after successful update
     }
 
-    @PostMapping("/add")
-    public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model) {
-        // Load lists for dropdowns
+    @GetMapping("/view-add")
+    public String viewAdd(Model model) {
         model.addAttribute("listViTri", viTriRepo.findAll());
         model.addAttribute("listVaiTro", vaiTroRepo.findAll());
         model.addAttribute("listPhongBan", phongBanRepo.findAll());
         model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
+        model.addAttribute("nhanVien", new NhanVien());
+        return "nhanvienadd";
+    }
 
-//        // Check for validation errors
-//        if (result.hasErrors()) {
-//            model.addAttribute("showModal", true); // Open modal on validation error
-//            return "nhanvien"; // Return to the index page with existing data
-//        }
+    @PostMapping("/add")
+    public String add(@Valid @ModelAttribute("nhanVien") NhanVien nhanVien, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            // Re-populate the model attributes for the view
+            model.addAttribute("listViTri", viTriRepo.findAll());
+            model.addAttribute("listVaiTro", vaiTroRepo.findAll());
+            model.addAttribute("listPhongBan", phongBanRepo.findAll());
+            model.addAttribute("listTruongPhong", truongPhongRepo.findAll());
+            return "nhanvienadd"; // Return to the form view with errors
+        }
 
         PhongBan phongBan = nhanVien.getPhongBan();
         if (phongBan != null && phongBan.getId() != null) {
@@ -248,7 +269,6 @@ public class NhanVienController {
 
             for (Row currentRow : sheet) {
                 if (currentRow.getRowNum() == 0) continue; // Skip header row
-
                 NhanVien nhanVien = new NhanVien();
                 nhanVien.setMa(getStringCellValue(currentRow.getCell(0)));
                 nhanVien.setHoTen(getStringCellValue(currentRow.getCell(1)));
@@ -260,14 +280,6 @@ public class NhanVienController {
                 String phongBanName = getStringCellValue(currentRow.getCell(6));
                 String vaiTroName = getStringCellValue(currentRow.getCell(7));
                 Boolean trangThai = getBooleanCellValue(currentRow.getCell(8));
-
-                // Debug logging to check values being read
-                System.out.println("Processing row: " + currentRow.getRowNum());
-                System.out.println("ViTri: " + viTriName);
-                System.out.println("TruongPhong: " + truongPhongName);
-                System.out.println("PhongBan: " + phongBanName);
-                System.out.println("VaiTro: " + vaiTroName);
-                System.out.println("TrangThai: " + trangThai);
 
                 // Fetch and set ViTri
                 ViTriCongViec viTri = (viTriName != null && !viTriName.isEmpty()) ? viTriRepo.findByName(viTriName) : null;
@@ -327,13 +339,18 @@ public class NhanVienController {
     // Helper method to get a Boolean value from the cell
     private Boolean getBooleanCellValue(Cell cell) {
         if (cell != null) {
-            if (cell.getCellType() == CellType.BOOLEAN) {
-                return cell.getBooleanCellValue();
-            } else if (cell.getCellType() == CellType.STRING) {
-                return "TRUE".equalsIgnoreCase(cell.getStringCellValue().trim());
+            switch (cell.getCellType()) {
+                case BOOLEAN:
+                    return cell.getBooleanCellValue();
+                case STRING:
+                    return "TRUE".equalsIgnoreCase(cell.getStringCellValue().trim());
+                case NUMERIC:
+                    // Assuming 0 = false and any positive number = true
+                    return cell.getNumericCellValue() != 0;
+                default:
+                    return null; // Handle other cases if necessary
             }
         }
-        return null;
+        return null; // Return null if the cell is empty
     }
-
 }

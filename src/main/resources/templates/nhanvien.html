@@ -18,6 +18,7 @@
             padding-bottom: 50px;
 
         }
+
         table {
             width: 100%;
             margin-top: 20px;
@@ -38,6 +39,7 @@
         table tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         body {
             background-color: #f8f9fa;
             font-family: Arial, sans-serif;
@@ -174,13 +176,10 @@
                 </select>
             </div>
         </form>
-
-        <!-- Add Employee Button -->
-        <div class="add text-end mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
-                Thêm Nhân Viên
-            </button>
-        </div>
+        <!--Thêm nhân viên-->
+        <a th:href="@{/nhan-vien/view-add}">
+            <button class="btn btn-success"><i class="fa-solid fa-user"></i> Thêm nhân viên</button>
+        </a>
 
         <!-- Export Excel -->
         <a th:href="@{/nhan-vien/export}" class="btn btn-dark">
@@ -189,7 +188,7 @@
 
         <!-- Import Excel Form -->
         <div class="import">
-            <form th:action="@{/nhan-vien/import}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/nhan-vien/import}" method="post" enctype="multipart/form-data"> <!-- Added enctype -->
                 <div class="form-group">
                     <label for="file">Select Excel file to import:</label>
                     <input type="file" name="file" id="file" class="form-control" required>
@@ -197,6 +196,8 @@
                 <button type="submit" class="btn btn-dark"><i class="fa-solid fa-file-import"></i> Import Excel</button>
             </form>
         </div>
+
+
 
         <!-- Table nhan vien-->
         <div>
@@ -227,32 +228,48 @@
                     <td th:text="${nv.truongPhong.tenTruongPhong}"></td>
                     <td th:text="${nv.phongBan.tenPhongBan}"></td>
                     <td th:text="${nv.vaiTro.tenVaiTro}"></td>
-                    <td th:text="${nv.trang_thai}"></td>
+                    <td th:text="${nv.trang_thai} ? 'Hoạt động':'Không hoạt động'"></td>
                     <td>
-                        <a th:href="@{/nhan-vien/sua/{id}(id=${nv.nhanVienId})}" class="btn btn-warning">Sửa</a>
-                        <button type="button" class="btn btn-danger" th:data-id="${nv.nhanVienId}"
-                                onclick="confirmDelete(this)">Xóa
+                        <a th:href="@{/nhan-vien/view-update/{id}(id=${nv.nhanVienId})}"/>
+                        <button type="button" class="btn btn-dark" th:data-id="${nv.nhanVienId}"
+                                onclick="confirmDelete(this)"><i class="fa-solid fa-circle-info"></i> Chi tiết & Sửa
                         </button>
+                        </a>
+                        <a th:href="@{/nhan-vien/xoa/{id}(id=${nv.nhanVienId})}"/>
+                        <button type="button" class="btn btn-danger" th:data-id="${nv.nhanVienId}"
+                                onclick="confirmDelete(this)"><i class="fa-solid fa-trash"></i> Xóa
+                        </button>
+                        </a>
+
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Pagination -->
+        <!--        Phan trang -->
         <nav aria-label="Page navigation">
             <ul class="pagination">
-                <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
-                    <a class="page-link" th:href="@{/nhan-vien/hien-thi?page=${currentPage - 1}}" aria-label="Previous">
+                <!-- Previous Button -->
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="${currentPage > 0} ? @{/nhan-vien/hien-thi(page=${currentPage - 1})} : '#'"
+                       aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
+
+                <!-- Page Numbers -->
                 <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
-                    th:class="${i == currentPage} ? 'active'">
-                    <a class="page-link" th:href="@{/nhan-vien/hien-thi?page=${i}}" th:text="${i + 1}"></a>
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/nhan-vien/hien-thi(page=${i})}" th:text="${i + 1}"></a>
                 </li>
-                <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
-                    <a class="page-link" th:href="@{/nhan-vien/hien-thi?page=${currentPage + 1}}" aria-label="Next">
+
+                <!-- Next Button -->
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link"
+                       th:href="${currentPage < totalPages - 1} ? @{/nhan-vien/hien-thi(page=${currentPage + 1})} : '#'"
+                       aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -260,63 +277,6 @@
         </nav>
     </div>
 </main>
-
-<!-- Add Employee Modal -->
-<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addEmployeeModalLabel">Thêm Nhân Viên</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form th:action="@{/nhan-vien/them}" method="post">
-                    <div class="mb-3">
-                        <label for="ma" class="form-label">Mã nhân viên</label>
-                        <input type="text" class="form-control" id="ma" name="ma" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="hoTen" class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" id="hoTen" name="hoTen" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sdt" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="sdt" name="sdt" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="viTri" class="form-label">Vị trí</label>
-                        <select class="form-select" id="viTri" name="viTri">
-                            <option value="" selected>--Chọn Vị Trí--</option>
-                            <option th:each="vt : ${listViTri}" th:value="${vt.tenViTri}"
-                                    th:text="${vt.tenViTri}"></option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phongBan" class="form-label">Phòng ban</label>
-                        <select class="form-select" id="phongBan" name="phongBan">
-                            <option value="" selected>--Chọn Phòng Ban--</option>
-                            <option th:each="pb : ${listPhongBan}" th:value="${pb.tenPhongBan}"
-                                    th:text="${pb.tenPhongBan}"></option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="vaiTro" class="form-label">Vai trò</label>
-                        <select class="form-select" id="vaiTro" name="vaiTro">
-                            <option value="" selected>--Chọn Vai Trò--</option>
-                            <option th:each="vr : ${listVaiTro}" th:value="${vr.tenVaiTro}"
-                                    th:text="${vr.tenVaiTro}"></option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Thêm</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz4fnFO9gyb7pqvJ2K8QQChQmStRcbH+zP5Uo5G8B2zxG+b/lW6Pz/7hm1"

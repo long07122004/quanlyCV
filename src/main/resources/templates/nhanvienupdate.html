@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Menu}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cập nhật Nhân Viên</title>
+</head>
+<body>
+<main layout:fragment="main1">
+    <form th:action="@{/nhan-vien/update}" method="post" th:object="${nhanVien}">
+        <input type="hidden" th:field="*{nhanVienId}"/>
+        <div class="mb-3">
+            <label class="form-label">Mã Nhân Viên</label>
+            <input type="text" th:field="*{ma}" class="form-control" required="required"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Họ và Tên</label>
+            <input type="text" th:field="*{hoTen}" class="form-control" required="required"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" required="required"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Số Điện Thoại</label>
+            <input type="text" th:field="*{sdt}" class="form-control" required="required"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Vị Trí</label>
+            <select class="form-control form-select" th:field="*{viTri.id}" required="required">
+                <option th:each="vt : ${listViTri}" th:value="${vt.id}" th:text="${vt.tenViTri}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trưởng Phòng</label>
+            <select class="form-control form-select" th:field="*{truongPhong.id}" required="required">
+                <option th:each="tp : ${listTruongPhong}" th:value="${tp.id}" th:text="${tp.tenTruongPhong}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Phòng Ban</label>
+            <select class="form-control form-select" th:field="*{phongBan.id}" required="required">
+                <option th:each="pb : ${listPhongBan}" th:value="${pb.id}" th:text="${pb.tenPhongBan}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Vai Trò</label>
+            <select class="form-control form-select" th:field="*{vaiTro.id}" required="required">
+                <option th:each="vt : ${listVaiTro}" th:value="${vt.id}" th:text="${vt.tenVaiTro}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trạng thái</label><br>
+            <input type="radio" th:field="*{trang_thai}" value="true" id="active" th:checked="${nhanVien.trang_thai}"/>
+            <label for="active">Hoạt động</label><br>
+            <input type="radio" th:field="*{trang_thai}" value="false" id="inactive" th:checked="${!nhanVien.trang_thai}"/>
+            <label for="inactive">Không hoạt động</label>
+        </div>
+        <button class="btn btn-success" type="submit">Cập nhật</button>
+    </form>
+</main>
+</body>
+</html>

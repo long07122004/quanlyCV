@@ -11,6 +11,7 @@
 </head>
 <body>
 <main layout:fragment="main1">
+    <h1 style="text-align: center">Chi tiết và Chỉnh sửa nhân viên</h1>
     <form th:action="@{/nhan-vien/update}" method="post" th:object="${nhanVien}">
         <input type="hidden" th:field="*{nhanVienId}"/>
         <div class="mb-3">

@@ -40,11 +40,6 @@
             background-color: #f2f2f2;
         }
 
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-        }
-
         .filter-container {
             background-color: #fff;
             padding: 20px;
@@ -71,7 +66,7 @@
         }
 
         .btn-search:hover {
-            background-color: #ff8260;
+            background-color: cyan;
         }
 
         .input-group-text {
@@ -115,14 +110,44 @@
 
         a {
             text-decoration: none;
-            font-family: "Roboto Light";
             color: black;
         }
+
+        a:hover {
+            text-decoration: none; /* Xóa dấu gạch chân khi di chuột qua */
+            color: #dc3545;
+        }
+        .form-group {
+            margin-bottom: 10px; /* Khoảng cách giữa các nhóm */
+        }
+
+        label {
+            display: block; /* Đảm bảo label đứng trên select */
+            margin-bottom: 5px; /* Khoảng cách giữa label và select */
+            font-weight: bold; /* Làm đậm chữ label */
+        }
+
+        select {
+            width: 49.5%; /* Chiều rộng đầy đủ cho select */
+            padding: 10px; /* Khoảng cách bên trong */
+            border: 1px solid #ccc; /* Đường viền cho select */
+            border-radius: 5px; /* Bo góc cho select */
+            box-sizing: border-box; /* Đảm bảo padding không làm tăng chiều rộng */
+        }
+
+        @media (min-width: 576px) {
+            .form-group {
+                display: flex; /* Sử dụng flexbox cho căn chỉnh */
+                flex-direction: column; /* Đặt chiều dọc     cho các phần tử con */
+            }
+        }
+
     </style>
 </head>
 <body>
 <main layout:fragment="main1">
-    <a href="/nhan-vien/hien-thi?page=0">
+
+    <a th:href="@{/nhan-vien/hien-thi?page=0}">
         <h1>Quản lý nhân viên</h1>
     </a>
 
@@ -197,7 +222,6 @@
             </form>
         </div>
 
-
         <!-- Table nhan vien-->
         <div>
             <table class="table table-hover">
@@ -254,7 +278,7 @@
                     <a class="page-link"
                        th:href="${currentPage > 0} ? @{/nhan-vien/hien-thi(page=${currentPage - 1})} : '#'"
                        aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
+                        <span aria-hidden="true">Trước</span>
                     </a>
                 </li>
 
@@ -269,11 +293,12 @@
                     <a class="page-link"
                        th:href="${currentPage < totalPages - 1} ? @{/nhan-vien/hien-thi(page=${currentPage + 1})} : '#'"
                        aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
+                        <span aria-hidden="true">Sau</span>
                     </a>
                 </li>
             </ul>
         </nav>
+
     </div>
 </main>
 

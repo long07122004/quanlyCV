@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="/css/side-bar.css"/>
     <link rel="stylesheet" th:href="@{|/css/side-bar.css|}"/>
     <title>Quản Lý CV</title>
+    <style>
+        a:hover{
+            text-decoration: none;
+        }
+        li:hover{
+            background-color: #ff9270;
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -42,37 +50,37 @@
 <!--                <a href="/phongBan" class="sidebar-link">-->
                 <a th:href="@{/phongBan}" class="sidebar-link">
                     <i class="lni lni-user"></i>
-                    <span>QL Phòng Ban</span>
+                    <span>Quản lý Phòng Ban</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/nhan-vien/hien-thi?page=0}" class="sidebar-link">
                     <i class="lni lni-user"></i>
-                    <span>QL Nhân Viên</span>
+                    <span>Quản lý Nhân Viên</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/tuyen-dung}" class="sidebar-link">
                     <i class="lni lni-write"></i>
-                    <span>QL Đợt Tuyển Dụng</span>
+                    <span>Quản lý Đợt Tuyển Dụng</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/qlcv}" class="sidebar-link">
                     <i class="lni lni-printer"></i>
-                    <span>QL CV</span>
+                    <span>Quản lý CV</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/index-uv}" class="sidebar-link ">
                     <i class="lni lni-protection"></i>
-                    <span>QL Hoạt Động UV</span>
+                    <span>Quản lý Hoạt Động UV</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/quan-ly-vi-tri}" class="sidebar-link ">
                     <i class="lni lni-protection"></i>
-                    <span>Quan ly vi tri</span>
+                    <span>Quản lý vị trí</span>
                 </a>
             </li>
 

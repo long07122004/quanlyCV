@@ -347,7 +347,7 @@
                                 <label class="form-check-label" th:for="'flexCheck' + ${permisster.id}" th:text="${permisster.name}"></label>
                             </div>
                         </div>
-                        <button  type="submit" class="btn btn-primary">Update</button>
+                        <button th:formaction="@{/admin/role/quyen-truy-cap/update}" type="submit" class="btn btn-primary">Update</button>
                     </form>
                 </div>
             </div>

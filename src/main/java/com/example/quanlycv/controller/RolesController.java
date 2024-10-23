@@ -72,7 +72,7 @@ public class RolesController {
         List<QuyenTruyCap> permisster = rolesService.getAllQuyenTruyCap();
         model.addAttribute("permisster",permisster);
 
-        VaiTroQuyenTruyCapDTO vaiTroDTO = new VaiTroQuyenTruyCapDTO();
+        VaiTroDTO vaiTroDTO = new VaiTroDTO();
         model.addAttribute("vaiTroDTO", vaiTroDTO);
 
         return  "roles/index-role";
@@ -197,7 +197,7 @@ public class RolesController {
         return  "redirect:/admin/role";
     }
 
-    @PostMapping("/admin/role/quyen-truy-cap/update/{id}")
+    @PostMapping("/admin/role/quyen-truy-cap/update")
     public String  updateRolePermissions(@ModelAttribute("vaiTroDTO") VaiTroDTO vaiTroDTO) {
         Integer vaiTroID = vaiTroDTO.getVaiTroID();
         List<Integer> quyenTruyCapIDs = vaiTroDTO.getQuyenTruyCapIDs();

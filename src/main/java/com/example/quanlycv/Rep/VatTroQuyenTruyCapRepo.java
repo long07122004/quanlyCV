@@ -1,10 +1,9 @@
-package com.example.quanlycv.repo;
+package com.example.quanlycv.Rep;
 
 import com.example.quanlycv.entity.VaiTro;
 import com.example.quanlycv.entity.VaiTroQuyenTruyCap;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

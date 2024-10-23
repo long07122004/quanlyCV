@@ -1,21 +1,19 @@
 package com.example.quanlycv.controller;
 
-
+import com.example.quanlycv.Rep.LoaiHoatDongRepository;
+import com.example.quanlycv.Rep.NguoiDungRepo;
+import com.example.quanlycv.Rep.UVRepository;
 import com.example.quanlycv.entity.LoaiHoatDong;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.QlTuyenDung;
 import com.example.quanlycv.Service.DotTuyenDungService;
 import com.example.quanlycv.entity.UV;
-import com.example.quanlycv.repo.LoaiHoatDongRepository;
-import com.example.quanlycv.repo.NguoiDungRepo;
-import com.example.quanlycv.repo.UVRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,10 +31,6 @@ public class test {
     @Autowired
     NguoiDungRepo nguoiDungRepo;
 
-
-
-
-
     @GetMapping("/")
     public String viewTest1(){
         return "Menu";
@@ -50,7 +44,7 @@ public class test {
 //
 //        return "tuyen-dung";
 //    }
-    @PreAuthorize("hasRole('ADMIN')")
+
     @GetMapping("/tuyen-dung")
     public String listTuyenDung(Model model,
                                 @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo,
@@ -95,15 +89,14 @@ public class test {
         return "tuyen-dung";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
+
     @PostMapping("/tuyen-dung/add")
     public String addDotTuyenDung(@ModelAttribute("qlTuyenDung") QlTuyenDung qlTuyenDung, RedirectAttributes redirectAttributes) {
         dotTuyenDungService.saveDotTuyenDung(qlTuyenDung);
         redirectAttributes.addFlashAttribute("message", "Đợt tuyển dụng đã được thêm thành công!");
         return "redirect:/tuyen-dung";
     }
-
-
 
 
     @GetMapping("/tuyen-dung/delete/{id}")
@@ -138,7 +131,6 @@ public class test {
 //    }
 
     // Handle the update request
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/tuyen-dung/update/{id}")
     public String updateTuyenDung(@PathVariable("id") Integer id, @ModelAttribute("tuyenDung") QlTuyenDung tuyenDung,Model model) {
         LocalDate today = LocalDate.now();
@@ -284,9 +276,9 @@ public class test {
     }
 
 
-    @GetMapping("/qlcv")
-    public String viewqlcv(){
-        return "qlcv";
+    @GetMapping("/test-qlcv")
+    public String viewqlcv() {
+        return "test-qlcv"; // Thay vì "qlcv", tránh trùng với phương thức trong CVController
     }
 
 

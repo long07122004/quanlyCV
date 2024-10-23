@@ -1,6 +1,5 @@
 package com.example.quanlycv.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

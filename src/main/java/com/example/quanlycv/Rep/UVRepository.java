@@ -1,5 +1,4 @@
-
-package com.example.quanlycv.repo;
+package com.example.quanlycv.Rep;
 
 import com.example.quanlycv.entity.UV;
 import org.springframework.data.domain.Page;

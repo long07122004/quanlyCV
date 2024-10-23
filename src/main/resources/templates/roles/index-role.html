@@ -45,7 +45,6 @@
                 </div>
             </div>
         </div>
-        <h3>Quản Lý Người Dùng</h3>
         <table class="table">
             <thead>
             <tr>
@@ -58,8 +57,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="nguoiDung,indexND : ${listND.content}">
-                <th th:text="${indexND.index + 1}" scope="row">1</th>
+            <tr th:each="nguoiDung : ${listND}">
+                <th scope="row">1</th>
                 <td th:text="${nguoiDung.email}"></td>
                 <td th:text="${nguoiDung.sdt}"></td>
                 <td th:text="${nguoiDung.vaiTro.tenVaiTro}"></td>
@@ -91,6 +90,7 @@
             </ul>
         </nav>
     </div>
+
     <br>
 
     <div class="row">
@@ -166,6 +166,7 @@
     </div>
 
 
+
 <!--    modal-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -177,7 +178,6 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <form th:object="${formUser}" method="post">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                            <div class="row">
                                <div class="mb-3">
                                    <label for="hoTen" class="form-label">Họ Và Tên</label>
@@ -233,7 +233,6 @@
 
                             <div class="row">
                                 <button th:formaction="@{/admin/role/add}" type="submit" id="btnSave" class="btn btn-primary col-sm-2">Save</button>
-<!--                                <button th:onclick="add()" type="submit" id="btnSave" class="btn btn-primary col-sm-2">Save</button>-->
                                 <button th:formaction="@{/admin/role/update/}" type="submit" class="btn btn-info col-sm-2" id="btnUpdate">Update</button>
                                 <button type="button" class="btn btn-secondary col-sm-2" data-bs-dismiss="modal">Close</button>
                             </div>

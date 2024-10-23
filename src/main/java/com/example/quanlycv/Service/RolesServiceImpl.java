@@ -1,10 +1,12 @@
 package com.example.quanlycv.Service;
 
 
-import com.example.quanlycv.dto.VaiTroQuyenTruyCapDTO;
+import com.example.quanlycv.Rep.*;
 import com.example.quanlycv.entity.*;
-import com.example.quanlycv.repo.*;
-import jakarta.persistence.EntityNotFoundException;
+
+
+import com.example.quanlycv.dto.VaiTroQuyenTruyCapDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,11 +26,11 @@ public class RolesServiceImpl implements RolesService{
     NhanVienRepo nhanVienRepo;
     @Autowired
     VaiTroRepo vaiTroRepo;
+
     @Autowired
     VatTroQuyenTruyCapRepo VTQTC;
     @Autowired
     QuyenTruyCapRepo quyenTruyCapRepo;
-
 
     @Override
     public List<NguoiDung> getAll() {
@@ -106,6 +108,7 @@ public class RolesServiceImpl implements RolesService{
         return nguoiDungRepo.findById(id).get();
     }
 
+
     @Override
     public List<VaiTroQuyenTruyCap> findAllVTQCT() {
         return VTQTC.findAll();
@@ -143,36 +146,36 @@ public class RolesServiceImpl implements RolesService{
 
     @Override
     public void updateRolePermissions(Integer vaiTroID, List<Integer> quyenTruyCapIDs) {
-        VaiTro vaiTro = vaiTroRepo.findById(vaiTroID)
-                .orElseThrow(() -> new EntityNotFoundException("Vai trò không tồn tại."));
-
-        // Lấy danh sách quyền truy cập hiện tại của vai trò
-        List<VaiTroQuyenTruyCap> currentPermissions = VTQTC.findByVaiTro(vaiTro);
-
-        // Lấy danh sách các ID quyền truy cập hiện tại
-        List<Integer> currentPermissionIDs = currentPermissions.stream()
-                .map(vq -> vq.getQuyenTruyCap().getId())
-                .collect(Collectors.toList());
-
-        // Xóa quyền không còn được chọn
-        for (VaiTroQuyenTruyCap vq : currentPermissions) {
-            if (!quyenTruyCapIDs.contains(vq.getQuyenTruyCap().getId())) {
-                VTQTC.delete(vq);  // Xóa quyền truy cập này
-            }
-        }
-
-        // Thêm quyền mới được chọn
-        for (Integer permissionId : quyenTruyCapIDs) {
-            if (!currentPermissionIDs.contains(permissionId)) {
-                QuyenTruyCap quyenTruyCap = quyenTruyCapRepo.findById(permissionId)
-                        .orElseThrow(() -> new EntityNotFoundException("Quyền truy cập không tồn tại."));
-
-                VaiTroQuyenTruyCap newPermission = new VaiTroQuyenTruyCap();
-                newPermission.setVaiTro(vaiTro);
-                newPermission.setQuyenTruyCap(quyenTruyCap);
-                VTQTC.save(newPermission);  // Lưu quyền truy cập mới
-            }
-        }
+//        VaiTro vaiTro = vaiTroRepo.findById(vaiTroID)
+//                .orElseThrow(() -> new EntityNotFoundException("Vai trò không tồn tại."));
+//
+//        // Lấy danh sách quyền truy cập hiện tại của vai trò
+//        List<VaiTroQuyenTruyCap> currentPermissions = VTQTC.findByVaiTro(vaiTro);
+//
+//        // Lấy danh sách các ID quyền truy cập hiện tại
+//        List<Integer> currentPermissionIDs = currentPermissions.stream()
+//                .map(vq -> vq.getQuyenTruyCap().getId())
+//                .collect(Collectors.toList());
+//
+//        // Xóa quyền không còn được chọn
+//        for (VaiTroQuyenTruyCap vq : currentPermissions) {
+//            if (!quyenTruyCapIDs.contains(vq.getQuyenTruyCap().getId())) {
+//                VTQTC.delete(vq);  // Xóa quyền truy cập này
+//            }
+//        }
+//
+//        // Thêm quyền mới được chọn
+//        for (Integer permissionId : quyenTruyCapIDs) {
+//            if (!currentPermissionIDs.contains(permissionId)) {
+//                QuyenTruyCap quyenTruyCap = quyenTruyCapRepo.findById(permissionId)
+//                        .orElseThrow(() -> new EntityNotFoundException("Quyền truy cập không tồn tại."));
+//
+//                VaiTroQuyenTruyCap newPermission = new VaiTroQuyenTruyCap();
+//                newPermission.setVaiTro(vaiTro);
+//                newPermission.setQuyenTruyCap(quyenTruyCap);
+//                VTQTC.save(newPermission);  // Lưu quyền truy cập mới
+//            }
+//        }
     }
 
 }

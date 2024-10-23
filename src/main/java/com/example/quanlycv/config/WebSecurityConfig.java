@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -29,19 +28,11 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private AccessDeniedHandler customAccessDeniedHandler; // Thêm handler
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/some-endpoint/**") // Nếu có một số endpoint không cần CSRF bảo vệ, có thể ignore tại đây
-                )
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**").permitAll()
-                        .requestMatchers("/tuyen-dung/**","/","/admin/role/**").hasRole("ADMIN")
-
+                        .requestMatchers("/login", "/forgot-password", "/register", "/oauth2/**","/tuyen-dung/**","/cv/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -54,9 +45,6 @@ public class WebSecurityConfig {
                         .logoutSuccessUrl("/login?logout=true") // URL để chuyển hướng sau khi logout
                         .permitAll()
                 )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedHandler(customAccessDeniedHandler) // Thêm handler vào đây
-                )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         .userInfoEndpoint()
@@ -67,6 +55,7 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {

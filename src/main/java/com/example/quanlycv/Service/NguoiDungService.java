@@ -1,12 +1,11 @@
 package com.example.quanlycv.Service;
 
-
+import com.example.quanlycv.Rep.NguoiDungRepo;
+import com.example.quanlycv.Rep.PasswordResetTokenRepository;
+import com.example.quanlycv.Rep.VaiTroRepo;
 import com.example.quanlycv.entity.NguoiDung;
 import com.example.quanlycv.entity.PasswordResetToken;
 import com.example.quanlycv.entity.VaiTro;
-import com.example.quanlycv.repo.NguoiDungRepo;
-import com.example.quanlycv.repo.PasswordResetTokenRepository;
-import com.example.quanlycv.repo.VaiTroRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

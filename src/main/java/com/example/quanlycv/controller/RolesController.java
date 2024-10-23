@@ -1,4 +1,5 @@
 
+
 package com.example.quanlycv.controller;
 
 import com.example.quanlycv.Service.RolesService;
@@ -64,6 +65,7 @@ public class RolesController {
             model.addAttribute("listND", listND);
         }
 
+
         List<VaiTroQuyenTruyCap> vtqtcList = rolesService.findAllVTQCT();
         Map<String, String> groupedRoles = rolesService.getGroupedRoles(vtqtcList);
         model.addAttribute("VTQTC",groupedRoles);
@@ -75,6 +77,16 @@ public class RolesController {
         VaiTroDTO vaiTroDTO = new VaiTroDTO();
         model.addAttribute("vaiTroDTO", vaiTroDTO);
 
+//        List<VaiTroQuyenTruyCap> vtqtcList = rolesService.findAllVTQCT();
+//        Map<String, String> groupedRoles = rolesService.getGroupedRoles(vtqtcList);
+//        model.addAttribute("VTQTC",groupedRoles);
+//        System.out.println("groupedRoles: "+groupedRoles);
+//
+//        List<QuyenTruyCap> permisster = rolesService.getAllQuyenTruyCap();
+//        model.addAttribute("permisster",permisster);
+//
+//        VaiTroQuyenTruyCapDTO vaiTroDTO = new VaiTroQuyenTruyCapDTO();
+//        model.addAttribute("vaiTroDTO", vaiTroDTO);
         return  "roles/index-role";
     }
 
@@ -92,11 +104,11 @@ public class RolesController {
         return rolesService.getAllVaiTro();
     }
 
-    @ModelAttribute(name = " QUYENTRUYCAP")
-    public List<QuyenTruyCap> getAllQTC(){
-        System.out.println("check QUYENTRUYCAP: "+rolesService.getAllQuyenTruyCap());
-        return rolesService.getAllQuyenTruyCap();
-    }
+//    @ModelAttribute(name = " QUYENTRUYCAP")
+//    public List<QuyenTruyCap> getAllQTC(){
+//        System.out.println("check QUYENTRUYCAP: "+rolesService.getAllQuyenTruyCap());
+//        return rolesService.getAllQuyenTruyCap();
+//    }
 
     @PostMapping("/admin/role/add")
     public String save(@ModelAttribute("formUser") NguoiDungDTO nguoiDung, RedirectAttributes redirectAttributes){
@@ -189,13 +201,13 @@ public class RolesController {
         return  "redirect:/admin/role";
     }
 
-    @PostMapping("/admin/role/add/quyen-truy-cap")
-    public String addRolePermist(@ModelAttribute("vaiTroDTO") VaiTroQuyenTruyCapDTO vtqctDTO){
-        System.out.println("vtqctDTO: "+vtqctDTO);
-        VaiTroQuyenTruyCap newVaitro = rolesService.saveRolesPermist(vtqctDTO);
-        System.out.println("new VTQCT: "+newVaitro);
-        return  "redirect:/admin/role";
-    }
+//    @PostMapping("/admin/role/add/quyen-truy-cap")
+//    public String addRolePermist(@ModelAttribute("vaiTroDTO") VaiTroQuyenTruyCapDTO vtqctDTO){
+//        System.out.println("vtqctDTO: "+vtqctDTO);
+//        VaiTroQuyenTruyCap newVaitro = rolesService.saveRolesPermist(vtqctDTO);
+//        System.out.println("new VTQCT: "+newVaitro);
+//        return  "redirect:/admin/role";
+//    }
 
     @PostMapping("/admin/role/quyen-truy-cap/update")
     public String  updateRolePermissions(@ModelAttribute("vaiTroDTO") VaiTroDTO vaiTroDTO) {
@@ -208,4 +220,5 @@ public class RolesController {
     }
 
 }
+
 

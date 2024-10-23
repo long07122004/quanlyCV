@@ -1,59 +1,43 @@
 package com.example.quanlycv.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "Vi_Tri_Cong_Viec")
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ViTriCongViec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vi_tri_id")
-    private Integer id;
+     Integer id;
 
-    @Column(name = "ma_vi_tri")
-    private String maViTri;
+    @Column(name = "ma_vi_tri",  unique = true, length = 50)
+     String maViTri;
 
-    @Column(name = "ten_vi_tri")
-    private String tenViTri;
+    @Column(name = "ten_vi_tri",  length = 100)
+     String tenViTri;
 
     @ManyToOne
     @JoinColumn(name = "phong_ban_id")
-    private PhongBan phongBan;
+     PhongBan phongBan;
 
     @ManyToOne
     @JoinColumn(name = "level_id")
-    private Level level;
+     Level level;
 
-    @Column(name = "trang_thai")
-    private Boolean trangThai;
+    @Column(name = "trang_thai", columnDefinition = "BIT DEFAULT 1")
+     Boolean trangThai = true;
 
     @Column(name = "ngay_tao")
-    private String ngayTao;
+     LocalDateTime ngayTao = LocalDateTime.now();
 
     @Column(name = "ngay_cap_nhat")
-    private String ngayCapNhat;
-
-    public String getTrangThaiNe(){
-        if(this.trangThai == true){
-            return "Đang hoạt động";
-        }else{
-            return "Không hoạt động";
-        }
-    }
-
+     LocalDateTime ngayCapNhat = LocalDateTime.now();
 }

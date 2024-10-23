@@ -1,6 +1,9 @@
 package com.example.quanlycv.controller;
 
 
+import com.example.quanlycv.Rep.NhanVienRepo;
+import com.example.quanlycv.Rep.TruongPhongRepo;
+import com.example.quanlycv.Rep.VaiTroRepo;
 import com.example.quanlycv.entity.*;
 import com.example.quanlycv.repo.*;
 import jakarta.persistence.EntityNotFoundException;

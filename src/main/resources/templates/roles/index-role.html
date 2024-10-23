@@ -64,12 +64,12 @@
                 <td th:text="${nguoiDung.vaiTro.tenVaiTro}"></td>
                 <td th:text="${nguoiDung.trangThai ? 'Kích hoạt' : 'Tạm khóa'}"></td>
                 <td>
-                    <a th:href="@{|/admin/role/change-status/${nguoiDung.id}|}">
+                    <a th:href="@{|/admin/role/change-status/${nguoiDung.nguoiDungId}|}">
                         <button type="button" class="btn btn-success lni lni-coin" ></button>
                     </a>
                     <button type="button" class="btn btn-warning lni lni-pencil"
-                            th:onclick="'edit(' + '\'' + ${nguoiDung.id} + '\'' + ')'"></button>
-                    <a th:href="@{|/admin/role/delete/${nguoiDung.id}|}">
+                            th:onclick="'edit(' + '\'' + ${nguoiDung.nguoiDungId} + '\'' + ')'"></button>
+                    <a th:href="@{|/admin/role/delete/${nguoiDung.nguoiDungId}|}">
                         <button type="button" class="btn btn-danger lni lni-trash-can"></button>
                     </a>
 

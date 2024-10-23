@@ -2,13 +2,13 @@ package com.example.quanlycv.Service;
 
 import com.example.quanlycv.dto.NguoiDungDTO;
 
-import com.example.quanlycv.entity.NguoiDung;
-import com.example.quanlycv.entity.NhanVien;
-import com.example.quanlycv.entity.VaiTro;
+import com.example.quanlycv.dto.VaiTroQuyenTruyCapDTO;
+import com.example.quanlycv.entity.*;
 
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface RolesService {
     List<NguoiDung> getAll();
@@ -27,14 +27,14 @@ public interface RolesService {
 
     NguoiDung findById(Integer id);
 
-//    List<VaiTroQuyenTruyCap> findAllVTQCT();
-//
-//    List<QuyenTruyCap> getAllQuyenTruyCap();
-//    Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList);
-//
-//    VaiTroQuyenTruyCap saveRolesPermist(VaiTroQuyenTruyCapDTO vtqctDTO);
-//
-//    List<VaiTroQuyenTruyCap> findAllVTQCT(String id);
+    List<VaiTroQuyenTruyCap> findAllVTQCT();
+
+    List<QuyenTruyCap> getAllQuyenTruyCap();
+    Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList);
+
+    VaiTroQuyenTruyCap saveRolesPermist(VaiTroQuyenTruyCapDTO vtqctDTO);
+
+    List<VaiTroQuyenTruyCap> findAllVTQCT(String id);
 
     void updateRolePermissions(Integer id, List<Integer> permissionIds);
 

@@ -1,12 +1,8 @@
 package com.example.quanlycv.Service;
 
 
-import com.example.quanlycv.Rep.NguoiDungRepo;
-import com.example.quanlycv.Rep.NhanVienRepo;
-import com.example.quanlycv.Rep.VaiTroRepo;
-import com.example.quanlycv.entity.NguoiDung;
-import com.example.quanlycv.entity.NhanVien;
-import com.example.quanlycv.entity.VaiTro;
+import com.example.quanlycv.Rep.*;
+import com.example.quanlycv.entity.*;
 
 
 import com.example.quanlycv.dto.VaiTroQuyenTruyCapDTO;
@@ -19,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RolesServiceImpl implements RolesService{
@@ -29,6 +27,10 @@ public class RolesServiceImpl implements RolesService{
     @Autowired
     VaiTroRepo vaiTroRepo;
 
+    @Autowired
+    VatTroQuyenTruyCapRepo VTQTC;
+    @Autowired
+    QuyenTruyCapRepo quyenTruyCapRepo;
 
     @Override
     public List<NguoiDung> getAll() {
@@ -106,42 +108,42 @@ public class RolesServiceImpl implements RolesService{
         return nguoiDungRepo.findById(id).get();
     }
 
-//
-//    @Override
-//    public List<VaiTroQuyenTruyCap> findAllVTQCT() {
-//        return VTQTC.findAll();
-//    }
-//
-//    @Override
-//    public List<QuyenTruyCap> getAllQuyenTruyCap() {
-//        return this.quyenTruyCapRepo.findAll();
-//    }
-//
-//    @Override
-//    public Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList) {
-//        return  vtqtcList.stream()
-//                .collect(Collectors.groupingBy(
-//                        vtqtc -> vtqtc.getVaiTro().getTenVaiTro(),  // Nhóm theo tên vai trò
-//                        Collectors.mapping(vtqtc -> vtqtc.getQuyenTruyCap().getName(),  // Lấy quyền truy cập
-//                                Collectors.joining("/"))));
-//    }
-//
-//    @Override
-//    public VaiTroQuyenTruyCap saveRolesPermist(VaiTroQuyenTruyCapDTO vtqctDTO) {
-//        VaiTroQuyenTruyCap newEntity = new VaiTroQuyenTruyCap();
-//        VaiTro newVT = vaiTroRepo.findById(vtqctDTO.getVaiTroIDS()).get();
-//        QuyenTruyCap newQCT = quyenTruyCapRepo.findById(vtqctDTO.getQuyenTruyCapID()).get();
-//        newEntity.setVaiTro(newVT);
-//        newEntity.setQuyenTruyCap(newQCT);
-//        return VTQTC.save(newEntity);
-//    }
-//
-//    @Override
-//    public List<VaiTroQuyenTruyCap> findAllVTQCT(String id) {
-//        VaiTro vaiTroID = VTQTC.findByTenVaiTro(id);
-//        return VTQTC.findAllById(vaiTroID.getId());
-//    }
-//
+
+    @Override
+    public List<VaiTroQuyenTruyCap> findAllVTQCT() {
+        return VTQTC.findAll();
+    }
+
+    @Override
+    public List<QuyenTruyCap> getAllQuyenTruyCap() {
+        return this.quyenTruyCapRepo.findAll();
+    }
+
+    @Override
+    public Map<String, String> getGroupedRoles(List<VaiTroQuyenTruyCap> vtqtcList) {
+        return  vtqtcList.stream()
+                .collect(Collectors.groupingBy(
+                        vtqtc -> vtqtc.getVaiTro().getTenVaiTro(),  // Nhóm theo tên vai trò
+                        Collectors.mapping(vtqtc -> vtqtc.getQuyenTruyCap().getName(),  // Lấy quyền truy cập
+                                Collectors.joining("/"))));
+    }
+
+    @Override
+    public VaiTroQuyenTruyCap saveRolesPermist(VaiTroQuyenTruyCapDTO vtqctDTO) {
+        VaiTroQuyenTruyCap newEntity = new VaiTroQuyenTruyCap();
+        VaiTro newVT = vaiTroRepo.findById(vtqctDTO.getVaiTroIDS()).get();
+        QuyenTruyCap newQCT = quyenTruyCapRepo.findById(vtqctDTO.getQuyenTruyCapID()).get();
+        newEntity.setVaiTro(newVT);
+        newEntity.setQuyenTruyCap(newQCT);
+        return VTQTC.save(newEntity);
+    }
+
+    @Override
+    public List<VaiTroQuyenTruyCap> findAllVTQCT(String id) {
+        VaiTro vaiTroID = VTQTC.findByTenVaiTro(id);
+        return VTQTC.findAllById(vaiTroID.getId());
+    }
+
     @Override
     public void updateRolePermissions(Integer vaiTroID, List<Integer> quyenTruyCapIDs) {
 //        VaiTro vaiTro = vaiTroRepo.findById(vaiTroID)

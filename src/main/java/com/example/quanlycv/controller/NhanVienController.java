@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -269,6 +270,12 @@ public class NhanVienController {
 
             for (Row currentRow : sheet) {
                 if (currentRow.getRowNum() == 0) continue; // Skip header row
+
+                // Check if the row is empty by checking the first cell (Employee ID)
+                if (currentRow.getCell(0) == null || currentRow.getCell(0).getCellType() == CellType.BLANK) {
+                    continue; // Skip empty rows
+                }
+
                 NhanVien nhanVien = new NhanVien();
                 nhanVien.setMa(getStringCellValue(currentRow.getCell(0)));
                 nhanVien.setHoTen(getStringCellValue(currentRow.getCell(1)));
@@ -313,12 +320,13 @@ public class NhanVienController {
                     System.err.println("VaiTro not found: " + vaiTroName);
                 }
 
-                // Set trangThai
+                // Set trangThai (Only if cell is not empty)
                 nhanVien.setTrang_thai(trangThai != null ? trangThai : false); // Default to false if null
 
                 // Add to the list
                 nhanVienList.add(nhanVien);
             }
+
 
 // Save all valid NhanVien objects to the database
             nhanVienRepo.saveAll(nhanVienList);
@@ -331,10 +339,19 @@ public class NhanVienController {
     // Helper method to get a String value from the cell
     private String getStringCellValue(Cell cell) {
         if (cell != null) {
-            return cell.getCellType() == CellType.STRING ? cell.getStringCellValue() : String.valueOf(cell.getNumericCellValue());
+            switch (cell.getCellType()) {
+                case STRING:
+                    return cell.getStringCellValue();
+                case NUMERIC:
+                    // If numeric, treat as a phone number and return without scientific notation
+                    return BigDecimal.valueOf(cell.getNumericCellValue()).toPlainString();
+                default:
+                    return "";
+            }
         }
         return "";
     }
+
 
     // Helper method to get a Boolean value from the cell
     private Boolean getBooleanCellValue(Cell cell) {

@@ -1,9 +1,11 @@
 package com.example.quanlycv.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Nhan_Vien")
@@ -16,39 +18,43 @@ public class NhanVien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "nhan_vien_id")
-     Integer id;
+    private Integer nhanVienId;
 
-    @Column(name = "ho_ten", nullable = false, length = 100)
-     String hoTen;
+    @Column(name = "ho_ten")
+    private String hoTen;
 
-    @Column(name = "email", nullable = false, unique = true, length = 100)
-     String email;
+    @Column(name = "ma")
+    private String ma;
 
-    @Column(name = "sdt", nullable = false, unique = true, length = 15)
-     String sdt;
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "sdt")
+    private String sdt;
 
     @ManyToOne
     @JoinColumn(name = "vi_tri_id")
-     ViTriCongViec viTriCongViec;
+    private ViTriCongViec viTri;
 
     @ManyToOne
     @JoinColumn(name = "vai_tro_id")
-     VaiTro vaiTro;
+    private VaiTro vaiTro;
 
-    @ManyToOne
-    @JoinColumn(name = "phong_ban_id")
-    private PhongBan phongBan;
+    @Column(name = "ngay_tao")
+    private Date ngay_tao;
+
+    @Column(name = "ngay_cap_nhat")
+    private Date ngay_cap_nhat;
 
     @ManyToOne
     @JoinColumn(name = "truong_phong_id")
     private TruongPhong truongPhong;
 
-    @Column(name = "qr_code", length = 255)
-    private String qrCode;
+    @ManyToOne
+    @JoinColumn(name = "phong_ban_id")
+    private PhongBan phongBan;
 
-    @Column(name = "ngay_tao")
-    private LocalDateTime ngayTao = LocalDateTime.now();
 
-    @Column(name = "ngay_cap_nhat")
-    private LocalDateTime ngayCapNhat = LocalDateTime.now();
+    @Column(name = "TrangThai")
+    private Boolean trang_thai;
 }

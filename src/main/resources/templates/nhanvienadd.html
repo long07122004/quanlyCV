@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{Menu}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<main layout:fragment="main1">
+    <h1 style="text-align: center">Thêm nhân viên</h1>
+    <form th:action="@{/nhan-vien/add}" method="post" th:object="${nhanVien}">
+        <div class="mb-3">
+            <label class="form-label">Mã Nhân Viên</label>
+            <input type="text" name="ma" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Họ và Tên</label>
+            <input type="text" name="hoTen" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Số Điện Thoại</label>
+            <input type="text" name="sdt" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Vị Trí</label>
+            <select class="form-control form-select" name="viTri.id">
+                <option th:each="vt : ${listViTri}" th:value="${vt.id}" th:text="${vt.tenViTri}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trưởng Phòng</label>
+            <select class="form-control form-select" name="truongPhong.id">
+                <option th:each="tp : ${listTruongPhong}" th:value="${tp.id}" th:text="${tp.tenTruongPhong}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Phòng Ban</label>
+            <select class="form-control form-select" name="phongBan.id">
+                <option th:each="pb : ${listPhongBan}" th:value="${pb.id}" th:text="${pb.tenPhongBan}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Vai Trò</label>
+            <select class="form-control form-select" name="vaiTro.id">
+                <option th:each="vt : ${listVaiTro}" th:value="${vt.id}" th:text="${vt.tenVaiTro}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Trạng thái</label><br>
+            <input type="radio" value="true" name="trang_thai" id="active"/>
+            <label for="active">Hoạt động</label><br>
+            <input type="radio" value="false" name="trang_thai" id="inactive"/>
+            <label for="inactive">Không hoạt động</label>
+        </div>
+        <button class="btn btn-success" type="submit">Thêm</button>
+    </form>
+
+</main>
+</body>
+</html>

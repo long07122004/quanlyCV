@@ -29,12 +29,13 @@ public class CVService {
         cvRepository.deleteById(id);
     }
 
-    public List<CV> findByGioiTinh(String gioiTinh) {
-        return cvRepository.findByGioiTinh(gioiTinh);
-    }
-
-    public List<CV> findByCvStatusId(Integer cvStatusId) {
-        return cvRepository.findByCvStatusId(cvStatusId);
+    public void update(Integer id, CV cv) {
+        if (cvRepository.existsById(id)) {
+            cv.setCv_id(id); // Đảm bảo rằng ID của đối tượng CV được cập nhật là ID đã cho
+            cvRepository.save(cv); // Lưu đối tượng CV đã cập nhật
+        } else {
+            throw new IllegalArgumentException("CV with id " + id + " does not exist.");
+        }
     }
 
     public List<CV> search(String keyword, String gioiTinh, Integer cvStatusId) {

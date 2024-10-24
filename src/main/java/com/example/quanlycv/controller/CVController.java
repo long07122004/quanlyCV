@@ -57,22 +57,33 @@ public class CVController {
 
     @PostMapping("/update/{id}")
     public String updateCV(@PathVariable Integer id, @ModelAttribute CV cv) {
-        // Retrieve the existing CV to get the current applyDateTime
+
+    // Kiểm tra xem CV có tồn tại không
         Optional<CV> existingCVOptional = cvService.findById(id);
 
         if (existingCVOptional.isPresent()) {
-            CV existingCV = existingCVOptional.get(); // Get the actual CV object
+            CV existingCV = existingCVOptional.get(); // Lấy đối tượng CV hiện tại
 
-            // Retain the original applyDateTime
-            cv.setApplyDateTime(existingCV.getApplyDateTime());
+            // Cập nhật các trường cần thiết
+            existingCV.setHoTen(cv.getHoTen());
+            existingCV.setGioiTinh(cv.getGioiTinh());
+            existingCV.setEmail(cv.getEmail());
+            existingCV.setSdt(cv.getSdt());
+            existingCV.setThanhPho(cv.getThanhPho());
+            existingCV.setTenCongViec(cv.getTenCongViec());
+            existingCV.setSoNamKinhNghiem(cv.getSoNamKinhNghiem());
+            existingCV.setGhiChu(cv.getGhiChu());
+            existingCV.setLinkCV(cv.getLinkCV());
+            existingCV.setNguonTuyenDung(cv.getNguonTuyenDung());
+            existingCV.setCvStatusId(cv.getCvStatusId());
 
-            // Proceed to update other fields
-            cvService.save(cv); // Save the updated CV
+            // Lưu đối tượng CV đã được cập nhật
+            cvService.save(existingCV);
         } else {
             throw new IllegalArgumentException("Invalid CV ID: " + id);
         }
 
-        return "redirect:/cv"; // Redirect to the CV list page
+        return "redirect:/cv"; // Chuyển hướng về trang danh sách CV
     }
 
     @GetMapping("/delete/{id}")

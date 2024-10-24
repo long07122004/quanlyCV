@@ -1,35 +1,50 @@
 package com.example.quanlycv.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "Phong_Ban")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.time.Instant;
+
 @Getter
 @Setter
+@Entity
+@Table(name = "Phong_Ban")
 public class PhongBan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "phong_ban_id")
-     Integer id;
+    @Column(name = "phong_ban_id", nullable = false)
+    private Integer id;
 
-    @Column(name = "ma_phong_ban",  unique = true, length = 50)
-     String maPhongBan;
+    @NotBlank(message = "Mã phòng ban không được để trống")
+    @Size(max = 50, message = "Mã phòng ban không được quá 50 ký tự")
+    @Column(name = "ma_phong_ban", nullable = false, length = 50)
+    private String maPhongBan;
 
-    @Column(name = "ten_phong_ban",  length = 100)
-     String tenPhongBan;
+    @NotBlank(message = "Tên phòng ban không được để trống")
+    @Size(max = 100, message = "Tên phòng ban không được quá 100 ký tự")
+    @Column(name = "ten_phong_ban", nullable = false, length = 100)
+    private String tenPhongBan;
 
-    @Column(name = "trang_thai", columnDefinition = "BIT DEFAULT 1")
-     Boolean trangThai = true;
+    @ColumnDefault("1")
+    @Column(name = "trang_thai")
+    private Boolean trangThai;
 
+    @ColumnDefault("getdate()")
     @Column(name = "ngay_tao")
-     LocalDateTime ngayTao = LocalDateTime.now();
+    private Instant ngayTao;
 
+    @ColumnDefault("getdate()")
     @Column(name = "ngay_cap_nhat")
-     LocalDateTime ngayCapNhat = LocalDateTime.now();
+    private Instant ngayCapNhat;
+
 }

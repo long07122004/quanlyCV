@@ -178,6 +178,7 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <form th:object="${formUser}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                            <div class="row">
                                <div class="mb-3">
                                    <label for="hoTen" class="form-label">Họ Và Tên</label>
@@ -272,10 +273,10 @@
                                     <td th:text="${nhanVien.hoTen}"></td>
                                     <td th:text="${nhanVien.email}"></td>
                                     <td th:text="${nhanVien.phongBan.tenPhongBan}"></td>
-                                    <td th:text="${nhanVien.viTriCongViec.tenViTri}"></td>
+                                    <td th:text="${nhanVien.viTri.tenViTri}"></td>
                                     <td>
                                         <a>
-                                            <button type="button" class="btn btn-warning lni lni-pencil" th:attr="data-id=${nhanVien.id}" onclick="getNhanVienId(this)"></button>
+                                            <button type="button" class="btn btn-warning lni lni-pencil" th:attr="data-id=${nhanVien.nhanVienId}" onclick="getNhanVienId(this)"></button>
                                         </a>
                                     </td>
                                 </tr>
@@ -332,10 +333,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form th:object="${vaiTroDTO}" method="post">
+                    <form th:object="${vaiTroDTO1}" method="post">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <div class="mb-3">
-                            <select th:field="*{vaiTroIDS}" class="form-select" aria-label="Default select example" id="vaiTroIDSS">
+                            <select th:field="*{vaiTroID}" class="form-select" aria-label="Default select example" id="vaiTroIDSS">
                                 <option selected value="">Open this select menu</option>
                                 <option th:each="vaitro:${VAITROSS}" th:value="${vaitro.id}" th:text="${vaitro.tenVaiTro}" >One</option>
                             </select>

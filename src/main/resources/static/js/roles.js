@@ -5,7 +5,7 @@ const modal2 = new bootstrap.Modal(document.getElementById('modalNV'));
 
 const modal3 = new bootstrap.Modal(document.getElementById('modal-show-3'));
 const modal4 = new bootstrap.Modal(document.getElementById('modal-show-4'));
-//const showModal1 = document.querySelector("#show-modal-1");
+const showModal1 = document.querySelector("#show-modal-1");
 
 
 // toggle.addEventListener("click",function(){
@@ -49,7 +49,8 @@ function getNhanVienId(button) {
             type: "GET",
             contentType: "application/json",
             success: function(data) {
-                if(data.id && data.hoTen){
+                console.log(data);
+                if(data.nhanVienId && data.hoTen){
                     $('#idNhanvienHidden').val(data.id);
                     $('#nhanvienID').val(data.hoTen);
                     modal2.hide();
